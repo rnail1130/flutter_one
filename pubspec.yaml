@@ -1,0 +1,302 @@
+name: phone_yiyang
+description: A new Flutter project.
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^0.1.2
+  fluttertoast: ^3.1.0
+  dio: ^2.1.4
+  event_bus: ^1.1.0
+  connectivity: ^0.4.3+1
+  flutter_spinkit: ^3.1.0
+  shared_preferences: any
+  # 内嵌浏览器
+  flutter_webview_plugin: ^0.3.5
+  # 打电话 发短信 发邮件  跳网页
+  url_launcher: ^5.0.2
+  # html渲染
+  flutter_html: ^0.9.6
+  flutter_bloc: ^0.15.0
+  flutter_easyrefresh: ^1.2.7
+  flutter_swiper: ^1.1.6
+  # 扫描二维码 条形码
+  barcode_scan: ^1.0.0
+  # 条形码
+  barcode_flutter: ^1.0.1
+  # 二维码
+  qr_flutter: ^2.0.0+51
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/img/account_introduce/0011/01.png
+    - assets/img/account_introduce/0011/02.png
+    - assets/img/account_introduce/0011/03.png
+    - assets/img/account_introduce/0011/04.png
+    - assets/img/account_introduce/0011/05.png
+    - assets/img/account_introduce/0011/06.png
+    - assets/img/account_introduce/0011/07.png
+    - assets/img/account_introduce/0011/08.png
+    - assets/img/account_introduce/0011/09.png
+    - assets/img/account_introduce/0013/01.png
+    - assets/img/account_introduce/0013/02.png
+    - assets/img/account_introduce/0013/03.png
+    - assets/img/account_introduce/0013/04.png
+    - assets/img/account_introduce/0013/05.png
+    - assets/img/account_introduce/0013/06.png
+    - assets/img/account_introduce/0013/07.png
+    - assets/img/account_introduce/0013/08.png
+    - assets/img/account_introduce/0014/01.png
+    - assets/img/account_introduce/0014/02.png
+    - assets/img/account_introduce/0014/03.png
+    - assets/img/account_introduce/0014/04.png
+    - assets/img/account_introduce/0014/05.png
+    - assets/img/account_introduce/0014/06.png
+    - assets/img/account_introduce/0014/07.png
+    - assets/img/account_introduce/0014/08.png
+    - assets/img/account_introduce/0014/09.png
+    - assets/img/account_introduce/2001/01.png
+    - assets/img/account_introduce/2001/02.png
+    - assets/img/account_introduce/2001/03.png
+    - assets/img/account_introduce/2001/04.png
+    - assets/img/account_introduce/2001/05.png
+    - assets/img/account_introduce/2001/06.png
+    - assets/img/account_introduce/2001/07.png
+    - assets/img/account_introduce/2001/08.png
+    - assets/img/account_introduce/2001/09.png
+    - assets/img/account_introduce/2001/10.png
+    - assets/img/bianmin.png
+    - assets/img/calendar.png
+    - assets/img/guide_logo.png
+    - assets/img/guide_logo_iphonex.png
+    - assets/img/index_pic29.png
+    - assets/img/index_pic32.png
+    - assets/img/index_pic33.png
+    - assets/img/index_pic36.png
+    - assets/img/index_pic37.png
+    - assets/img/index_pic41.png
+    - assets/img/index_pic42.png
+    - assets/img/index_pic43.png
+    - assets/img/index_pic44.png
+    - assets/img/index_pic45.png
+    - assets/img/index_pic46.png
+    - assets/img/index_pic47.png
+    - assets/img/index_pic48.png
+    - assets/img/loginal.png
+    - assets/img/loginno.png
+    - assets/img/loginpwd.png
+    - assets/img/moreID7_1.png
+    - assets/img/myCard.png
+    - assets/img/shuifeisuccess.png
+    - assets/img/Tide_1022.png
+    - assets/img/TiedCardAccount/gonghui.jpg
+    - assets/img/TiedCardAccount/gongjiaoka.png
+    - assets/img/TiedCardAccount/sms_duihuan.jpg
+    - assets/img/TiedCardAccount/TideCard_VIP01.png
+    - assets/img/TiedCardAccount/TideCard_VIP02.png
+    - assets/img/TiedCardAccount/TideCard_VIP03.png
+    - assets/img/TiedCardAccount/TideCard_VIP04.png
+    - assets/img/TiedCardAccount/tiedBank_001.png
+    - assets/img/TiedCardAccount/tiedBank_002.png
+    - assets/img/TiedCardAccount/tiedBank_003.png
+    - assets/img/TiedCardAccount/tiedBank_004.png
+    - assets/img/TiedCardAccount/tiedBank_005.png
+    - assets/img/TiedCardAccount/tiedBank_006.png
+    - assets/img/TiedCardAccount/tiedBank_007.png
+    - assets/img/TiedCardAccount/tiedBank_008.png
+    - assets/img/TiedCardAccount/tiedBank_009.png
+    - assets/img/TiedCardAccount/tiedBank_010.png
+    - assets/img/TiedCardAccount/Tiedcard.png
+    - assets/img/TiedCardAccount/tied_139yx01.png
+    - assets/img/TiedCardAccount/tied_139yx02.png
+    - assets/img/TiedCardAccount/tied_139yx03.png
+    - assets/img/TiedCardAccount/tied_139yx04.png
+    - assets/img/TiedCardAccount/tied_139yx05.png
+    - assets/img/TiedCardAccount/tied_cjz.jpg
+    - assets/img/TiedCardAccount/tied_csqb01.jpg
+    - assets/img/TiedCardAccount/tied_csqb02.png
+    - assets/img/TiedCardAccount/tied_csqb03.png
+    - assets/img/TiedCardAccount/tied_csqb04.png
+    - assets/img/TiedCardAccount/tied_csqb05.png
+    - assets/img/TiedCardAccount/tied_csqb06.png
+    - assets/img/TiedCardAccount/tied_dy01.png
+    - assets/img/TiedCardAccount/tied_ghk1.png
+    - assets/img/TiedCardAccount/tied_ghk2.png
+    - assets/img/TiedCardAccount/tied_sbk.jpg
+    - assets/img/TiedCardAccount/tied_xnk01.png
+    - assets/img/TiedCardAccount/tied_xnk02.png
+    - assets/img/TiedCardAccount/tied_xnk03.png
+    - assets/img/TiedCardAccount/tied_xnk04.png
+    - assets/img/TiedCardAccount/tied_xnk05.png
+    - assets/img/TiedCardAccount/tied_xnk06.png
+    - assets/img/TiedCardAccount/tied_xnk07.png
+    - assets/img/TiedCardAccount/tied_xnk08.png
+    - assets/img/TiedCardAccount/tied_xnk09.png
+    - assets/img/TiedCardAccount/tied_xnk10.png
+    - assets/img/TiedCardAccount/tied_ydhb01.png
+    - assets/img/TiedCardAccount/tied_ydhb02.png
+    - assets/img/TiedCardAccount/tied_ydhb03.png
+    - assets/img/TiedCardAccount/tied_ydhb04.png
+    - assets/img/TiedCardAccount/tied_ydhb05.png
+    - assets/img/TiedCardAccount/tied_ydhb06.png
+    - assets/img/TiedCardAccount/tied_ydhb07.png
+    - assets/img/TiedCardAccount/tied_ydhb08.png
+    - assets/img/TiedCardAccount/tied_ydhb09.png
+    - assets/img/TiedCardAccount/tied_ydhb10.png
+    - assets/img/TiedCardAccount/tied_zfb01.png
+    - assets/img/TiedCardAccount/tied_zfb02.png
+    - assets/img/TiedCardAccount/tied_zfb03.png
+    - assets/img/TiedCardAccount/tied_zfb04.png
+    - assets/img/TiedCardAccount/tied_zfb05.png
+    - assets/img/TiedCardAccount/tied_zfb06.png
+    - assets/img/TiedCardAccount/tied_zfb07.png
+    - assets/img/TiedCardAccount/tied_zfb08.png
+    - assets/img/TiedCardAccount/tied_zfb09.png
+    - assets/img/top.png
+    - assets/img/weixuan.png
+    - assets/img/yhname.png
+    - assets/tideimage/Tide_1001.png
+    - assets/tideimage/Tide_1002.png
+    - assets/tideimage/Tide_1003.png
+    - assets/tideimage/Tide_1004.png
+    - assets/tideimage/Tide_1005.png
+    - assets/tideimage/Tide_1006.png
+    - assets/tideimage/Tide_1007.png
+    - assets/tideimage/Tide_1008.png
+    - assets/tideimage/Tide_1009.png
+    - assets/tideimage/Tide_1010.png
+    - assets/tideimage/Tide_1011.png
+    - assets/tideimage/Tide_1012.png
+    - assets/tideimage/Tide_1013.png
+    - assets/tideimage/Tide_1014.png
+    - assets/tideimage/Tide_1015.png
+    - assets/tideimage/Tide_1016.png
+    - assets/tideimage/Tide_1017.png
+    - assets/tideimage/Tide_1018.png
+    - assets/tideimage/Tide_1019.png
+    - assets/tideimage/Tide_1020.png
+    - assets/tideimage/Tide_1021.png
+
+    - assets/images/index_pic47.png
+    - assets/images/index/newNewsBgc.png
+    - assets/images/jiaofei.png
+    - assets/images/huiyuan.png
+    - assets/images/piaoquan.png
+    - assets/images/bangka.png
+    - assets/images/bianmin.png
+    - assets/images/more/rdcx.png
+    - assets/images/more/grbs.png
+    - assets/images/more/qybs.png
+    - assets/images/more/ggfb.png
+    - assets/images/more/bjcx.png
+    - assets/images/index/index_pic11.png
+    - assets/images/index/index_pic12.png
+    - assets/images/index/index_pic13.png
+    - assets/images/index/index_pic14.png
+    - assets/images/more/moreID2_0.png
+    - assets/images/more/moreID2_1.png
+    - assets/images/more/moreID2_2.png
+    - assets/images/more/moreID2_5.png
+    - assets/images/more/moreID2_6.png
+    - assets/images/more/moreID2_7.png
+    - assets/images/more/moreID2_8.png
+    - assets/images/index/index_pic.png
+    - assets/images/index/index_pic2.png
+    - assets/images/index/index_pic3.png
+    - assets/images/index/index_pic4.png
+    - assets/images/index/index_pic7.png
+    - assets/images/index/index_pic8.png
+    - assets/images/index/index_pic9.png
+    - assets/images/index/index_pic10.png
+    - assets/images/more/moreID1_0.png
+    - assets/images/more/moreID1_1.png
+    - assets/images/more/moreID1_2.png
+    - assets/images/more/moreID1_3.png
+    - assets/images/more/moreID0_0.png
+    - assets/images/more/moreID0_1.png
+    - assets/images/more/moreID0_2.png
+    - assets/images/more/moreID0_3.png
+    - assets/images/more/moreID0_4.png
+    - assets/images/more/moreID0_5.png
+    - assets/images/more/moreID0_6.png
+    - assets/images/more/moreID0_7.png
+    - assets/images/more/moreID0_8.png
+    - assets/images/more/moreID0_9.png
+    - assets/images/more/moreID0_10.png
+    - assets/images/more/moreID0_11.png
+    - assets/images/index/index_pic24.png
+    - assets/images/index/index_pic25.png
+    - assets/images/index/index_pic26.png
+    - assets/images/index/index_pic60.png
+    - assets/img/myCard.png
+    - assets/images/myCenter0.png
+    - assets/images/myCenter1.png
+    - assets/images/myCenter2.png
+    - assets/images/myCenter3.png
+    - assets/images/myCenter4.png
+    - assets/images/myCenter5.png
+    - assets/images/myCenter6.png
+    - assets/images/bangka.png
+    - assets/images/personal_pwd.png
+    - assets/images/person3.png
+
+
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/assets-and-images/#resolution-aware.
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/assets-and-images/#from-packages
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
