@@ -1,85 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/tabThird/hubThird.dart';
 import 'package:phone_yiyang/styles/colors.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import 'index.dart';
 
-class thirdTabs extends StatelessWidget {
-  Widget buildListData(BuildContext context, String strItem, Icon iconItem) {
-    return new ListTile(
-      isThreeLine: false,
-      leading: iconItem,
-      title: new Text(strItem),
-      trailing: new Icon(Icons.keyboard_arrow_right),
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return new AlertDialog(
-              title: new Text(
-                'ListViewDemo',
-                style: new TextStyle(
-                  color: Colors.black54,
-                  fontSize: 18.0,
-                ),
-              ),
-              content: new Text('您选择的item内容为:$strItem'),
-            );
-          },
-        );
-      },
-    );
-  }
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 200.0,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [AppColors.themeColorLight,Theme.of(context).primaryColor],
-                  begin: Alignment.topLeft
-                )
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 30.0,
-                    backgroundImage: NetworkImage("http://60.247.61.162:8020/UploadFiles/HeaderImgs/temp_1554116484560.jpg",),
-                  ),
-                  SizedBox(height: 25.0,),
-                  Text("卡号：21354563215465132456",style: TextStyle(color: Colors.white,fontSize: 16.0),),
-                ],
-              ),
-            ),
-            Container(
-              height: 10.0,
-              color: Colors.grey[100],
-            ),
-          buildListData(context,"121231",Icon(Icons.android)),
-          Divider(),
-          buildListData(context,"121231",Icon(Icons.android)),
-        Divider(),
-        buildListData(context,"121231",Icon(Icons.android)),
-        Divider(),
-        buildListData(context,"121231",Icon(Icons.android)),
-        Divider(),
-      ],
-    );
-  }
-}
-class userList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scrollbar(
-      child: Text('2212'),
-    );
-  }
-}
 class thirdTab extends StatelessWidget {
   List<List<String>> userList = DataConfig.userList;
   var titleStyle = TextStyle(fontSize: 16.0,color: Colors.white);
@@ -144,7 +72,35 @@ class thirdTab extends StatelessWidget {
       leading: Image.asset(userList[index][1],width: 25.0,),
       title: Text(userList[index][0],style: TextStyle(fontSize: 14.0),),
       trailing: Icon(Icons.chevron_right),
-      onTap: (){},
+      onTap: (){
+        if(userList[index][0] == "云闪付绑卡" || userList[index][0] == "实名认证"){
+          Alert(
+            context: context,
+            type: AlertType.warning,
+            title: "提示",
+            desc: "该功能尚未完全开放",
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "确定",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(context),
+                gradient: LinearGradient(colors: [
+                  Color.fromRGBO(116, 116, 191, 1.0),
+                  Color.fromRGBO(52, 138, 199, 1.0)
+                ]),
+              )
+            ],
+          ).show();
+        }else{
+          Navigator.push(
+            context,
+            new MaterialPageRoute(builder: (context) => hubThird(userList[index][0])),
+          );
+        }
+
+      },
     );
   }
 }

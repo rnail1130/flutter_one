@@ -1,9 +1,11 @@
 //跳转的中转
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/findPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/government.dart';
 class hub extends StatefulWidget {
   final String name;
   final String url;
+
   hub(this.name,{this.url});
 
   @override
@@ -16,6 +18,30 @@ class _hubState extends State<hub> {
       case "政务查询":
        return government();
        break;
+      case "不动产登记查询":
+        return find('请输入公民身份证号码');
+        break;
+      case "单位医保参保查询":
+        return find('请输入业务系统单位编码');
+        break;
+      case "个人医保参保查询":
+        return find('请输入公民身份证号码');
+        break;
+      case "个人公积金查询":
+        return find('请输入公民身份证号码');
+        break;
+      case "单位失业查询":
+        return find('请输入业务系统单位编码');
+        break;
+      case "个人失业查询":
+        return find('请输入公民身份证号码');
+        break;
+      case "单位工伤查询":
+        return find('请输入业务系统单位编码');
+        break;
+      case "个人工伤查询":
+        return find('请输入公民身份证号码');
+        break;
     }
   }
   @override

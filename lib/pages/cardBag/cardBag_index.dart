@@ -268,7 +268,7 @@ class _CardBagIndexState extends State<CardBagIndex> {
         return Container(
           decoration: new BoxDecoration(
               border: Border.all(width: 0.5, color: Colors.grey[300]),
-              color: AppColors.white),
+              color: AppColors.twhite),
           margin: EdgeInsets.only(top: AppSize.ufp7),
           child: ExpansionTile(
             onExpansionChanged: (bol) {

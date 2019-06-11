@@ -12,7 +12,7 @@ class AppColors {
   static Color theme_blu = Color(0XF666666);
   static Color theme_reminder = Color(0XFaa3200);
   static Color theme_gra11 = Color(0XF2d2d2d);
-  static Color white = Color(0XFFFFFFF);
+  static Color twhite = Colors.white;
   static Color bla8 = Color(0XF7C7C7C);
   static Color gral = Color(0XFA0A0A0);
   static Color blu11 = Color(0XF0076CB);

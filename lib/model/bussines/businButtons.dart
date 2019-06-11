@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/utiles/core.dart';
+import 'package:phone_yiyang/utiles/plug.dart';
 import 'business_list.dart';
 import '../../pages/TiedCardAccount/TiedListDetail.dart';
 
 class BusinessButtons {
   List<BusinessButton> butt;
-  Widget msgH5;
   List<BusinessButton> b_1001 = [
     BusinessButton(f100101, "详情", true),
     BusinessButton(f100102, "虚拟卡", true),
@@ -160,175 +161,79 @@ class BusinessButtons {
     BusinessButton(f100101, "详情", true),
     BusinessButton(f102402, "医保查询", false),
   ];
-  Widget m_1001 = Container(
-    child: Text("1001"),
-  );
-  Widget m_1002 = Container(
-    child: Text("1002"),
-  );
-  Widget m_1003 = Container(
-    child: Text("1003"),
-  );
-  Widget m_1004 = Container(
-    child: Text("1004"),
-  );
-  Widget m_1005 = Container(
-    child: Text("1005"),
-  );
-  Widget m_1006 = Container(
-    child: Text("1006"),
-  );
-  Widget m_1007 = Container(
-    child: Text("1007"),
-  );
-  Widget m_1008 = Container(
-    child: Text("1008"),
-  );
-  Widget m_1009 = Container(
-    child: Text("1009"),
-  );
-  Widget m_1010 = Container(
-    child: Text("1010"),
-  );
-  Widget m_1011 = Container(
-    child: Text("1011"),
-  );
-  Widget m_1012 = Container(
-    child: Text("1012"),
-  );
-  Widget m_1013 = Container(
-    child: Text("1013"),
-  );
-  Widget m_1014 = Container(
-    child: Text("1014"),
-  );
-  Widget m_1015 = Container(
-    child: Text("1015"),
-  );
-  Widget m_1016 = Container(
-    child: Text("1016"),
-  );
-  Widget m_1017 = Container(
-    child: Text("1017"),
-  );
-  Widget m_1018 = Container(
-    child: Text("1018"),
-  );
-  Widget m_1019 = Container(
-    child: Text("1019"),
-  );
-  Widget m_1020 = Container(
-    child: Text("1020"),
-  );
-  Widget m_1021 = Container(
-    child: Text("1021"),
-  );
-  Widget m_1022 = Container(
-    child: Text("1022"),
-  );
-  Widget m_1023 = Container(
-    child: Text("1023"),
-  );
-  Widget m_1024 = Container(
-    child: Text("1024"),
-  );
   BusinessButtons.fromget(code) {
     switch (code) {
       case '1001':
         this.butt = this.b_1001;
-        this.msgH5 = this.m_1001;
         break;
       case '1002':
         this.butt = this.b_1002;
-        this.msgH5 = this.m_1002;
         break;
       case '1003':
         this.butt = this.b_1003;
-        this.msgH5 = this.m_1003;
         break;
       case '1004':
         this.butt = this.b_1004;
-        this.msgH5 = this.m_1004;
         break;
       case '1005':
         this.butt = this.b_1005;
-        this.msgH5 = this.m_1005;
         break;
       case '1006':
         this.butt = this.b_1006;
-        this.msgH5 = this.m_1006;
         break;
       case '1007':
         this.butt = this.b_1007;
-        this.msgH5 = this.m_1007;
         break;
       case '1008':
         this.butt = this.b_1008;
-        this.msgH5 = this.m_1008;
         break;
       case '1009':
         this.butt = this.b_1009;
-        this.msgH5 = this.m_1009;
         break;
       case '1010':
         this.butt = this.b_1010;
-        this.msgH5 = this.m_1010;
         break;
       case '1011':
         this.butt = this.b_1011;
-        this.msgH5 = this.m_1011;
         break;
       case '1012':
         this.butt = this.b_1012;
-        this.msgH5 = this.m_1012;
         break;
       case '1013':
         this.butt = this.b_1013;
-        this.msgH5 = this.m_1013;
         break;
       case '1014':
         this.butt = this.b_1014;
-        this.msgH5 = this.m_1014;
         break;
       case '1015':
         this.butt = this.b_1015;
-        this.msgH5 = this.m_1015;
         break;
       case '1016':
         this.butt = this.b_1016;
-        this.msgH5 = this.m_1016;
         break;
       case '1017':
         this.butt = this.b_1017;
-        this.msgH5 = this.m_1017;
         break;
       case '1018':
         this.butt = this.b_1018;
-        this.msgH5 = this.m_1018;
         break;
       case '1019':
         this.butt = this.b_1019;
-        this.msgH5 = this.m_1019;
         break;
       case '1020':
         this.butt = this.b_1020;
-        this.msgH5 = this.m_1020;
         break;
       case '1021':
         this.butt = this.b_1021;
-        this.msgH5 = this.m_1021;
         break;
       case '1022':
         this.butt = this.b_1022;
-        this.msgH5 = this.m_1022;
         break;
       case '1023':
         this.butt = this.b_1023;
-        this.msgH5 = this.m_1023;
         break;
       case '1024':
         this.butt = this.b_1024;
-        this.msgH5 = this.m_1024;
     }
   }
 }
@@ -338,6 +243,9 @@ class BusinessButton {
   String name;
   bool isonclick;
   BusinessButton(this.fun, this.name, this.isonclick);
+  setisonclick(bol) {
+    this.isonclick = bol;
+  }
 }
 
 f100101(context, ResultBusinessList movie, bool ifsign) {
@@ -356,72 +264,324 @@ f100101(context, ResultBusinessList movie, bool ifsign) {
     ),
   );
 }
+
+/// 虚拟卡
 f100102() {}
+
+/// 交易记录
 f100103() {}
+
+/// 修改信息
 f100104() {}
-f100105() {}
-f100202() {}
-f100302() {}
-f100303() {}
+
+/// 一键挂失
+f100105() {
+  openlaunchUrl("url");
+}
+
+/// 身份认证
+f100202() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 银行积分
+f100302() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 居民卡转账
+f100303() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 银行网点
 f100304() {}
-f100402() {}
-f100403() {}
+
+/// 缴纳话费
+f100402() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 流量充值
+f100403() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 积分兑换
 f100404() {}
+
+/// 交易记录
 f100502() {}
-f100503() {}
-f100602() {}
-f100603() {}
-f100604() {}
-f100605() {}
+
+/// 居民卡转账
+f100503() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// APP下载
+f100602() {
+  openlaunchUrl("https://p.10086.cn/info/wap/sjqb/cpb/jsym/index.html");
+}
+
+/// 交易记录
+f100603() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 重置密码
+f100604() {
+  openlaunchUrl(
+      "https://p.10086.cn/ptw/msg_login.xhtml?FLOW_PATH=1&BACK_FLG=6");
+}
+
+/// 免密签约授权
+f100605() {
+  openlaunchUrl(
+      "https://p.10086.cn/ptw/msg_login.xhtml?FLOW_PATH=2&BACK_FLG=6");
+}
+
+/// 账户绑定/解绑
 f100702() {}
-f100703() {}
-f100704() {}
-f100705() {}
-f100803() {}
-f100804() {}
-f100805() {}
-f100806() {}
-f100807() {}
-f100903() {}
-f100904() {}
-f101003() {}
-f101004() {}
-f101103() {}
-f101104() {}
-f101203() {}
-f101303() {}
-f101403() {}
-f101503() {}
-f101603() {}
-f101604() {}
-f101605() {}
-f101606() {}
-f101607() {}
-f101703() {}
-f101704() {}
-f101705() {}
-f101706() {}
-f101803() {}
-f101804() {}
-f101903() {}
-f102002() {}
-f102003() {}
-f102102() {}
-f102103() {}
-f102202() {}
-f102203() {}
-f102302() {}
-f102303() {}
-f102402() {}
-f100802() {}
-f100902() {}
-f101002() {}
-f101102() {}
-f101202() {}
-f101302() {}
-f101402() {}
-f101502() {}
-f101602() {}
-f101702() {}
-f101802() {}
-f101902() {}
+
+/// 账户充值
+f100703() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 账户余额
+f100704() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 乘车记录
+f100705() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 社保缴费
+f100803() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 养老查询
+f100804() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+// 医疗查询
+f100805() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 公积金查询
+f100806() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 失业查询
+f100807() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 身份核实
+f100903() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 特惠商户
+f100904() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 身份核实
+f101003() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 特惠商户
+f101004() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 违章查询
+f101103() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 违章缴费
+f101104() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 记分查询
+f101203() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 免密支付
+f101303() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 免密支付
+f101403() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 学历证书查询
+f101503() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 咪咕视频
+f101603() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 咪咕音乐
+f101604() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 咪咕游戏
+f101605() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 咪咕阅读
+f101606() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 咪咕动漫
+f101607() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 网络电话
+f101703() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 和彩云
+f101704() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 我的移动
+f101705() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 朋友圈
+f101706() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 查看邮件
+f101803() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 修改密码
+f101804() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 缴纳党费（通过和包）
+f101903() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 申请开通/虚拟卡
+f102002() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 交易记录
+f102003() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 居民卡VIP账户-购买VIP
+f102102() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 居民卡VIP账户-购买记录
+f102103() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 公积金账户-公积金查询
+f102202() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 公积金账户-贷款查询
+f102203() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 物业缴费账户-账户绑定/解绑
+f102302() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 物业缴费账户-物业费缴纳
+f102303() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+/// 医疗保险账户-医保查询
+f102402() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f100802() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f100902() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101002() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101102() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101202() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101302() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101402() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101502() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101602() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101702() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101802() {
+  alertMsg(null, "暂未开通", [], false);
+}
+
+f101902() {
+  alertMsg(null, "暂未开通", [], false);
+}

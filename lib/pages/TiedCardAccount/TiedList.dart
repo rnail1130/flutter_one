@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -6,7 +5,6 @@ import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/utiles/refresh.dart';
 import 'package:phone_yiyang/model/bussines/business_list.dart';
 import 'package:phone_yiyang/model/bussines/businButtons.dart';
-import 'package:phone_yiyang/model/currentUser.dart';
 
 ResultCurrentUser currentUser;
 
@@ -22,6 +20,18 @@ class _TiedListState extends State<TiedList> {
   int pagenum;
   List<ResultBusinessList> tidelist = [];
   List<bool> _listbutt = List<bool>();
+  List notbang = [
+    "1000",
+    "1001",
+    "1002",
+    "1003",
+    "1004",
+    "1005",
+    "1006",
+    "1021",
+    "1022",
+    "1024"
+  ];
   // 列表
   Widget _createListView(BuildContext context) {
     return ListView.builder(
@@ -40,9 +50,8 @@ class _TiedListState extends State<TiedList> {
             : Icon(Icons.expand_more, color: AppColors.test95a);
         return Container(
           decoration: new BoxDecoration(
-              border:
-                  Border.all(width: 0.5, color: Colors.grey[300]),
-              color: AppColors.white),
+              border: Border.all(width: 0.5, color: Colors.grey[300]),
+              color: AppColors.twhite),
           margin: EdgeInsets.only(top: AppSize.ufp7),
           child: ExpansionTile(
             onExpansionChanged: (bol) {
@@ -55,8 +64,8 @@ class _TiedListState extends State<TiedList> {
             },
             backgroundColor: Colors.white,
             leading: Padding(
-              padding: EdgeInsets.only(
-                  top: AppSize.ufp75, bottom: AppSize.ufp375),
+              padding:
+                  EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
               child: Image.asset(
                 'assets/tideimage/Tide_${movies.businessCode}.png',
                 height: doub52p4736,
@@ -64,8 +73,8 @@ class _TiedListState extends State<TiedList> {
               ),
             ),
             title: Padding(
-              padding: EdgeInsets.only(
-                  top: AppSize.ufp75, bottom: AppSize.ufp375),
+              padding:
+                  EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
               child: Text(movies.name,
                   style: TextStyle(
                       color: Colors.black,
@@ -75,8 +84,8 @@ class _TiedListState extends State<TiedList> {
             trailing: Column(
               children: <Widget>[
                 Padding(
-                    padding: EdgeInsets.fromLTRB(AppSize.ufp8125,
-                        AppSize.ufp75, AppSize.ufp8125, 0.0),
+                    padding: EdgeInsets.fromLTRB(
+                        AppSize.ufp8125, AppSize.ufp75, AppSize.ufp8125, 0.0),
                     child: Text(movies.status > 0 ? '已绑定' : '未绑定',
                         style: TextStyle(
                             fontSize: AppSize.ufp625,
@@ -99,10 +108,12 @@ class _TiedListState extends State<TiedList> {
     List<Widget> bus = List<Widget>();
     List<Widget> bus1 = List<Widget>();
     for (var i = 0; i < _bButtons.butt.length; i++) {
+      if(!notbang.contains(_bButtons.butt[i].name)){
+        
+      }
       if (i < 4)
         bus.add(Padding(
-          padding: EdgeInsets.fromLTRB(
-              AppSize.ufp45, 0.0, AppSize.ufp45, 0.0),
+          padding: EdgeInsets.fromLTRB(AppSize.ufp45, 0.0, AppSize.ufp45, 0.0),
           child: Container(
             width: doub85,
             child: RaisedButton(
@@ -117,7 +128,7 @@ class _TiedListState extends State<TiedList> {
                 _bButtons.butt[i].name,
                 style: TextStyle(
                     color: _bButtons.butt[i].isonclick
-                        ? AppColors.white
+                        ? AppColors.twhite
                         : AppColors.text_Tide_hui,
                     fontSize: AppSize.ufp6875),
               ),
@@ -131,8 +142,7 @@ class _TiedListState extends State<TiedList> {
         ));
       else
         bus1.add(Padding(
-          padding: EdgeInsets.fromLTRB(
-              AppSize.ufp45, 0.0, AppSize.ufp45, 0.0),
+          padding: EdgeInsets.fromLTRB(AppSize.ufp45, 0.0, AppSize.ufp45, 0.0),
           child: Container(
             width: doub85,
             child: RaisedButton(
@@ -147,7 +157,7 @@ class _TiedListState extends State<TiedList> {
                 _bButtons.butt[i].name,
                 style: TextStyle(
                     color: _bButtons.butt[i].isonclick
-                        ? AppColors.white
+                        ? AppColors.twhite
                         : AppColors.text_Tide_hui,
                     fontSize: AppSize.ufp6875),
               ),
@@ -180,7 +190,7 @@ class _TiedListState extends State<TiedList> {
       // backgroundColor: ThemeConfig.bodyColor,
       appBar: AppBar(
         title: Center(
-          child: Text('绑卡账户', style: TextStyle(color: Colors.white)),
+          child: Text('绑卡账户'),
         ),
       ),
       body: easyRefresh(_createListView(context), () async {
@@ -206,19 +216,19 @@ class _TiedListState extends State<TiedList> {
 
   @override
   void initState() {
-    GetPageData.getlogin((data) {
-      CurrentUserD currentUserD = CurrentUserD.fromJson(data.toString());
-      currentUser = currentUserD.result;
-      LocalStorage.set("currentUser", json.encode(currentUser));
-      pagenum = 1;
-      GetPageData.getdata(pagenum, (data) {
-        var businessListD = BusinessListD.fromJson(data.toString());
-        setState(() {
-          tidelist.clear();
-          tidelist.addAll(businessListD.result);
-        });
+    // GetPageData.getlogin((data) {
+    //   CurrentUserD currentUserD = CurrentUserD.fromJson(data.toString());
+    //   currentUser = currentUserD.result;
+    //   LocalStorage.set("currentUser", json.encode(currentUser));
+    pagenum = 1;
+    GetPageData.getdata(pagenum, (data) {
+      var businessListD = BusinessListD.fromJson(data.toString());
+      setState(() {
+        tidelist.clear();
+        tidelist.addAll(businessListD.result);
       });
     });
+    // });
   }
 }
 
@@ -226,6 +236,7 @@ class GetPageData {
   static getlogin(Function callback) async {
     var res = await httpManager.netFetch(hostAddres.getNewLogin(),
         {"mobile": "18210530620", "passWord": "abc123"}, null, null);
+
     callback(res.data);
   }
 

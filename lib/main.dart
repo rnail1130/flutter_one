@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           platform: TargetPlatform.iOS,//手势滑动关闭页面
           primaryColor: AppColors.themeColor,
-          accentColor: AppColors.white
+          accentColor: AppColors.twhite
       ),
       // initialRoute: "/HomePage",//功能测试初始化的页面
 /*      routes: <String,WidgetBuilder>{//配置路径

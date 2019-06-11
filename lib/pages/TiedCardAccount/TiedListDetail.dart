@@ -1,16 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/model/bussines/business_PhoneIP.dart';
-import 'package:phone_yiyang/utiles/LocalStorage.dart';
-import 'package:phone_yiyang/utiles/net/api.dart';
-import 'package:phone_yiyang/utiles/getHost.dart';
-import 'package:phone_yiyang/styles/colors.dart';
-import 'package:phone_yiyang/styles/fontSize.dart';
 import 'package:phone_yiyang/model/bussines/business_detail.dart';
 import 'package:phone_yiyang/model/bussines/business_list.dart';
 import 'package:phone_yiyang/model/bussines/businButtons.dart';
-import 'package:phone_yiyang/model/currentUser.dart';
 import 'package:phone_yiyang/pages/TiedCardAccount/detail_msg.dart';
 
 ResultCurrentUser currentUser;
@@ -176,7 +171,7 @@ class TiedListDetail extends StatefulWidget {
   final String businessCode;
   final status;
   final code;
-  final detailInfo;
+  final ResultBusinessList detailInfo;
   _TiedListDetailState createState() => _TiedListDetailState();
 }
 
@@ -187,10 +182,44 @@ class _TiedListDetailState extends State<TiedListDetail> {
   var detailtitle;
   bool _ifbutt = true;
   BusinessButtons _bButtons;
-  Widget bodyW = Center(child: Text("加载中..."));
+
+  @override
+  void initState() {
+    _bButtons = BusinessButtons.fromget(widget.businessCode);
+    _bButtons.butt.removeAt(0);
+    ifsign = widget.ifsign;
+    if (widget.status) {
+      LocalStorage.getjson('currentUser', (data) {
+        currentUser = ResultCurrentUser.fromJson(data);
+        if (widget.businessCode != "1004") {
+          GetPageData.getdata(
+              currentUser.fCard, widget.code, widget.businessCode, (data) {
+            var businessListD = BusinessDetailD.fromJson(data.toString(), null);
+            setState(() {
+              businessDetail = businessListD.result;
+            });
+          });
+        } else {
+          GetPageData.getPhoneIPdata(currentUser.fTelephone, (data1) {
+            PhoneIP phoneIP = PhoneIP.fromJson(data1);
+            GetPageData.getdata(
+                currentUser.fCard, widget.code, widget.businessCode, (data) {
+              var businessListD =
+                  BusinessDetailD.fromJson(data.toString(), phoneIP);
+              setState(() {
+                businessDetail = businessListD.result;
+              });
+            });
+          });
+        }
+      });
+    } else {
+      businessDetail = widget.detailInfo;
+    }
+  }
+
   // 列表的按钮
   List<Widget> _getbutton(movies) {
-    _bButtons.butt.removeAt(0);
     List<Widget> bus = List<Widget>();
     List<Widget> bus1 = List<Widget>();
     for (var i = 0; i < _bButtons.butt.length; i++) {
@@ -211,7 +240,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
                 _bButtons.butt[i].name,
                 style: TextStyle(
                     color: _bButtons.butt[i].isonclick
-                        ? AppColors.white
+                        ? AppColors.twhite
                         : AppColors.text_Tide_hui,
                     fontSize: AppSize.ufp6875),
               ),
@@ -239,7 +268,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
               child: Text(_bButtons.butt[i].name,
                   style: TextStyle(
                     color: _bButtons.butt[i].isonclick
-                        ? AppColors.white
+                        ? AppColors.twhite
                         : AppColors.text_Tide_hui,
                     fontSize: AppSize.ufp6875,
                   )),
@@ -267,11 +296,6 @@ class _TiedListDetailState extends State<TiedListDetail> {
   }
 
   Widget _createListView(BuildContext context) {
-    if (businessDetail == null) {
-      return Center(
-        child: Text("加载中..."),
-      );
-    }
     var _icon = _ifbutt
         ? Icon(Icons.expand_less, color: AppColors.test95a)
         : Icon(Icons.expand_more, color: AppColors.test95a);
@@ -279,7 +303,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
       margin: EdgeInsets.fromLTRB(0.0, AppSize.ufp7, 0.0, AppSize.ufp6),
       decoration: new BoxDecoration(
           border: Border.all(width: 0.5, color: Colors.grey[300]),
-          color: AppColors.white),
+          color: AppColors.twhite),
       child: ExpansionTile(
         backgroundColor: Colors.white,
         initiallyExpanded: true,
@@ -335,125 +359,84 @@ class _TiedListDetailState extends State<TiedListDetail> {
   }
 
   Widget listTitle(BuildContext context) {
-    List<Widget> aacd = List<Widget>();
-    if (widget.businessCode == "1001" ||
-        widget.businessCode == "1002" ||
-        widget.businessCode == "1003" ||
-        widget.businessCode == "1004" ||
-        widget.businessCode == "1005" ||
-        widget.businessCode == "1021") {
-      switch (widget.businessCode) {
-        case "1001":
-          detailtitle = Detailtitle1001.fromJson(businessDetail);
-          break;
-        case "1002":
-          detailtitle = Detailtitle1002.fromJson(businessDetail);
-          break;
-        case "1003":
-          detailtitle = Detailtitle1003.fromJson(businessDetail);
-          break;
-        case "1004":
-          detailtitle = Detailtitle1004.fromJson(businessDetail);
-          break;
-        case "1005":
-          detailtitle = Detailtitle1005.fromJson(businessDetail);
-          break;
-        case "1021":
-          detailtitle = Detailtitle1021.fromJson(businessDetail);
-          break;
-      }
-      final _namelist = detailtitle.tonamelist();
-      final _tocodelist = detailtitle.tocodelist();
-      for (var i = 0; i < _tocodelist.length; i++) {
-        if (i == 0) aacd..add(Divider(height: AppSize.ubp_1));
+    List<Widget> aacd = List<Widget>()..add(Divider(height: AppSize.ubp_1));
+    if (widget.status) {
+      if (widget.businessCode == "1001" ||
+          widget.businessCode == "1002" ||
+          widget.businessCode == "1003" ||
+          widget.businessCode == "1004" ||
+          widget.businessCode == "1005" ||
+          widget.businessCode == "1021") {
+        switch (widget.businessCode) {
+          case "1001":
+            detailtitle = Detailtitle1001.fromJson(businessDetail);
+            break;
+          case "1002":
+            detailtitle = Detailtitle1002.fromJson(businessDetail);
+            break;
+          case "1003":
+            detailtitle = Detailtitle1003.fromJson(businessDetail);
+            break;
+          case "1004":
+            detailtitle = Detailtitle1004.fromJson(businessDetail);
+            break;
+          case "1005":
+            detailtitle = Detailtitle1005.fromJson(businessDetail);
+            break;
+          case "1021":
+            detailtitle = Detailtitle1021.fromJson(businessDetail);
+            break;
+        }
+        final _namelist = detailtitle.tonamelist();
+        final _tocodelist = detailtitle.tocodelist();
+        for (var i = 0; i < _tocodelist.length; i++) {
+          aacd
+            ..add(Container(
+                color: AppColors.twhite,
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        AppSize.ufp875, 0.0, AppSize.ufp875, 0.0),
+                    child: ListTile(
+                      leading: null,
+                      title: Text(_namelist[i]),
+                      trailing: Text(
+                          (_tocodelist[i] != null && _tocodelist[i] != "")
+                              ? _tocodelist[i]
+                              : "无"),
+                    ))));
+        }
+      } else {
         aacd
           ..add(Container(
-              color: AppColors.white,
+              color: AppColors.twhite,
               child: Padding(
                   padding: EdgeInsets.fromLTRB(
                       AppSize.ufp875, 0.0, AppSize.ufp875, 0.0),
                   child: ListTile(
                     leading: null,
-                    title: Text(_namelist[i]),
-                    trailing: Text(
-                        (_tocodelist[i] != null && _tocodelist[i] != "")
-                            ? _tocodelist[i]
-                            : "无"),
-                  ))))
-          ..add(Divider(height: AppSize.ubp_1));
+                    title: Text("${widget.businessname}号"),
+                    trailing: Text((businessDetail.code != null &&
+                            businessDetail.code != "")
+                        ? businessDetail.code
+                        : "无"),
+                  ))));
       }
     } else {
       aacd
-        ..add(Divider(height: AppSize.ubp_1))
         ..add(Container(
-            color: AppColors.white,
+            color: AppColors.twhite,
             child: Padding(
                 padding: EdgeInsets.fromLTRB(
                     AppSize.ufp875, 0.0, AppSize.ufp875, 0.0),
                 child: ListTile(
-                  leading: null,
-                  title: Text("${widget.businessname}号"),
-                  trailing: Text(
-                      (businessDetail.code != null && businessDetail.code != "")
-                          ? businessDetail.code
-                          : "无"),
-                ))))
-        ..add(Divider(height: AppSize.ubp_1));
+                  title: Text(widget.businessname + "号"),
+                  trailing: Text("********"),
+                ))));
     }
-    return Column(
-      children: aacd,
-    );
-  }
 
-  getbody() {
-    if (widget.status) {
-      if (businessDetail != null) {
-        bodyW = Column(
-          children: <Widget>[
-            _createListView(context),
-            listTitle(context),
-            Container(
-              color:AppColors.white,
-              margin: EdgeInsets.only(top: 9.0),
-              child: Row(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: AppSize.ufp875, bottom: AppSize.ufp875),
-                    child: Text(
-                      "使用说明",
-                      style: TextStyle(fontSize: AppSize.ufp875),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        );
-      }
-    } else {
-      bodyW = Column(
-        children: <Widget>[
-          _createListView(context),
-          Divider(height: AppSize.ubp_1),
-          Container(
-              color: AppColors.white,
-              child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      AppSize.ufp875, 0.0, AppSize.ufp875, 0.0),
-                  child: ListTile(
-                    title: Text(widget.businessname + "号"),
-                    trailing: Text("********"),
-                  ))),
-          Divider(height: AppSize.ubp_1),
-          Container(
-            color: AppColors.white,
-            margin: EdgeInsets.only(top: 9.0),
-            child: _bButtons.msgH5,
-          ),
-        ],
-      );
-    }
+    return Column(
+      children: aacd..add(Divider(height: AppSize.ubp_1)),
+    );
   }
 
   @override
@@ -461,53 +444,16 @@ class _TiedListDetailState extends State<TiedListDetail> {
     return Scaffold(
       backgroundColor: AppColors.themebody,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: AppColors.white),
-        title: Text(
-          "${widget.businessname}详情",
-          style: TextStyle(color: AppColors.white),
-        ),
+        title: Text("${widget.businessname}详情"),
       ),
-      body: bodyW,
+      body: ListView(
+        children: <Widget>[
+          _createListView(context),
+          listTitle(context),
+          GetH5(businessCode: widget.businessCode, ifsgin: false),
+        ],
+      ),
     );
-  }
-
-  @override
-  void initState() {
-    _bButtons = BusinessButtons.fromget(widget.businessCode);
-    ifsign = widget.ifsign;
-    if (widget.status) {
-      businessDetail = BusinessDetail;
-      LocalStorage.getjson('currentUser', (data) {
-        currentUser = ResultCurrentUser.fromJson(data);
-        if (widget.businessCode != "1004") {
-          GetPageData.getdata(
-              currentUser.fCard, widget.code, widget.businessCode, (data) {
-            var businessListD = BusinessDetailD.fromJson(data.toString(), null);
-            setState(() {
-              businessDetail = businessListD.result;
-              getbody();
-            });
-          });
-        } else {
-          GetPageData.getPhoneIPdata(currentUser.fTelephone, (data1) {
-            PhoneIP phoneIP = PhoneIP.fromJson(data1);
-            GetPageData.getdata(
-                currentUser.fCard, widget.code, widget.businessCode, (data) {
-              var businessListD =
-                  BusinessDetailD.fromJson(data.toString(), phoneIP);
-              setState(() {
-                businessDetail = businessListD.result;
-                getbody();
-              });
-            });
-          });
-        }
-      });
-    } else {
-      businessDetail = ResultBusinessList;
-      businessDetail = widget.detailInfo;
-      getbody();
-    }
   }
 }
 

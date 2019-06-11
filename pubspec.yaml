@@ -44,6 +44,11 @@ dependencies:
   barcode_flutter: ^1.0.1
   # 二维码
   qr_flutter: ^2.0.0+51
+  #弹出插件
+  giffy_dialog: ^1.3.0
+  rflutter_alert: ^1.0.2
+  #下拉列表插件
+  dropdown_menu: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -210,6 +215,9 @@ flutter:
     - assets/tideimage/Tide_1019.png
     - assets/tideimage/Tide_1020.png
     - assets/tideimage/Tide_1021.png
+    - assets/tideimage/Tide_1022.png
+    - assets/tideimage/Tide_1023.png
+    - assets/tideimage/Tide_1024.png
 
     - assets/images/index_pic47.png
     - assets/images/index/newNewsBgc.png
@@ -273,6 +281,8 @@ flutter:
     - assets/images/bangka.png
     - assets/images/personal_pwd.png
     - assets/images/person3.png
+    - assets/images/source.gif
+    - assets/images/header_bg.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

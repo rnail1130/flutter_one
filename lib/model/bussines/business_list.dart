@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class BusinessListD {
   int code;
-  Null msg;
+  var msg;
   List<ResultBusinessList> result;
 
   BusinessListD({this.code, this.msg, this.result});
@@ -10,7 +10,7 @@ class BusinessListD {
   BusinessListD.fromJson(String str) {
     Map<String, dynamic> jsonA = json.decode(str)['d'];
     code = jsonA['Code'];
-    msg = jsonA['Msg'];
+    msg = jsonA['Msg'] != null ? jsonA['Msg'] : "";
     if (jsonA['Result'] != null) {
       result = new List<ResultBusinessList>();
       jsonA['Result'].forEach((v) {
@@ -40,8 +40,7 @@ class ResultBusinessList {
   String businessCode;
 
   ResultBusinessList(
-      {
-      this.sType,
+      {this.sType,
       this.status,
       this.name,
       this.code,
