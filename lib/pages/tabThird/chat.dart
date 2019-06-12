@@ -1,12 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:phone_yiyang/utiles/inputKey.dart';
 import 'package:flutter/cupertino.dart';
+class chats extends StatelessWidget {
+  final String name;
+  chats(this.name);
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+          title: Text(
+            this.name,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(fontSize: 16.0, color: Colors.white,fontFamily: "alm"),
+          ),
+          leading: IconButton(
+              icon: Icon(
+                Icons.chevron_left,
+                size: 30.0,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              })
+      ),
+      body: SafeArea(child: chat()),
+    );
+  }
+}
+
 class chat extends StatefulWidget {
   @override
   _chatState createState() => _chatState();
 }
 const defaultUserName = "jaiou ";
 class _chatState extends State<chat> with TickerProviderStateMixin {
+  FocusNode blankNode = FocusNode();
   final List<Msg> _message = <Msg>[];
   final TextEditingController _textEditingController = TextEditingController();
   bool _isWriting = false;
@@ -35,22 +62,27 @@ class _chatState extends State<chat> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Column(
-      children: <Widget>[
-        Flexible(
-          child: ListView.builder(
-            itemBuilder: (_,int index) => _message[index],
-            itemCount: _message.length,
-            reverse: true,
-            padding: EdgeInsets.all(6.0),
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(blankNode);
+      },
+      child: Column(
+        children: <Widget>[
+          Flexible(
+            child: ListView.builder(
+              itemBuilder: (_,int index) => _message[index],
+              itemCount: _message.length,
+              reverse: true,
+              padding: EdgeInsets.all(6.0),
+            ),
           ),
-        ),
-        Divider(height: 1.0,),
-        Container(
-          child: _buidComposer(),
-          decoration: BoxDecoration(color: Theme.of(context).cardColor),
-        ),
-      ],
+          Divider(height: 1.0,),
+          Container(
+            child: _buidComposer(),
+            decoration: BoxDecoration(color: Theme.of(context).cardColor),
+          ),
+        ],
+      ),
     );
   }
   Widget _buidComposer(){
@@ -75,7 +107,7 @@ class _chatState extends State<chat> with TickerProviderStateMixin {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 3.0),
               child: Theme.of(context).platform == TargetPlatform.iOS ? CupertinoButton(
-                child: Text('提交'),
+                child: Icon(Icons.send),
                 onPressed: _isWriting ? () => _submitMsg(_textEditingController.text):null
               ):IconButton(
                 icon: Icon(Icons.message),
@@ -84,9 +116,9 @@ class _chatState extends State<chat> with TickerProviderStateMixin {
             ),
           ],
         ),
-        decoration: Theme.of(context).platform == TargetPlatform.iOS ? BoxDecoration(
-          border: Border(top: BorderSide(color: Colors.brown[200]))
-        ):null
+//        decoration: Theme.of(context).platform == TargetPlatform.iOS ? BoxDecoration(
+//          border: Border(top: BorderSide(color: Colors.brown[200]))
+//        ):null
       ),
     );
   }

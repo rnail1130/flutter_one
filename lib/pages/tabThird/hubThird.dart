@@ -40,15 +40,16 @@ class _hubState extends State<hubThird> {
       case "居民卡一键挂失":
         return lostCall();
         break;
-      case "客户服务":
-        return chat();
-        break;
+
     }
   }
   _buildScaffold(){
     switch(this.widget.name){
       case "交易查询":
         return checkDeil(this.widget.name);
+        break;
+      case "客户服务":
+        return chats(this.widget.name);
         break;
       default:
        return Scaffold(

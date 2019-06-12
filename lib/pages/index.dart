@@ -19,7 +19,7 @@ class _BottomNav extends State<BottomNav>{
 
   void _onTapHandler (int index) {
 
-    LocalStorage.getstring('username', (data){
+    LocalStorage.getstring('currentUser', (data){
       if(data == null){
         Navigator.push(
           context,

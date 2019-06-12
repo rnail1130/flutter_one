@@ -46,7 +46,7 @@ class HeaderTitle extends StatelessWidget {
           ),
           Text("|",style: font3,),
           Container(
-            child: Center(child: Icon(Icons.camera,color:Color(0xFF0076CB) ,),),
+            child: Center(child: Icon(Icons.photo_camera,color:Color(0xFF0076CB) ,),),
           ),
         ],
       ),
