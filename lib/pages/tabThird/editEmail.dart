@@ -30,7 +30,7 @@ class _editEmailState extends State<editEmail> {
             child: RaisedButton(
               onPressed: (){},
               color: Theme.of(context).primaryColor,
-              child: Text('确  定',style: TextStyle(color: Theme.of(context).accentColor),),
+              child: Text('确  定',style: TextStyle(color: Theme.of(context).backgroundColor),),
             ),
           ),
         ],

@@ -202,7 +202,8 @@ class _CreateWidgetState extends State<CreateWidget> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                          Map['data_title']
+                          Map['data_title'],
+                        style: TextStyle(fontFamily: "alr",fontSize: 14),
                       ),
                       SizedBox(height: AppContent.mpzHight,),
                       Text(

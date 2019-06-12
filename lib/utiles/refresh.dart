@@ -1,9 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:flutter_easyrefresh/material_footer.dart';
+import 'package:flutter_easyrefresh/material_header.dart';
+import 'package:phone_yiyang/styles/colors.dart';
 
-GlobalKey<EasyRefreshState> _easyRefreshKey = new GlobalKey<EasyRefreshState>();
-GlobalKey<RefreshHeaderState> _headerKey = new GlobalKey<RefreshHeaderState>();
-GlobalKey<RefreshFooterState> _footerKey = new GlobalKey<RefreshFooterState>();
+var str = "Key" + Random().nextInt(10).toString();
+GlobalKey<EasyRefreshState> _easyRefreshKey =
+    new GlobalKey<EasyRefreshState>(debugLabel: str);
+GlobalKey<RefreshHeaderState> _headerKey =
+    new GlobalKey<RefreshHeaderState>(debugLabel: str);
+GlobalKey<RefreshFooterState> _footerKey =
+    new GlobalKey<RefreshFooterState>(debugLabel: str);
 
 ///  child, Widget组件
 ///  onRefresh, 下拉刷新方法
@@ -15,6 +24,7 @@ Widget easyRefresh(
   loadMore,
   bool firstRefresh,
 ) {
+  print(str);
   return Center(
       child: new EasyRefresh(
     key: _easyRefreshKey,
@@ -24,30 +34,14 @@ Widget easyRefresh(
     onRefresh: onRefresh,
     loadMore: loadMore,
     behavior: RefreshBehavior(showLeading: true, showTrailing: true),
-    refreshHeader: ClassicsHeader(
+    refreshHeader: MaterialHeader(
+      backgroundColor: AppColors.themeColor,
       key: _headerKey,
-      refreshText: ("pullToRefresh"),
-      refreshReadyText: ("releaseToRefresh"),
-      refreshingText: ("refreshing") + "...",
-      refreshedText: ("refreshed"),
-      moreInfo: ("updateAt"),
-      bgColor: Colors.transparent,
-      textColor: Colors.black87,
-      moreInfoColor: Colors.black54,
-      showMore: true,
     ),
-    refreshFooter: ClassicsFooter(
+    refreshFooter: MaterialFooter(
+      displacement: 20.0,
+      backgroundColor: AppColors.themeColor,
       key: _footerKey,
-      loadText: ("pushToLoad"),
-      loadReadyText: ("releaseToLoad"),
-      loadingText: ("loading"),
-      loadedText: ("loaded"),
-      noMoreText: ("noMore"),
-      moreInfo: ("updateAt"),
-      bgColor: Colors.transparent,
-      textColor: Colors.black87,
-      moreInfoColor: Colors.black54,
-      showMore: true,
     ),
   ));
 }

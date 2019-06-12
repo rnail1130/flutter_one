@@ -40,24 +40,24 @@ class _GetH5State extends State<GetH5> {
   List<String> bologin = ["点击查看我的居民卡", "查看移动积分消费明细", "购买居民卡VIP用户"];
   getFun(String msg) {
     if (weikaitong.contains(msg)) {
-      alertMsg(null, null, ["此功能暂未开通"], false);
+      alertMsg(null, null, "此功能暂未开通",null);
       return;
     } else if (bologin.contains(msg) && !widget.ifsgin) {
-      alertMsg(null, null, ["请登录"], false);
+      alertMsg(null, null, "请登录",null);
       return;
     }
     switch (msg) {
       case "点击查看我的居民卡":
-        alertMsg(null, null, ["暂未添加"], false);
+        alertMsg(null, null, "暂未添加",null);
         return;
       case "一键查询移动积分余额":
         openlaunchUrl("sms:10086?body=JF");
         return;
       case "一键兑换移动消费券":
-        alertMsg(null, null, ["暂未添加"], false);
+        alertMsg(null, null, "暂未添加",null);
         return;
       case "查看移动积分消费明细":
-        alertMsg(null, null, ["暂未添加"], false);
+        alertMsg(null, null, "暂未添加",null);
         return;
       case "启动和包支付APP":
         openAppurl("cmpay://", "com.cmcc.hebao",
@@ -78,7 +78,7 @@ class _GetH5State extends State<GetH5> {
         openlaunchUrl("http://feixin.10086.cn");
         return;
       case "购买居民卡VIP用户":
-        alertMsg(null, null, ["暂未添加"], false);
+        alertMsg(null, null, "暂未添加",null);
         return;
       // case "一键查询移动积分余额":
       // case "一键兑换移动消费券":

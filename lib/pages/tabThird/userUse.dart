@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:url_launcher/url_launcher.dart';
 class userUse extends StatelessWidget {
   Widget _buildr(String string){
     return Html(
@@ -11,11 +12,34 @@ class userUse extends StatelessWidget {
       ),
     );
   }
+  _launchURL() async {
+    const url = 'tel:0737-6666666';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: <Widget>[
-        Image.asset("assets/images/header_bg.png"),
+        Stack(
+          children: <Widget>[
+            Image.asset("assets/images/header_bg.png"),
+            Positioned(
+              right: 30,
+              top:50,
+              child: Column(
+                children: <Widget>[
+                  Text('益阳居民卡',style: TextStyle(fontSize: 12,fontFamily: "alm",color: Theme.of(context).backgroundColor),),
+                  SizedBox(height: 10,),
+                  Text('使用说明',style: TextStyle(fontFamily: "alr",fontSize: 20.0,color: Theme.of(context).backgroundColor),),
+                ],
+              ),
+            ),
+          ],
+        ),
         Container(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -37,7 +61,7 @@ class userUse extends StatelessWidget {
                     onPressed: (){},
                     child: Padding(
                       padding: EdgeInsets.all(10),
-                      child: Text("点击查看我的居民卡",style: TextStyle(fontSize: 17.0,color: Theme.of(context).accentColor),),
+                      child: Text("点击查看我的居民卡",style: TextStyle(fontSize: 17.0,color: Theme.of(context).backgroundColor),),
                     ),
                   ),
                 ),
@@ -60,10 +84,10 @@ class userUse extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                     color: Theme.of(context).primaryColor,
-                    onPressed: (){},
+                    onPressed: _launchURL,
                     child: Padding(
                       padding: EdgeInsets.all(10),
-                      child: Text("居民卡一键挂失",style: TextStyle(fontSize: 17.0,color: Theme.of(context).accentColor),),
+                      child: Text("居民卡一键挂失",style: TextStyle(fontSize: 17.0,color: Theme.of(context).backgroundColor),),
                     ),
                   ),
                 ),

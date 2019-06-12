@@ -13,6 +13,7 @@ class hostAddres {
   static const GetAllTickets = "/TicketPackages.aspx/GetAllTickets";
   static const GetMyTickets = "/TicketPackages.aspx/GetMyRecordsInfo";
   static const GetTicketDetailInfo = "/TicketPackages.aspx/GetTicketDetailInfo";
+  static const GetPaymentAccountList = "/PaymentAccount.aspx/GetBusinessList";
 
   ///获取天气的接口
   static getWeatherUrl() {
@@ -20,19 +21,19 @@ class hostAddres {
   }
 
   //获取地方资讯的接口
-  static getLocalMessageUrl(){
+  static getLocalMessageUrl() {
     return config.API_VER + LocalMessage;
   }
+
   //获取最新消息的接口
-  static getNewMessageUrl(){
+  static getNewMessageUrl() {
     return config.API_VER + NewMessage;
   }
+
   //获取文章的详细内容接口
-  static getDeatilUrl(){
+  static getDeatilUrl() {
     return config.API_VER + Deatil;
   }
-
-
 
   ///获取绑卡账户列表的接口
   static getBusinessList() {
@@ -68,5 +69,9 @@ class hostAddres {
   static getTicketDetailInfoApi() {
     return config.API_VER + GetTicketDetailInfo;
   }
-}
 
+  /// 缴费账户-列表
+  static getPaymentAccountList() {
+    return config.API_VER + GetPaymentAccountList;
+  }
+}

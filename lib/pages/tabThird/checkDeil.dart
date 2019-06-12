@@ -1,113 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:dropdown_menu/dropdown_menu.dart';
-class checkDeil extends StatefulWidget {
-  @override
-  _checkDeilState createState() => _checkDeilState();
-}
-const List<Map<String, dynamic>> TYPES = [
-  {"title": "全部", "id": 0},
-  {"title": "城市钱包", "id": 1},
-  {"title": "商户点卡", "id": 2},
-  {"title": "商户积分", "id": 3},
-  {"title": "移动消费券", "id": 4},
+import 'package:date_range_picker/date_range_picker.dart' as DateRagePicker;
 
-];
-class _checkDeilState extends State<checkDeil> {
-  ScrollController scrollController;
-  GlobalKey globalKey;
-  @override
-  void initState() {
-    scrollController = new ScrollController();
-    globalKey = new GlobalKey();
-    super.initState();
-  }
-  DropdownHeader buildDropdownHeader({DropdownMenuHeadTapCallback onTap}) {
-    return new DropdownHeader(
-      onTap: onTap,
-      titles: ["全部"],
-    );
-  }
-  Widget buildInnerListHeaderDropdownMenu() {
-    return new DefaultDropdownMenuController(
-        onSelected: ({int menuIndex, int index, int subIndex, dynamic data}) {
-          print(
-              "menuIndex:$menuIndex index:$index subIndex:$subIndex data:$data");
-        },
-        child: new Stack(
-          children: <Widget>[
-            new CustomScrollView(
-                controller: scrollController,
-                slivers: <Widget>[
-                  new SliverList(
-                      key: globalKey,
-                      delegate: new SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                            return new Container(
-                              color: Colors.black26,
-                            );
-                          }, childCount: 1)),
-                  new SliverPersistentHeader(
-                    delegate: new DropdownSliverChildBuilderDelegate(
-                        builder: (BuildContext context) {
-                          return new Container(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              child: buildDropdownHeader(onTap: this._onTapHead));
-                        }),
-                    pinned: true,
-                    floating: true,
-                  ),
-                  new SliverList(
-                      delegate: new SliverChildBuilderDelegate(
-                              (BuildContext context, int index) {
-                            return new Container(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              child: Text('2123132123')
-                            );
-                          }, childCount: 100)),
-                ]),
-            new Padding(
-                padding: new EdgeInsets.only(top: 46.0),
-                child: buildDropdownMenu())
-          ],
-        ));
-  }
-  DropdownMenu buildDropdownMenu() {
-    return new DropdownMenu(maxMenuHeight: kDropdownMenuItemHeight * 10,
-      menus: [
-        new DropdownMenuBuilder(
-            builder: (BuildContext context) {
-              return new DropdownListMenu(
-                selectedIndex: 0,
-                data: TYPES,
-                itemBuilder: buildCheckItem,
-              );
-            },
-            height: kDropdownMenuItemHeight * TYPES.length),
-      ],
-    );
-  }
-  void _onTapHead(int index) {
-    RenderObject renderObject = globalKey.currentContext.findRenderObject();
-    DropdownMenuController controller =
-    DefaultDropdownMenuController.of(globalKey.currentContext);
-    //
-    scrollController
-        .animateTo(scrollController.offset + renderObject.semanticBounds.height,
-        duration: new Duration(milliseconds: 150), curve: Curves.ease)
-        .whenComplete(() {
-      controller.show(index);
+class checkDeil extends StatelessWidget {
+  final String name;
+  checkDeil(this.name);
+  List<String> title = ['全部',"城市钱包","商户点卡","商户积分","移动消费券"];
+  List<Widget> creatBuild(){
+    List<Widget> con = [];
+    title.forEach((item){
+      con.add(Padding(padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,10),
+      child: Text(item,style: TextStyle(fontFamily: "alr",fontSize: 14.0),),
+      ));
     });
+    return con;
   }
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 10,
-          child: Text('1212'),
+    return DefaultTabController(
+      length: 5,
+      child: Scaffold(
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+            title: Text(
+              this.name,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontSize: 16.0, color: Colors.white),
+            ),
+            leading: IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  size: 30.0,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+          actions: <Widget>[
+            IconButton(icon: Icon(Icons.date_range,color: Theme.of(context).backgroundColor,), onPressed: () async {
+              final List<DateTime> picked = await DateRagePicker.showDatePicker(
+                  context: context,
+                  initialFirstDate: (new DateTime.now()).add(new Duration(days: -7)),
+                  initialLastDate: new DateTime.now(),
+                  firstDate: new DateTime(2015),
+                  lastDate: new DateTime.now()
+              );
+              if (picked != null && picked.length == 2) {
+                print(picked);
+              }
+            })
+          ],
+          bottom: TabBar(
+            isScrollable: true,
+            indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 1.0,
+            tabs: creatBuild()
+          ),
         ),
-        buildInnerListHeaderDropdownMenu(),
-      ],
+        body:  TabBarView(
+          children: <Widget>[
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/nodatas.png",width: 60.0,),
+                  SizedBox(height: 5,),
+                  Text("暂无数据",style: TextStyle(fontSize: 14,fontFamily: "alr",color: Colors.grey),),
+                ],
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/nodatas.png",width: 60.0,),
+                  SizedBox(height: 5,),
+                  Text("暂无数据",style: TextStyle(fontSize: 14,fontFamily: "alr",color: Colors.grey),),
+                ],
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/nodatas.png",width: 60.0,),
+                  SizedBox(height: 5,),
+                  Text("暂无数据",style: TextStyle(fontSize: 14,fontFamily: "alr",color: Colors.grey),),
+                ],
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/nodatas.png",width: 60.0,),
+                  SizedBox(height: 5,),
+                  Text("暂无数据",style: TextStyle(fontSize: 14,fontFamily: "alr",color: Colors.grey),),
+                ],
+              ),
+            ),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Image.asset("assets/images/nodatas.png",width: 60.0,),
+                  SizedBox(height: 5,),
+                  Text("暂无数据",style: TextStyle(fontSize: 14,fontFamily: "alr",color: Colors.grey),),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

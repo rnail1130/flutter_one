@@ -7,6 +7,7 @@ import 'package:phone_yiyang/model/bussines/business_detail.dart';
 import 'package:phone_yiyang/model/bussines/business_list.dart';
 import 'package:phone_yiyang/model/bussines/businButtons.dart';
 import 'package:phone_yiyang/pages/TiedCardAccount/detail_msg.dart';
+import 'package:phone_yiyang/utiles/core.dart';
 
 ResultCurrentUser currentUser;
 
@@ -214,7 +215,9 @@ class _TiedListDetailState extends State<TiedListDetail> {
         }
       });
     } else {
-      businessDetail = widget.detailInfo;
+      setState(() {
+        businessDetail = widget.detailInfo;
+      });
     }
   }
 
@@ -246,7 +249,8 @@ class _TiedListDetailState extends State<TiedListDetail> {
               ),
               onPressed: () {
                 setState(() {
-                  _bButtons.butt[i].fun(context, movies);
+                  showDiog();
+                  // _bButtons.butt[i].fun(context, movies);
                 });
               },
             ),
@@ -333,7 +337,10 @@ class _TiedListDetailState extends State<TiedListDetail> {
                       color: Colors.black,
                       fontSize: AppSize.ufp875,
                       fontWeight: FontWeight.w500)),
-              Text(widget.status ? businessDetail.code : '',
+              Text(
+                  (widget.status && businessDetail != null)
+                      ? businessDetail.code
+                      : '',
                   style:
                       TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
             ],
@@ -360,7 +367,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
 
   Widget listTitle(BuildContext context) {
     List<Widget> aacd = List<Widget>()..add(Divider(height: AppSize.ubp_1));
-    if (widget.status) {
+    if (widget.status && businessDetail != null) {
       if (widget.businessCode == "1001" ||
           widget.businessCode == "1002" ||
           widget.businessCode == "1003" ||
@@ -439,20 +446,24 @@ class _TiedListDetailState extends State<TiedListDetail> {
     );
   }
 
+  Widget _build(context) {
+    return ListView(
+      children: <Widget>[
+        _createListView(context),
+        listTitle(context),
+        GetH5(businessCode: widget.businessCode, ifsgin: false),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    setContext(context);
     return Scaffold(
-      backgroundColor: AppColors.themebody,
       appBar: AppBar(
         title: Text("${widget.businessname}详情"),
       ),
-      body: ListView(
-        children: <Widget>[
-          _createListView(context),
-          listTitle(context),
-          GetH5(businessCode: widget.businessCode, ifsgin: false),
-        ],
-      ),
+      body: _build(context),
     );
   }
 }

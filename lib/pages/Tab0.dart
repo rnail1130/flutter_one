@@ -9,7 +9,7 @@ class firstTab extends StatelessWidget {
           child: AppBar(
             title: HeaderTitle(),
             elevation: 0.0,
-            backgroundColor:  Theme.of(context).accentColor,
+            backgroundColor:  Theme.of(context).backgroundColor,
           ),
           preferredSize: Size.fromHeight(MediaQuery.of(context).size.height * 0.1)
       ),

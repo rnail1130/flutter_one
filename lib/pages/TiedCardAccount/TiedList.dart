@@ -21,16 +21,15 @@ class _TiedListState extends State<TiedList> {
   List<ResultBusinessList> tidelist = [];
   List<bool> _listbutt = List<bool>();
   List notbang = [
-    "1000",
-    "1001",
-    "1002",
-    "1003",
-    "1004",
-    "1005",
-    "1006",
-    "1021",
-    "1022",
-    "1024"
+    "居民卡账户",
+    "身份证账户",
+    "银行卡账户",
+    "手机账户",
+    "电子钱包账户",
+    "移动和包账户",
+    "居民卡VIP账户",
+    "公积金账户",
+    "医疗保险账户"
   ];
   // 列表
   Widget _createListView(BuildContext context) {
@@ -42,9 +41,8 @@ class _TiedListState extends State<TiedList> {
         }
         index = index ~/ 2;
         ResultBusinessList movies = tidelist[index];
-        if (_listbutt.length <= index) {
-          _listbutt.add(false);
-        }
+        if (_listbutt.length <= index) _listbutt.add(false);
+
         var _icon = _listbutt[index]
             ? Icon(Icons.expand_less, color: AppColors.test95a)
             : Icon(Icons.expand_more, color: AppColors.test95a);
@@ -107,10 +105,14 @@ class _TiedListState extends State<TiedList> {
     final _bButtons = BusinessButtons.fromget(movies.businessCode);
     List<Widget> bus = List<Widget>();
     List<Widget> bus1 = List<Widget>();
-    for (var i = 0; i < _bButtons.butt.length; i++) {
-      if(!notbang.contains(_bButtons.butt[i].name)){
-        
+    if (!notbang.contains(movies.name)) {
+      if (movies.status > 0) {
+        _bButtons.butt.removeAt(1);
+      } else {
+        _bButtons.butt.removeAt(2);
       }
+    }
+    for (var i = 0; i < _bButtons.butt.length; i++) {
       if (i < 4)
         bus.add(Padding(
           padding: EdgeInsets.fromLTRB(AppSize.ufp45, 0.0, AppSize.ufp45, 0.0),
@@ -187,19 +189,21 @@ class _TiedListState extends State<TiedList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: ThemeConfig.bodyColor,
       appBar: AppBar(
         title: Center(
           child: Text('绑卡账户'),
         ),
       ),
       body: easyRefresh(_createListView(context), () async {
-        pagenum = 1;
-        GetPageData.getdata(pagenum, (data) {
-          var businessListD = BusinessListD.fromJson(data.toString());
-          setState(() {
-            tidelist.clear();
-            tidelist.addAll(businessListD.result);
+        LocalStorage.getjson("currentUser", (data) {
+          currentUser = ResultCurrentUser.fromJson(data);
+          pagenum = 1;
+          GetPageData.getdata(pagenum, (data) {
+            var businessListD = BusinessListD.fromJson(data.toString());
+            setState(() {
+              tidelist.clear();
+              tidelist.addAll(businessListD.result);
+            });
           });
         });
       }, () async {
@@ -210,36 +214,16 @@ class _TiedListState extends State<TiedList> {
             tidelist.addAll(businessListD.result);
           });
         });
-      }, false),
+      }, true),
     );
   }
 
   @override
   void initState() {
-    // GetPageData.getlogin((data) {
-    //   CurrentUserD currentUserD = CurrentUserD.fromJson(data.toString());
-    //   currentUser = currentUserD.result;
-    //   LocalStorage.set("currentUser", json.encode(currentUser));
-    pagenum = 1;
-    GetPageData.getdata(pagenum, (data) {
-      var businessListD = BusinessListD.fromJson(data.toString());
-      setState(() {
-        tidelist.clear();
-        tidelist.addAll(businessListD.result);
-      });
-    });
-    // });
   }
 }
 
 class GetPageData {
-  static getlogin(Function callback) async {
-    var res = await httpManager.netFetch(hostAddres.getNewLogin(),
-        {"mobile": "18210530620", "passWord": "abc123"}, null, null);
-
-    callback(res.data);
-  }
-
   static getdata(int pagenum, Function callback) async {
     var cardNo = '';
     if (currentUser != null) {

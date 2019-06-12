@@ -62,11 +62,72 @@ class AppContent {
   static const mWidth = 5.0;
   static const mContainerHight = 20.0; //行高
   static var mtopText =
-  TextStyle(fontWeight: FontWeight.w500, fontSize: smallTextSize); //标题字体的样式
+  TextStyle(fontFamily:'alm',fontSize: smallTextSize); //标题字体的样式
   static var mMore =
   TextStyle(fontSize: minTextSize, color: Colors.grey); //更多的样式
   static const mpHight = 60.0; //小格子的高度
   static const mpzHight = 8.0; //内部字体和解释字体的高度
   static var mpzSub = TextStyle(fontSize: AppSize.ufp6, color: Colors.grey); //
   static const mpzImgWidth = 35.0;
+}
+///颜色
+class GSYColors {
+  static const String primaryValueString = "#24292E";
+  static const String primaryLightValueString = "#42464b";
+  static const String primaryDarkValueString = "#121917";
+  static const String miWhiteString = "#ececec";
+  static const String actionBlueString = "#267aff";
+  static const String webDraculaBackgroundColorString = "#282a36";
+
+  static const int primaryValue = 0xFFAA3200;
+  static const int primaryLightValue = 0xFF42464b;
+  static const int primaryDarkValue = 0xFF121917;
+
+  static const int accentValue = 0xFFFFFFFF;
+  static const int accentLightValue = 0xFF42464b;
+  static const int accentDarkValue = 0xFF121917;
+
+  static const int cardWhite = 0xFFFFFFFF;
+  static const int textWhite = 0xFFFFFFFF;
+  static const int miWhite = 0xffececec;
+  static const int white = 0xFFFFFFFF;
+  static const int actionBlue = 0xff267aff;
+  static const int subTextColor = 0xff959595;
+  static const int subLightTextColor = 0xffc4c4c4;
+
+  static const int mainBackgroundColor = miWhite;
+
+  static const int mainTextColor = primaryDarkValue;
+  static const int textColorWhite = white;
+
+  static const MaterialColor primarySwatch = const MaterialColor(
+    primaryValue,
+    const <int, Color>{
+      50: const Color(primaryLightValue),
+      100: const Color(primaryLightValue),
+      200: const Color(primaryLightValue),
+      300: const Color(primaryLightValue),
+      400: const Color(primaryLightValue),
+      500: const Color(primaryValue),
+      600: const Color(primaryDarkValue),
+      700: const Color(primaryDarkValue),
+      800: const Color(primaryDarkValue),
+      900: const Color(primaryDarkValue),
+    },
+  );
+  static const MaterialColor accentSwatch = const MaterialColor(
+    accentValue,
+    const <int, Color>{
+      50: const Color(primaryLightValue),
+      100: const Color(primaryLightValue),
+      200: const Color(primaryLightValue),
+      300: const Color(primaryLightValue),
+      400: const Color(primaryLightValue),
+      500: const Color(accentValue),
+      600: const Color(primaryDarkValue),
+      700: const Color(primaryDarkValue),
+      800: const Color(primaryDarkValue),
+      900: const Color(primaryDarkValue),
+    },
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phone_yiyang/pages/TiedCardAccount/TiedList.dart';
+import 'package:phone_yiyang/pages/paymentAccount/paymentIndex.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
 
@@ -59,7 +60,12 @@ class ExpandedList extends StatelessWidget {
               return TiedList();
             }));
           }
-          if (this.data[0] == "缴费账户") {}
+          if (this.data[0] == "缴费账户") {
+            Navigator.of(context)
+                .push(new MaterialPageRoute(builder: (context) {
+              return PaymentIndex();
+            }));
+          }
           if (this.data[0] == "会员账户") {}
           if (this.data[0] == "票券卡包") {}
         },

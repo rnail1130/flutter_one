@@ -1,7 +1,7 @@
 class config {
-  // static const API_VER = "http://192.168.1.204:8032";
+  static const API_VER = "http://192.168.1.204:1024"; // 测试环境
   // static const API_VER = "http://60.247.61.162:8020"; // 益阳演示环境
-  static const API_VER = "http://220.170.144.41:8001"; // 益阳正式环境
+  // static const API_VER = "http://220.170.144.41:8001"; // 益阳正式环境
   static const IF_DEVELOP = true;
   static const VERSION = '2.0.4';
 }
@@ -47,4 +47,3 @@ class config {
     调用：
     import 'package:myapp/urlModel/getHost.dart';
  */
-

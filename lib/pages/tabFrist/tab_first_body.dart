@@ -21,7 +21,7 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      backgroundColor: Colors.blue[500],
+     // backgroundColor: Colors.blue[500],
       onRefresh: _onRefresh,
       child: ListView(
         children: <Widget>[
@@ -29,7 +29,7 @@ class _HomeBodyState extends State<HomeBody> {
           Container(
             height: 40.0,
             decoration: BoxDecoration(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).backgroundColor,
               image: DecorationImage(
                 image: AssetImage("assets/images/index/newNewsBgc.png")
               ),

@@ -16,7 +16,7 @@ class _governmentState extends State<government> {
   @override
   Widget build(BuildContext context) {
     return  RefreshIndicator(
-      backgroundColor: Theme.of(context).primaryColor,
+     // backgroundColor: Theme.of(context).primaryColor,
       onRefresh: _onRefresh,
       child: ListView.builder(
         itemCount: ListDatas.length,

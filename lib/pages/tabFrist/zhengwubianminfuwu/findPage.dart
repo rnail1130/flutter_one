@@ -25,7 +25,7 @@ class find extends StatelessWidget {
             child: RaisedButton(
               onPressed: (){},
               color: Theme.of(context).primaryColor,
-              child: Text('查   询',style: TextStyle(color: Theme.of(context).accentColor),),
+              child: Text('查   询',style: TextStyle(color: Theme.of(context).backgroundColor),),
             ),
           ), 
         ],

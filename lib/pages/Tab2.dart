@@ -70,7 +70,7 @@ class thirdTab extends StatelessWidget {
     return ListTile(
       dense: true,
       leading: Image.asset(userList[index][1],width: 25.0,),
-      title: Text(userList[index][0],style: TextStyle(fontSize: 14.0),),
+      title: Text(userList[index][0],style: TextStyle(fontSize: 14.0,fontFamily: "alr"),),
       trailing: Icon(Icons.chevron_right),
       onTap: (){
         if(userList[index][0] == "云闪付绑卡" || userList[index][0] == "实名认证"){
