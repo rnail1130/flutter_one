@@ -33,7 +33,7 @@ class thirdTab extends StatelessWidget {
         pinned: true,    //固定在顶部
         actions: <Widget>[
           IconButton(icon: Icon(Icons.exit_to_app,color: Colors.white,), onPressed: (){
-            LocalStorage.remove('username');
+            LocalStorage.remove('currentUser');
             Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>BottomNav() ), (Route<dynamic> rout)=>false);
           })
         ],
@@ -70,7 +70,7 @@ class thirdTab extends StatelessWidget {
     return ListTile(
       dense: true,
       leading: Image.asset(userList[index][1],width: 25.0,),
-      title: Text(userList[index][0],style: TextStyle(fontSize: 16.0,fontFamily: "alr"),),
+      title: Text(userList[index][0],style: TextStyle(fontSize: 14.0,fontFamily: "alr"),),
       trailing: Icon(Icons.chevron_right),
       onTap: (){
         if(userList[index][0] == "云闪付绑卡" || userList[index][0] == "实名认证"){
@@ -99,7 +99,6 @@ class thirdTab extends StatelessWidget {
             new MaterialPageRoute(builder: (context) => hubThird(userList[index][0])),
           );
         }
-
       },
     );
   }

@@ -14,6 +14,7 @@ class hostAddres {
   static const GetMyTickets = "/TicketPackages.aspx/GetMyRecordsInfo";
   static const GetTicketDetailInfo = "/TicketPackages.aspx/GetTicketDetailInfo";
   static const GetPaymentAccountList = "/PaymentAccount.aspx/GetBusinessList";
+  static const GetUserCheck = "/Member.aspx/NewLogin";
 
   ///获取天气的接口
   static getWeatherUrl() {
@@ -73,5 +74,10 @@ class hostAddres {
   /// 缴费账户-列表
   static getPaymentAccountList() {
     return config.API_VER + GetPaymentAccountList;
+  }
+
+  ///用户登陆
+  static getLoginUrl() {
+    return config.API_VER + GetUserCheck;
   }
 }

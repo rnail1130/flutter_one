@@ -107,8 +107,8 @@ class _chatState extends State<chat> with TickerProviderStateMixin {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 3.0),
               child: Theme.of(context).platform == TargetPlatform.iOS ? CupertinoButton(
-                child: Icon(Icons.send),
-                onPressed: _isWriting ? () => _submitMsg(_textEditingController.text):null
+                  child: Icon(Icons.send),
+                  onPressed: _isWriting ? () => _submitMsg(_textEditingController.text):null
               ):IconButton(
                 icon: Icon(Icons.message),
                 onPressed: _isWriting ? ()=> _submitMsg(_textEditingController.text):null,
@@ -134,8 +134,8 @@ class Msg extends StatelessWidget{
     // TODO: implement build
     return SizeTransition(
       sizeFactor: CurvedAnimation(
-        parent: animationController,
-        curve: Curves.bounceInOut
+          parent: animationController,
+          curve: Curves.bounceInOut
       ),
       axisAlignment: 0.0,
       child: Container(

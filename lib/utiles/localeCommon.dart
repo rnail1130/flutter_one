@@ -141,8 +141,4 @@ class _DefaultCupertinoLocalizations extends CupertinoLocalizations {
 
   @override
   String timerPickerSecondLabel(int second) => '秒';
-
-  @override
-  // TODO: implement todayLabel
-  String get todayLabel => null;
 }

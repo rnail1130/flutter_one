@@ -22,7 +22,7 @@ class AppContent {
 
   //首页标题样式---------title
   static const moreMinText = TextStyle(
-      color: Colors.white,
+      color: Colors.blue,
       fontSize: moreminTextSize,
       fontWeight: FontWeight.w700);
   static const middleMinText = TextStyle(
