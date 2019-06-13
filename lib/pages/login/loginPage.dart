@@ -92,7 +92,7 @@ class _loginHomePageState extends State<loginHomePage> {
           textColor: Colors.white,
           fontSize: 16.0
       );
-      await Future.delayed(Duration(milliseconds: 500), () {
+      await Future.delayed(Duration(seconds: 1), () {
         LocalStorage.set(
             'currentUser',
             json.encode({
@@ -121,10 +121,13 @@ class _loginHomePageState extends State<loginHomePage> {
       });
     }
   }
-  Future<Null> _register() async {
-    await Future.delayed(Duration(seconds: 1), () async{
+
+  //这个func 就是关闭Dialog的方法
+  _disMissCallBack(Function func) async {
+    await Future.delayed(Duration(milliseconds: 1500), () async{
       var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":"18210530620","passWord":"abc123"}, null,  null);
       String resz = res.data.toString();
+      func();
       return jumop(resz);
     });
 
@@ -135,7 +138,7 @@ class _loginHomePageState extends State<loginHomePage> {
         barrierDismissible: false,
         builder: (_) {
           return new NetLoadingDialog(
-            requestCallBack: _register(),
+            dismissDialog: _disMissCallBack,
             outsideDismiss: false,
           );
         });

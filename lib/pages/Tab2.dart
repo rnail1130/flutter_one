@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:phone_yiyang/pages/tabThird/hubThird.dart';
 import 'package:phone_yiyang/styles/colors.dart';
+import 'package:phone_yiyang/utiles/Dialogs.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
@@ -33,8 +34,56 @@ class thirdTab extends StatelessWidget {
         pinned: true,    //固定在顶部
         actions: <Widget>[
           IconButton(icon: Icon(Icons.exit_to_app,color: Colors.white,), onPressed: (){
-            LocalStorage.remove('currentUser');
-            Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>BottomNav() ), (Route<dynamic> rout)=>false);
+            Alert(
+              context: context,
+              type: AlertType.info,
+              style: AlertStyle(
+                animationType: AnimationType.grow
+              ),
+              title: "提示",
+              desc: "確定要退出嗎？",
+              buttons: [
+                DialogButton(
+                  child: Text(
+                    "取消",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: () => Navigator.pop(context),
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(116, 116, 191, 1.0),
+                    Color.fromRGBO(52, 138, 199, 1.0)
+                  ]),
+                ),
+                DialogButton(
+                  child: Text(
+                    "确定",
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                  onPressed: (){
+                    showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (_) {
+                          return new NetLoadingDialog(
+                            dismissDialog: (Function func)async{
+                              await Future.delayed(Duration(milliseconds: 1500), () async{
+                                func();
+                                LocalStorage.remove('currentUser');
+                                Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>BottomNav() ), (Route<dynamic> rout)=>false);
+                              });
+                            },
+                            outsideDismiss: false,
+                          );
+                        });
+                  },
+                  gradient: LinearGradient(colors: [
+                    Color.fromRGBO(116, 116, 191, 1.0),
+                    Color.fromRGBO(52, 138, 199, 1.0)
+                  ]),
+                )
+              ],
+            ).show();
+
           })
         ],
         flexibleSpace: FlexibleSpaceBar(
@@ -77,6 +126,9 @@ class thirdTab extends StatelessWidget {
           Alert(
             context: context,
             type: AlertType.warning,
+            style: AlertStyle(
+                animationType: AnimationType.grow
+            ),
             title: "提示",
             desc: "该功能尚未完全开放",
             buttons: [

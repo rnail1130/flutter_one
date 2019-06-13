@@ -1,31 +1,21 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-/**
- *     showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (_) {
-    return new NetLoadingDialog(
-    requestCallBack: _register(),//此为异步方法
-    outsideDismiss: false,
-    );
-    });
- */
 // ignore: must_be_immutable
 class NetLoadingDialog extends StatefulWidget {
   String loadingText;
   bool outsideDismiss;
-  Function dismissCallback;
-  Future<dynamic> requestCallBack;
+
+  Function dismissDialog;
+
 
   NetLoadingDialog(
       {Key key,
         this.loadingText = "loading...",
         this.outsideDismiss = true,
-        this.dismissCallback,
-        this.requestCallBack})
+        this.dismissDialog})
       : super(key: key);
 
   @override
@@ -34,22 +24,22 @@ class NetLoadingDialog extends StatefulWidget {
 
 class _LoadingDialog extends State<NetLoadingDialog> {
   _dismissDialog() {
-    if (widget.dismissCallback != null) {
-      widget.dismissCallback();
-    }
     Navigator.of(context).pop();
   }
 
   @override
   void initState() {
     super.initState();
-    if (widget.requestCallBack != null) {
-      widget.requestCallBack.then((_) {
-        Navigator.pop(context);
-      });
+    print(widget.dismissDialog);
+    if (widget.dismissDialog != null) {
+      widget.dismissDialog(
+
+        //将关闭 dialog的方法传递到调用的页面.
+              (){Navigator.of(context).pop();}
+
+      );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return new GestureDetector(
