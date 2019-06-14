@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/styles/colors.dart';
 
 /// 选择移动消费券兑换但档位
@@ -15,9 +16,12 @@ class _SmsContentState extends State<SmsContent> {
     const SMS_CON = [500, 1000, 2000, 5000, 10000, 20000];
     _smsllist = List();
     for (int i = 0; i < SMS_CON.length; i++) {
-      _smsllist.add(SmsContentEntity(SMS_CON[i], Colors.white));
+      _smsllist.add(
+        SmsContentEntity(SMS_CON[i], Colors.white, Colors.black),
+      );
     }
   }
+
   /// 选中函数
   _smsllisteach(that) {
     setState(() {
@@ -25,8 +29,10 @@ class _SmsContentState extends State<SmsContent> {
       _smsllist.forEach((index) {
         if (index.smsContentName == that) {
           index.smsContentColor = AppColors.themeColor;
+          index.smstextColor = Colors.white;
         } else {
           index.smsContentColor = Colors.white;
+          index.smstextColor = Colors.black;
         }
       });
     });
@@ -36,18 +42,35 @@ class _SmsContentState extends State<SmsContent> {
   Widget build(BuildContext context) {
     return SimpleDialog(
       contentPadding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 0.0),
-      title: new Text('选择移动消费券兑换档位'),
+      title: Center(
+        child: Text(
+          '选择移动消费券兑换档位',
+          style: TextStyle(fontSize: AppSize.uf1, fontWeight: FontWeight.bold),
+        ),
+      ),
       children: <Widget>[
         Column(
           children: _smsllist.map((index) {
-            return Container(
-              color: index.smsContentColor,
-              child: ListTile(
-                title: Center(child: Text('${index.smsContentName}点移动消费券222')),
-                onTap: () {
-                  _smsllisteach(index.smsContentName);
-                },
-              ),
+            return Column(
+              children: <Widget>[
+                Divider(
+                  height: 1.0,
+                ),
+                Container(
+                  color: index.smsContentColor,
+                  child: ListTile(
+                    title: Center(
+                        child: Text(
+                      '${index.smsContentName}点移动消费券',
+                      style: TextStyle(
+                          fontSize: AppSize.ufp9375, color: index.smstextColor),
+                    )),
+                    onTap: () {
+                      _smsllisteach(index.smsContentName);
+                    },
+                  ),
+                )
+              ],
             );
           }).toList(),
         ),
@@ -55,32 +78,34 @@ class _SmsContentState extends State<SmsContent> {
           children: <Widget>[
             Expanded(
                 child: Container(
-                  color: Colors.grey,
-                  child: ListTile(
-                    title: Center(
-                      child: Text('取消'),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                )),
+              color: Colors.grey,
+              child: ListTile(
+                title: Center(
+                  child:
+                      Text('取消', style: TextStyle(fontSize: AppSize.ufp9375)),
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            )),
             Expanded(
                 child: Container(
-                  color: AppColors.themeColor,
-                  child: ListTile(
-                    title: Center(
-                      child: Text(
-                        '兑换',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    onTap: () {
-                      print(_smsKey);
-                      Navigator.of(context).pop();
-                    },
+              color: AppColors.themeColor,
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    '兑换',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: AppSize.ufp9375),
                   ),
-                )),
+                ),
+                onTap: () {
+                  print(_smsKey);
+                  Navigator.of(context).pop();
+                },
+              ),
+            )),
           ],
         )
       ],
@@ -92,6 +117,7 @@ class _SmsContentState extends State<SmsContent> {
 class SmsContentEntity {
   var smsContentName;
   Color smsContentColor;
-
-  SmsContentEntity(this.smsContentName, this.smsContentColor);
+  Color smstextColor;
+  SmsContentEntity(
+      this.smsContentName, this.smsContentColor, this.smstextColor);
 }

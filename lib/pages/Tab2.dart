@@ -60,6 +60,7 @@ class thirdTab extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                   onPressed: (){
+                    Navigator.pop(context);
                     showDialog(
                         context: context,
                         barrierDismissible: false,

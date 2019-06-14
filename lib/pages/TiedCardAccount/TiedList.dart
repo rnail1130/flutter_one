@@ -27,7 +27,7 @@ class _TiedListState extends State<TiedList> {
     "手机账户",
     "电子钱包账户",
     "移动和包账户",
-    "居民卡VIP账户",
+    "居民卡VIP用户账户",
     "公积金账户",
     "医疗保险账户"
   ];
@@ -93,7 +93,7 @@ class _TiedListState extends State<TiedList> {
                 _icon,
               ],
             ),
-            children: _getbutton(movies),
+            children: _getbutton(movies, context),
           ),
         );
       },
@@ -101,7 +101,7 @@ class _TiedListState extends State<TiedList> {
   }
 
   // 列表的按钮
-  List<Widget> _getbutton(ResultBusinessList movies) {
+  List<Widget> _getbutton(ResultBusinessList movies, context) {
     final _bButtons = BusinessButtons.fromget(movies.businessCode);
     List<Widget> bus = List<Widget>();
     List<Widget> bus1 = List<Widget>();
@@ -165,7 +165,7 @@ class _TiedListState extends State<TiedList> {
               ),
               onPressed: () {
                 setState(() {
-                  _bButtons.butt[i].fun();
+                  _bButtons.butt[i].fun(context, movies, currentUser != null);
                 });
               },
             ),
@@ -189,11 +189,7 @@ class _TiedListState extends State<TiedList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text('绑卡账户'),
-        ),
-      ),
+      appBar: getheader(title: "绑卡账户"),
       body: easyRefresh(_createListView(context), () async {
         LocalStorage.getjson("currentUser", (data) {
           currentUser = ResultCurrentUser.fromJson(data);
@@ -219,8 +215,7 @@ class _TiedListState extends State<TiedList> {
   }
 
   @override
-  void initState() {
-  }
+  void initState() {}
 }
 
 class GetPageData {

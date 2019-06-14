@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/Tab1.dart';
+import 'package:phone_yiyang/pages/TiedCardAccount/TiedCardAccount_shopList.dart';
+import 'package:phone_yiyang/pages/TiedCardAccount/TiedCardAccount_shopshow.dart';
+import 'package:phone_yiyang/pages/bankOutlets/bankOutlets_index.dart';
+import 'package:phone_yiyang/pages/cardBag/cardBag_index_sms.dart';
+import 'package:phone_yiyang/pages/login/loginPage.dart';
+import 'package:phone_yiyang/pages/tabThird/checkDeil.dart';
+import 'package:phone_yiyang/pages/tabThird/hubThird.dart';
+import 'package:phone_yiyang/pages/tabThird/lostCall.dart';
 import 'package:phone_yiyang/utiles/core.dart';
 import 'package:phone_yiyang/utiles/plug.dart';
 import 'business_list.dart';
@@ -249,97 +258,150 @@ class BusinessButton {
 }
 
 notFun() {
-  alertMsg(null, "暂未开通", "",null);
+  alertMsg(null, "暂未开通", "", null);
 }
 
 gotodetail(BuildContext context, ResultBusinessList movie, bool ifsign) {
   Navigator.of(context).push(
     new MaterialPageRoute(
-      builder: (context) {
-        return TiedListDetail(
-          ifsign: ifsign,
-          status: movie.status == 1,
-          businessname: movie.name,
-          businessCode: movie.businessCode,
-          code: movie.status == 1 ? movie.code : null,
-          detailInfo: movie.status == 1 ? null : movie,
-        );
-      },
+      builder: (context) => TiedListDetail(
+        ifsign: ifsign,
+        status: movie.status == 1,
+        businessname: movie.name,
+        businessCode: movie.businessCode,
+        code: movie.status == 1 ? movie.code : null,
+        detailInfo: movie.status == 1 ? null : movie,
+      ),
     ),
   );
 }
 
 /// 虚拟卡
 f100102(BuildContext context, ResultBusinessList movie, bool ifsign) {
+  if (ifsign)
+    Navigator.push(context, MaterialPageRoute(builder: (context) => MyCard()));
+  else
+    gotoLogin();
   // 跳转到虚拟卡页面
 }
 
 /// 交易记录
 f100103(BuildContext context, ResultBusinessList movie, bool ifsign) {
   // 跳转到交易记录页面
+  if (ifsign) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
+  } else {
+    gotoLogin();
+  }
 }
 
 /// 修改信息
 f100104(BuildContext context, ResultBusinessList movie, bool ifsign) {
   // 跳转到修改信息页面
+  if (ifsign) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => hubThird("个人信息")));
+  } else {
+    gotoLogin();
+  }
 }
 
 /// 一键挂失
 f100105(BuildContext context, ResultBusinessList movie, bool ifsign) {
   // 跳转到 一键挂失 页面
-  openlaunchUrl("url");
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => hubThird("居民卡一键挂失")));
 }
 
 /// 银行网点
 f100304(BuildContext context, ResultBusinessList movie, bool ifsign) {
+  Navigator.push(
+      context, MaterialPageRoute(builder: (context) => BankOutlets()));
   // 跳转到 银行网点 页面
 }
 
 /// 积分兑换
-f100404(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100404(BuildContext context, movie, bool ifsign) {
+  showDialog<Null>(
+    context: context,
+    builder: (BuildContext context) {
+      return SmsContent();
+    },
+  ).then((val) {
+    print(val);
+  });
   // 弹出选择框
 }
 
 /// 交易记录
 f100502(BuildContext context, ResultBusinessList movie, bool ifsign) {
   // 跳转到 电子钱包-交易记录 页面
+  if (ifsign) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
+  } else {
+    gotoLogin();
+  }
 }
 
 /// APP下载
 f100602(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  openlaunchUrl("https://p.10086.cn/info/wap/sjqb/cpb/jsym/index.html");
+  openWithBrowser("https://p.10086.cn/info/wap/sjqb/cpb/jsym/index.html");
 }
 
 /// 重置密码
 f100604(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  openlaunchUrl(
+  openWithBrowser(
       "https://p.10086.cn/ptw/msg_login.xhtml?FLOW_PATH=1&BACK_FLG=6");
 }
 
 /// 免密签约授权
 f100605(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  openlaunchUrl(
+  openWithBrowser(
       "https://p.10086.cn/ptw/msg_login.xhtml?FLOW_PATH=2&BACK_FLG=6");
 }
+
 /// 居民卡VIP账户-购买记录
 f102103(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  alertMsg(null, "暂未开通", "",null);
+  if (ifsign) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TiedCardAccount_shopList()));
+  } else {
+    gotoLogin();
+  }
 }
 
 /// 公积金账户-公积金查询
 f102202(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  alertMsg(null, "暂未开通", "",null);
+  alertMsg(null, "暂未开通", "", null);
 }
 
 /// 居民卡VIP账户-购买VIP
 f102102(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  alertMsg(null, "暂未开通", "",null);
+  if (ifsign) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TiedCardAccount_shopshow()));
+  } else {
+    gotoLogin();
+  }
 }
+
 /// 交易记录
 f102003(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  alertMsg(null, "暂未开通", "",null);
+  if (ifsign) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
+  } else {
+    gotoLogin();
+  }
 }
+
 /// 申请开通/虚拟卡
 f102002(BuildContext context, ResultBusinessList movie, bool ifsign) {
-  alertMsg(null, "暂未开通", "",null);
+  alertMsg(null, "暂未开通", "", null);
+}
+
+gotoLogin() {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
 }

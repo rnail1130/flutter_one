@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import '../../styles/fontSize.dart';
-import '../../utiles/net/api.dart';
-import '../../utiles/getHost.dart';
-import '../../model/cardBag/order_history_entity.dart';
+import "package:phone_yiyang/pages/public.dart";
+
+import 'package:phone_yiyang/model/cardBag/order_history_entity.dart';
 
 //订单记录
 class OrderHistoryList extends StatefulWidget {
@@ -46,6 +45,7 @@ class _OrderHistoryListState extends State<OrderHistoryList>
         );
 
       case ConnectionState.done: //请求成功
+
         Map orderHistoryDataMap = json.decode(snapshot.data.toString());
         var orderHistoryData =
             new OrderHistoryD.fromJson(orderHistoryDataMap['d']);
@@ -53,60 +53,86 @@ class _OrderHistoryListState extends State<OrderHistoryList>
             controller: _tabController,
             children: _orderOrHistory.map((Tab tab) {
               if (tab.text == "我的订单") {
+                print(111);
                 return Center(
                   child: Text(tab.text),
                 );
               } else {
-                return Center(
-                  child: ListView.builder(
-                    itemCount: orderHistoryData.result.length,
-                    itemBuilder: (context, index) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          ListTile(
-                            leading: Image.network(
-                              orderHistoryData.result[index].productImg,
-                              width: 60.0,
+                print(222);
+                print(orderHistoryData.result.toString());
+                if (orderHistoryData.result.length == 0) {
+                  return _noData();
+                } else {
+                  return Center(
+                    child: ListView.builder(
+                      itemCount: orderHistoryData.result.length,
+                      itemBuilder: (context, index) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            ListTile(
+                              leading: Image.network(
+                                orderHistoryData.result[index].productImg,
+                                width: 60.0,
+                              ),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(orderHistoryData
+                                      .result[index].ticketName),
+                                  Text(
+                                    orderHistoryData.result[index].verifyDate,
+                                    style: TextStyle(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "面值: ￥${orderHistoryData.result[index].marketPrice}",
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                  Text(
+                                    orderHistoryData.result[index].status,
+                                    style: TextStyle(fontSize: 14.0),
+                                  ),
+                                ],
+                              ),
                             ),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(orderHistoryData.result[index].ticketName),
-                                Text(
-                                  orderHistoryData.result[index].verifyDate,
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                              ],
+                            //分割线'
+                            Divider(
+                              height: AppSize.ubp_1,
                             ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "面值: ￥${orderHistoryData.result[index].marketPrice}",
-                                  style: TextStyle(fontSize: 14.0),
-                                ),
-                                Text(
-                                  orderHistoryData.result[index].status,
-                                  style: TextStyle(fontSize: 14.0),
-                                ),
-                              ],
-                            ),
-                          ),
-                          //分割线'
-                          Divider(
-                            height: AppSize.ubp_1,
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                );
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }
               }
             }).toList());
       default:
         return null;
     }
+  }
+
+  Widget _noData() {
+    return Container(
+      padding: EdgeInsets.all(AppSize.up1),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "暂无相关数据~",
+            style: TextStyle(color: Colors.grey),
+          )
+        ],
+      ),
+    );
   }
 
   @override

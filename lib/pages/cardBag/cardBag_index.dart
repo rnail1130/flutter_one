@@ -1,18 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter/cupertino.dart';
 import 'dart:convert';
-import '../../styles/colors.dart';
-import '../../styles/fontSize.dart';
-import '../../utiles/net/api.dart';
-import '../../utiles/refresh.dart';
-import '../../utiles/getHost.dart';
-import '../../utiles/LocalStorage.dart';
-import '../../model/currentUser.dart';
-import '../../pages/cardBag/order_history.dart';
-import '../../pages/cardBag/cardBag_detail.dart';
-import '../../pages/cardBag/cardBag_index_sms.dart';
-import '../../model/cardBag/card_bag_index_all_entity.dart';
+import "package:phone_yiyang/pages/public.dart";
+import 'package:phone_yiyang/utiles/core.dart';
+import 'package:phone_yiyang/utiles/refresh.dart';
+
+import 'package:phone_yiyang/model/currentUser.dart';
+import 'package:phone_yiyang/model/cardBag/cardbagindex_all_entity.dart';
+import 'package:phone_yiyang/model/cardBag/cardbagindex_moble_entity.dart';
+
+import 'package:phone_yiyang/pages/cardBag/order_history.dart';
+import 'package:phone_yiyang/pages/cardBag/cardBag_detail.dart';
+import 'package:phone_yiyang/pages/cardBag/cardBag_index_sms.dart';
+
+/**
+ * 卡类型：
+ * -1：代金券
+ * 1：
+ * 2：
+ * 3：旅游卡
+ */
 
 ResultCurrentUser currentUser;
 
@@ -23,241 +29,199 @@ class CardBagIndex extends StatefulWidget {
 }
 
 class _CardBagIndexState extends State<CardBagIndex> {
-  List<CardBagIndexAllDResult> _cardBagIndexDatas =
-      List<CardBagIndexAllDResult>();
+  List<CardBagIndexAllDResult> _cardBagIndexDatas;
+  CardBagIndexMobleResult _cardMobleDatas;
   List<bool> _listbutt = List<bool>();
   List _list;
+  bool _oneShow = false;
   int pagenum;
   var currentPanelIndex = -1; //设置-1默认全部闭合
 
   @override
   void initState() {
-//    _cardBagIndexDatas = _getdata();
     GetPageData.getlogin((data) {
       CurrentUserD currentUserD = CurrentUserD.fromJson(data.toString());
       currentUser = currentUserD.result;
-      print(currentUser);
       LocalStorage.set("currentUser", json.encode(currentUser));
       pagenum = 1;
       GetPageData.getdata(pagenum, (data) {
         var _getCardBag = CardBagIndexAllD.fromJson(json.decode(data)['d']);
-
-        setState(() {
-          _cardBagIndexDatas.clear();
-          _cardBagIndexDatas.addAll(_getCardBag.result);
+        GetPageData.getMobleCouponInfoData(pagenum, (data) {
+          CardBagIndexMobleD _getMoble =
+              CardBagIndexMobleD.fromJson(json.decode(data)['d']);
+          setState(() {
+            _cardBagIndexDatas = _getCardBag.result;
+            _cardMobleDatas = _getMoble.result;
+          });
         });
       });
     });
     super.initState();
   }
 
-  Widget _buildFuture(BuildContext context, AsyncSnapshot snapshot) {
-    switch (snapshot.connectionState) {
-      case ConnectionState.none: //还没有开始网络请求
-
-      case ConnectionState.active: //正在链接
-
-      case ConnectionState.waiting: //等待阶段
-        return Center(
-          child: Text("加载中..."),
-        );
-      case ConnectionState.done: //请求成功
-        var cardBagIndexDataMap = json.decode(snapshot.data);
-        var cardBagIndexData =
-            new CardBagIndexAllD.fromJson(cardBagIndexDataMap['d']);
-        _list = List();
-        for (int i = 0; i < cardBagIndexData.result.length; i++) {
-          _list.add(i);
-        }
-
-        return SingleChildScrollView(
-          child: ExpansionPanelList(
-            expansionCallback: (panelIndex, isExpanded) {
-              setState(() {
-                currentPanelIndex =
-                    (currentPanelIndex != panelIndex ? panelIndex : -1);
-              });
-            },
-            children: _list.map((index) {
-              if (index == 0) {
-                return ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return Padding(
-                          padding: new EdgeInsets.all(10.0),
-                          child: ListTile(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: Text(
-                                    "居民卡移动消费券",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10.0, 0, 10.0),
-                                    child: Text("移动消费券有效期为90个自然日"),
-                                  ),
-                                  Text("移动消费券余额：-330点")
-                                ],
-                              ),
-                              leading: Image.network(
-                                cardBagIndexData.result[index].imgUrl,
-                                width: 60.0,
-                              )));
-                    },
-                    body: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return CardDetailsList();
-                                }));
-                              },
-                              child: Text("详情"),
-                              textColor: Colors.white,
-                              color: AppColors.themeColor,
-                              shape: const RoundedRectangleBorder(
-                                  side: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)))),
-                          SizedBox(width: 20.0),
-                          RaisedButton(
-                              onPressed: () {},
-                              child: Text("消费记录"),
-                              textColor: Colors.white,
-                              color: AppColors.themeColor,
-                              shape: const RoundedRectangleBorder(
-                                  side: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)))),
-                          SizedBox(width: 20.0),
-                          RaisedButton(
-                              onPressed: () {
-                                showDialog<Null>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return SmsContent();
-                                  },
-                                ).then((val) {
-                                  print(val);
-                                });
-                              },
-                              child: Text("一键兑换"),
-                              textColor: Colors.white,
-                              color: AppColors.themeColor,
-                              shape: const RoundedRectangleBorder(
-                                  side: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)))),
-                        ],
-                      ),
-                    ),
-                    isExpanded: currentPanelIndex == index);
-              } else {
-                return ExpansionPanel(
-                    headerBuilder: (context, isExpanded) {
-                      return Padding(
-                          padding: new EdgeInsets.all(10.0),
-                          child: ListTile(
-                              title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Expanded(
-                                      child: Text(
-                                    cardBagIndexData.result[index].ticketName,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: new TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  )),
-                                  Text(
-                                    "可领取",
-                                    style: new TextStyle(
-                                        color: Colors.grey, fontSize: 14.0),
-                                  ),
-                                ],
-                              ),
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        0, 10.0, 0, 10.0),
-                                    child: Text("有效截至日期: 2019-5-23"),
-                                  ),
-                                  Text(
-                                      "面值: ￥${cardBagIndexData.result[index].marketPrice}")
-                                ],
-                              ),
-                              leading: Image.network(
-                                cardBagIndexData.result[index].imgUrl,
-                                width: 60.0,
-                              )));
-                    },
-                    body: ListTile(
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (BuildContext context) {
-                                  return CardDetailsList();
-                                }));
-                              },
-                              child: Text("详情"),
-                              textColor: Colors.white,
-                              color: AppColors.themeColor,
-                              shape: const RoundedRectangleBorder(
-                                  side: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)))),
-                          SizedBox(width: 20.0),
-                          RaisedButton(
-                              onPressed: () {},
-                              child: Text("购买"),
-                              textColor: Colors.white,
-                              color: AppColors.themeColor,
-                              shape: const RoundedRectangleBorder(
-                                  side: BorderSide.none,
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)))),
-                        ],
-                      ),
-                    ),
-                    isExpanded: currentPanelIndex == index);
-              }
-            }).toList(),
-          ),
-        );
-      default:
-        return null;
+  ///格式化票券列表
+  Widget _createListView(BuildContext context) {
+    if (_cardBagIndexDatas == null || _cardMobleDatas == null) {
+      return showDiog();
     }
+    return ListView(
+      children: <Widget>[_mobleCouponInfo(context), _allTickets(context)],
+    );
   }
 
-  Widget _createListView(BuildContext context) {
-    return ListView.builder(
-      itemCount:
-          _cardBagIndexDatas.length > 0 ? (_cardBagIndexDatas.length * 2) : 0,
-      itemBuilder: (context, index) {
-        if (index.isOdd) {
-          return Divider(height: 0.0);
-        }
-        index = index ~/ 2;
+  ///居民卡移动消费券
+  Widget _mobleCouponInfo(context) {
+    var _icon = _oneShow
+        ? Icon(Icons.expand_less, color: AppColors.test95a)
+        : Icon(Icons.expand_more, color: AppColors.test95a);
+    return Container(
+      decoration: new BoxDecoration(
+          border: Border.all(width: 0.5, color: Colors.grey[300]),
+          color: AppColors.twhite),
+      margin: EdgeInsets.only(top: AppSize.ufp7),
+      child: ExpansionTile(
+        onExpansionChanged: (bol) {
+          setState(() {
+            if (bol)
+              _oneShow = true;
+            else
+              _oneShow = false;
+          });
+        },
+        backgroundColor: Colors.white,
+        leading: Padding(
+          padding: EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
+          child: Image.asset(
+            'assets/images/tourismCard_0.png',
+            height: AppSize.up3,
+            width: AppSize.up3,
+          ),
+        ),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text("居民卡移动消费券",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: AppSize.ufp875,
+                    fontWeight: FontWeight.w500)),
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+              child: Text("移动消费券有效期为${_cardMobleDatas.validDays}个自然日",
+                  style:
+                      TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+            ),
+            Text("移动消费券余额：${_cardMobleDatas.balance}点",
+                style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+          ],
+        ),
+        trailing: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.fromLTRB(AppSize.ufp8125, AppSize.ufp375,
+                  AppSize.ufp8125, AppSize.uf1),
+              child: Text(
+                '',
+              ),
+            ),
+            _icon,
+          ],
+        ),
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                child: RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) {
+                        print(context);
+                        return CardDetailsList();
+                      }),
+                    );
+                  },
+                  child: Text(
+                    "详情",
+                    style: TextStyle(
+                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                  ),
+                  textColor: Colors.white,
+                  color: AppColors.themeColor,
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                child: RaisedButton(
+                  onPressed: () {},
+                  child: Text(
+                    "消费记录",
+                    style: TextStyle(
+                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                  ),
+                  textColor: Colors.white,
+                  color: AppColors.themeColor,
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                child: RaisedButton(
+                  onPressed: () {
+                    showDialog<Null>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        print(context);
+                        return SmsContent();
+                      },
+                    ).then((val) {
+                      print(val);
+                    });
+                  },
+                  child: Text(
+                    "一键兑换",
+                    style: TextStyle(
+                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                  ),
+                  textColor: Colors.white,
+                  color: AppColors.themeColor,
+                  shape: const RoundedRectangleBorder(
+                    side: BorderSide.none,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  ///其他票券列表
+  Widget _allTickets(context) {
+    List _thisList = List();
+    for (var i = 0; i < _cardBagIndexDatas.length; i++) {
+      _thisList.add(i);
+    }
+    return Column(
+      children: _thisList.map((index) {
         CardBagIndexAllDResult _cardBagIndexData = _cardBagIndexDatas[index];
         if (_listbutt.length <= index) {
           _listbutt.add(false);
@@ -285,44 +249,42 @@ class _CardBagIndexState extends State<CardBagIndex> {
                   EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
               child: Image.network(
                 _cardBagIndexData.imgUrl,
-                height: 60.0,
-                width: 60.0,
+                height: AppSize.up3,
+                width: AppSize.up3,
               ),
             ),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(_cardBagIndexData.ticketName,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: AppSize.ufp875,
-                        fontWeight: FontWeight.w500)),
+                      color: Colors.black,
+                      fontSize: AppSize.ufp875,
+                      fontWeight: FontWeight.w500,
+                    )),
                 Container(
                   padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                  child: Text("移动消费券有效期为90个自然日",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: AppSize.ufp875,
-                          fontWeight: FontWeight.w500)),
+                  child: _subTicketType(_cardBagIndexData),
                 ),
-                Text("移动消费券余额：-330点",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: AppSize.ufp875,
-                        fontWeight: FontWeight.w500))
+                _priceTicketType(_cardBagIndexData),
               ],
             ),
             trailing: Column(
               children: <Widget>[
                 Padding(
-                    padding: EdgeInsets.fromLTRB(
-                        AppSize.ufp8125, AppSize.ufp75, AppSize.ufp8125, 0.0),
-                    child: Text(_cardBagIndexData.status > 0 ? '已绑定' : '未绑定',
-                        style: TextStyle(
-                            fontSize: AppSize.ufp625,
-                            color: _cardBagIndexData.status > 0
-                                ? AppColors.text_Tide_87c87f
-                                : AppColors.test95a))),
+                  padding: EdgeInsets.fromLTRB(AppSize.ufp8125, AppSize.ufp375,
+                      AppSize.ufp8125, AppSize.uf1),
+                  child: Text(
+                    _cardBagIndexData.ticketType == 1 ? '可领取' : '可购买',
+                    style: TextStyle(
+                        fontSize: AppSize.ufp75,
+                        color: _cardBagIndexData.status > 0
+                            ? AppColors.text_Tide_87c87f
+                            : AppColors.test95a),
+                  ),
+                ),
                 _icon,
               ],
             ),
@@ -331,54 +293,74 @@ class _CardBagIndexState extends State<CardBagIndex> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
-                      child: RaisedButton(
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) {
-                              return CardDetailsList();
-                            }));
-                          },
-                          child: Text("详情"),
-                          textColor: Colors.white,
-                          color: AppColors.themeColor,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))))),
-                  Padding(
-                      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
-                      child: RaisedButton(
-                          onPressed: () {},
-                          child: Text("购买"),
-                          textColor: Colors.white,
-                          color: AppColors.themeColor,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))))),
+                    padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          print(context);
+                          return CardDetailsList();
+                        }));
+                      },
+                      child: Text(
+                        "详情",
+                        style: TextStyle(
+                            color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                      ),
+                      textColor: Colors.white,
+                      color: AppColors.themeColor,
+                      shape: const RoundedRectangleBorder(
+                        side: BorderSide.none,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
                   Offstage(
-                    offstage: index == 1, //这里控制
+                    offstage: _cardBagIndexData.ticketType == 3, //这里控制
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
                       child: RaisedButton(
-                          onPressed: () {
-                            showDialog<Null>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return SmsContent();
-                              },
-                            ).then((val) {
-                              print(val);
-                            });
-                          },
-                          child: Text("一键兑换"),
-                          textColor: Colors.white,
-                          color: AppColors.themeColor,
-                          shape: const RoundedRectangleBorder(
-                              side: BorderSide.none,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12)))),
+                        onPressed: () {},
+                        child: Text(
+                          "购买",
+                          style: TextStyle(
+                              color: AppColors.twhite,
+                              fontSize: AppSize.ufp6875),
+                        ),
+                        textColor: Colors.white,
+                        color: AppColors.themeColor,
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Offstage(
+                    offstage: _cardBagIndexData.ticketType != 3, //这里控制
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                      child: RaisedButton(
+                        onPressed: () {},
+                        child: Text(
+                          "购买旅游卡",
+                          style: TextStyle(
+                              color: AppColors.twhite,
+                              fontSize: AppSize.ufp6875),
+                        ),
+                        textColor: Colors.white,
+                        color: AppColors.themeColor,
+                        shape: const RoundedRectangleBorder(
+                          side: BorderSide.none,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -386,8 +368,55 @@ class _CardBagIndexState extends State<CardBagIndex> {
             ],
           ),
         );
-      },
+      }).toList(),
     );
+  }
+
+  ///副标题
+  _subTicketType(that) {
+    if (that.ticketType == 1) {
+      return Text("111",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    } else if (that.ticketType == 2) {
+      return Text("有效截止日期：${that.endDate}",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    } else if (that.ticketType == 3) {
+      return Text("旅游卡",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    } else if (that.ticketType == -1) {
+      return Text("代金券",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    }
+  }
+
+  ///售价面值
+  Widget _priceTicketType(that) {
+    if (that.ticketType == 1) {
+      return Text("移动消费券余额：-130点",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    } else if (that.ticketType == 2) {
+      return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Text("售价：",
+            style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+        Text("￥${that.salePrice}",
+            style: TextStyle(color: Colors.red, fontSize: AppSize.ufp75)),
+        SizedBox(
+          width: AppSize.up1,
+        ),
+        Text(" 面值：￥${that.marketPrice}",
+            style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+      ]);
+    } else if (that.ticketType == 3) {
+      return Row(mainAxisAlignment: MainAxisAlignment.start, children: <Widget>[
+        Text("售价：",
+            style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+        Text("￥${that.salePrice}",
+            style: TextStyle(color: Colors.red, fontSize: AppSize.ufp75))
+      ]);
+    } else {
+      return Text("移动消费券余额：-30点",
+          style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75));
+    }
   }
 
   @override
@@ -441,9 +470,8 @@ class GetPageData {
   }
 
   static getdata(int _pagenum, Function callback) async {
-    print(_pagenum);
     var _CardCode = '2014351000471158';
-    var _ContractPhone = '"18210530620"';
+    var _ContractPhone = '18210530620';
     if (currentUser != null) {
       _CardCode = currentUser.fCard.toString();
       _ContractPhone = currentUser.fCard.toString();
@@ -454,6 +482,24 @@ class GetPageData {
           'CardCode': _CardCode,
           'ContractPhone': _ContractPhone,
           'PageIndex': _pagenum
+        },
+        null,
+        null);
+    callback(res.data);
+  }
+
+  static getMobleCouponInfoData(int _pagenum, Function callback) async {
+    var _CardCode = '220500100000580';
+    var _ContractPhone = '18210530620';
+    if (currentUser != null) {
+      _CardCode = currentUser.fCard.toString();
+      _ContractPhone = currentUser.fCard.toString();
+    }
+    var res = await httpManager.netFetch(
+        hostAddres.getMobleCouponInfoApi(),
+        {
+          'cardCode': _CardCode,
+          'phoneNo': _ContractPhone,
         },
         null,
         null);

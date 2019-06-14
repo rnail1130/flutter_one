@@ -132,7 +132,7 @@ class _PaymentIndexState extends State<PaymentIndex> {
                                 color: AppColors.twhite,
                                 fontSize: AppSize.ufp6875),
                           ),
-                          onPressed: () => gotopay(movies.businessCode,
+                          onPressed: () => gotopay(context, movies.businessCode,
                               movies.name, movies.categoryCode),
                         ),
                       ),
@@ -190,7 +190,7 @@ class _PaymentIndexState extends State<PaymentIndex> {
   }
 
   // 缴费
-  gotopay(businessCode, name, categoryCode) {
+  gotopay(context, businessCode, name, categoryCode) {
     if (currentUser != null) {
       Navigator.push(
         context,

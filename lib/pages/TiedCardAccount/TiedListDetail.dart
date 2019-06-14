@@ -249,8 +249,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
               ),
               onPressed: () {
                 setState(() {
-                  showDiog();
-                  // _bButtons.butt[i].fun(context, movies);
+                  _bButtons.butt[i].fun(context, movies, widget.status);
                 });
               },
             ),
@@ -278,7 +277,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
                   )),
               onPressed: () {
                 setState(() {
-                  _bButtons.butt[i].fun();
+                  _bButtons.butt[i].fun(context, movies, widget.status);
                 });
               },
             ),
@@ -451,7 +450,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
       children: <Widget>[
         _createListView(context),
         listTitle(context),
-        GetH5(businessCode: widget.businessCode, ifsgin: false),
+        GetH5(businessCode: widget.businessCode, ifsgin: widget.ifsign),
       ],
     );
   }
@@ -460,9 +459,7 @@ class _TiedListDetailState extends State<TiedListDetail> {
   Widget build(BuildContext context) {
     setContext(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("${widget.businessname}详情"),
-      ),
+      appBar: getheader(title: "${widget.businessname}详情"),
       body: _build(context),
     );
   }

@@ -30,7 +30,6 @@ class _LoadingDialog extends State<NetLoadingDialog> {
   @override
   void initState() {
     super.initState();
-    print(widget.dismissDialog);
     if (widget.dismissDialog != null) {
       widget.dismissDialog(
 

@@ -35,12 +35,10 @@ Widget easyRefresh(
     loadMore: loadMore,
     behavior: RefreshBehavior(showLeading: true, showTrailing: true),
     refreshHeader: MaterialHeader(
-      backgroundColor: AppColors.themeColor,
       key: _headerKey,
     ),
     refreshFooter: MaterialFooter(
       displacement: 20.0,
-      backgroundColor: AppColors.themeColor,
       key: _footerKey,
     ),
   ));

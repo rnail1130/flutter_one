@@ -7,54 +7,71 @@ import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/net/api.dart';
 
 import '../index.dart';
+import 'forgetHub.dart';
 import 'forgetPwd.dart';
 import 'registered.dart';
 import 'package:phone_yiyang/utiles/getHost.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:phone_yiyang/utiles/config.dart';
 
 class login extends StatelessWidget {
   FocusNode blankNode = FocusNode();
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        FocusScope.of(context).requestFocus(blankNode);
+    return WillPopScope(
+      onWillPop: (){
+        Navigator.push(
+          context,
+          new MaterialPageRoute(builder: (context) => BottomNav()),
+        );
       },
-      child: Scaffold(
-        resizeToAvoidBottomPadding: false,
-        appBar: AppBar(
-          elevation: 0.0,
-          leading: IconButton(
-              icon: Icon(
-                Icons.chevron_left,
-                size: 30.0,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          actions: <Widget>[
-            Container(
-              color: Theme.of(context).primaryColor,
-              child: InkWell(
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
-                  child: Center(
-                    child: Text('忘记密码'),
-                  ),
+      child: GestureDetector(
+        onTap: (){
+          FocusScope.of(context).requestFocus(blankNode);
+        },
+        child: Scaffold(
+          resizeToAvoidBottomPadding: false,
+          appBar: AppBar(
+            elevation: 0.0,
+            leading: IconButton(
+                icon: Icon(
+                  Icons.chevron_left,
+                  size: 30.0,
+                  color: Colors.white,
                 ),
-                onTap: () {
-                  Navigator.push(
+                onPressed: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      new MaterialPageRoute(
+                          builder: (context) => BottomNav()),
+                          (Route<dynamic> rout) => false);
+/*                  Navigator.push(
                     context,
-                    new MaterialPageRoute(builder: (context) => forget()),
-                  );
-                },
+                    new MaterialPageRoute(builder: (context) => BottomNav()),
+                  );*/
+                }),
+            actions: <Widget>[
+              Container(
+                color: Theme.of(context).primaryColor,
+                child: InkWell(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                    child: Center(
+                      child: Text('忘记密码'),
+                    ),
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      new MaterialPageRoute(builder: (context) => forgetHub("忘记密码",1)),
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
+          body: loginHomePage(),
+          backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: loginHomePage(),
-        backgroundColor: Theme.of(context).primaryColor,
       ),
     );
   }
@@ -70,6 +87,9 @@ class _loginHomePageState extends State<loginHomePage> {
   final registerFormKey = GlobalKey<FormState>();
   String phone, password;
   bool autovalidate = false;
+  RegExp exp = RegExp(
+      r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
+
   jumop(String resz) async{
     Map datas = json.decode(resz);
     if(datas["d"]["Code"] == 0){
@@ -95,25 +115,8 @@ class _loginHomePageState extends State<loginHomePage> {
       await Future.delayed(Duration(seconds: 1), () {
         LocalStorage.set(
             'currentUser',
-            json.encode({
-              "BankCardNo": null,
-              "ChinaName": null,
-              "FCard": "220500100000580",
-              "FCreateTime": "/Date(1554100470000+0800)/",
-              "FEmail": "",
-              "FEmailValidated": 0,
-              "FExpireTime": "/Date(1554186870000+0800)/",
-              "FHeadImg":
-              "http://192.168.1.204:1024/UploadFiles/HeaderImgs/temp_1554116484560.jpg",
-              "FID": null,
-              "FIsAuthenticate": false,
-              "FPassword": "e99a18c428cb38d5f260853678922e03",
-              "FTelephone": "18210530620",
-              "FUniqueId": 22,
-              "FUserName": null,
-              "ICCard": null,
-              "VirtualTelephone": null
-            }));
+            datas["d"]["Result"]
+      );
         Navigator.of(context).pushAndRemoveUntil(
             new MaterialPageRoute(
                 builder: (context) => BottomNav()),
@@ -125,7 +128,7 @@ class _loginHomePageState extends State<loginHomePage> {
   //这个func 就是关闭Dialog的方法
   _disMissCallBack(Function func) async {
     await Future.delayed(Duration(milliseconds: 1500), () async{
-      var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":"18210530620","passWord":"abc123"}, null,  null);
+      var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":phone.toString().trim(),"passWord":password.toString().trim()}, null,  null);
       String resz = res.data.toString();
       func();
       return jumop(resz);
@@ -157,7 +160,9 @@ class _loginHomePageState extends State<loginHomePage> {
     if (value.isEmpty) {
       return '请填写手机号';
     }
-
+    if (!exp.hasMatch(value)){
+      return "请填写正确手机号码";
+    }
     return null;
   }
   String validatePassword(value) {
@@ -191,6 +196,7 @@ class _loginHomePageState extends State<loginHomePage> {
               child: TextFormField(
                 autovalidate: autovalidate,
                 keyboardType: TextInputType.phone,
+                initialValue: config.ACCOUNT ? '18210530620':" ",
                 cursorColor: Colors.white,
                 onSaved: (value) {
                   phone = value;
@@ -245,6 +251,7 @@ class _loginHomePageState extends State<loginHomePage> {
               child: TextFormField(
                 autovalidate: autovalidate,
                 obscureText: true,
+                initialValue: config.ACCOUNT ? 'abc123':" ",
                 onSaved: (value) {
                   password = value;
                 },

@@ -11,10 +11,24 @@ class hostAddres {
   static const GetPhoneIP = "/BindCardAccount.aspx/GetPhoneIP";
   static const GetNewLogin = "/Member.aspx/NewLogin";
   static const GetAllTickets = "/TicketPackages.aspx/GetAllTickets";
+  static const GetMobleCouponInfo =
+      "/MobileIntegration.aspx/GetMobleCouponInfo";
   static const GetMyTickets = "/TicketPackages.aspx/GetMyRecordsInfo";
   static const GetTicketDetailInfo = "/TicketPackages.aspx/GetTicketDetailInfo";
   static const GetPaymentAccountList = "/PaymentAccount.aspx/GetBusinessList";
   static const GetUserCheck = "/Member.aspx/NewLogin";
+  static const GetCode = "/Member.aspx/SendMsg";
+  static const GetNewCode = "/Member.aspx/NewSendMsg";
+  static const GetConsumePoints = "/BindCardAccount.aspx/GetConsumePoints";
+  static const SendConsumeValidCode = "/BindCardAccount.aspx/SendConsumeValidCode";
+  static const GetLandScapeList = "/Index.aspx/LandScapeList";
+
+  static const GetRegister = "/Member.aspx/RegisterNew";
+  static const GetFindPassword = "/Member.aspx/FindPasswordMegValid";
+  static const GetFindPasswordFinal = "/Member.aspx/UpdatePassword";
+
+  static const MerchantsApply = "/Member.aspx/MerchantsApply";
+
 
   ///获取天气的接口
   static getWeatherUrl() {
@@ -60,6 +74,10 @@ class hostAddres {
   static getAllTicketsApi() {
     return config.API_VER + GetAllTickets;
   }
+  ///票券卡包 index页面列表“Moble”
+  static getMobleCouponInfoApi() {
+    return config.API_VER + GetMobleCouponInfo;
+  }
 
   ///票券卡包 订单记录 - 历史记录
   static getMyTicketsApi() {
@@ -79,5 +97,43 @@ class hostAddres {
   ///用户登陆
   static getLoginUrl() {
     return config.API_VER + GetUserCheck;
+  }
+
+  ///获取验证码
+  static getCodeUrl() {
+    return config.API_VER + GetCode;
+  }
+  ///获取注册验证码
+  static getNewCodeUrl() {
+    return config.API_VER + GetNewCode;
+  }
+  ///获取注册接口
+  static getRegistUrl() {
+    return config.API_VER + GetRegister;
+  }
+  ///获取找回密码验证
+  static getFindPasswordUrl() {
+    return config.API_VER + GetFindPassword;
+  }
+  ///修改密码
+  static getEditPasswordUrl() {
+    return config.API_VER + GetFindPasswordFinal;
+  }
+  /// 购买VIP账户
+  static getConsumePoints() {
+    return config.API_VER + GetConsumePoints;
+  }
+  /// 获取购买VIP账户的验证码
+  static sendConsumeValidCode() {
+    return config.API_VER + SendConsumeValidCode;
+  }
+
+  /// 多彩益阳
+  static getLandScapeListApi() {
+    return config.API_VER + GetLandScapeList;
+  }
+  /// 申请加入
+  static getMerchantsApply() {
+    return config.API_VER + MerchantsApply;
   }
 }

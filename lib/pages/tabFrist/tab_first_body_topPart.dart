@@ -3,6 +3,7 @@ import 'package:phone_yiyang/pages/TiedCardAccount/TiedList.dart';
 import 'package:phone_yiyang/pages/paymentAccount/paymentIndex.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
+import 'package:phone_yiyang/pages/cardBag/cardBag_index.dart';
 
 class TopPart extends StatelessWidget {
   //遍历追加组价
@@ -67,7 +68,11 @@ class ExpandedList extends StatelessWidget {
             }));
           }
           if (this.data[0] == "会员账户") {}
-          if (this.data[0] == "票券卡包") {}
+          if (this.data[0] == "票券卡包") {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+              return CardBagIndex();
+            }));
+          }
         },
       ),
     );

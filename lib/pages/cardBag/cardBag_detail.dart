@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import '../../styles/fontSize.dart';
-import '../../utiles/net/api.dart';
-import '../../utiles/getHost.dart';
-import '../../model/cardBag/card_details_entity.dart';
+import "package:phone_yiyang/pages/public.dart";
+import '../../model/cardBag/carddetails_entity.dart';
 
 //订单记录
 class CardDetailsList extends StatefulWidget {
@@ -32,10 +30,9 @@ class _CardDetailsListState extends State<CardDetailsList> {
         );
       case ConnectionState.done: //请求成功
         Map cardDetailsDataMap = json.decode(snapshot.data.toString());
-        var cardDetailsData =  new CardDetailsD.fromJson(cardDetailsDataMap['d']);
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        var cardDetailsData =
+            new CardDetailsD.fromJson(cardDetailsDataMap['d']);
+        return ListView(
           children: <Widget>[
             Container(
               decoration: BoxDecoration(),
@@ -57,7 +54,8 @@ class _CardDetailsListState extends State<CardDetailsList> {
                           Text(cardDetailsData.result.ticketName),
                           Padding(
                             padding: EdgeInsets.fromLTRB(0, 5.0, 0, 5.0),
-                            child: Text("截止日期：${cardDetailsData.result.endDate}"),
+                            child:
+                                Text("截止日期：${cardDetailsData.result.endDate}"),
                           ),
                           Text("面值: ￥${cardDetailsData.result.marketPrice}"),
                         ],
@@ -73,21 +71,23 @@ class _CardDetailsListState extends State<CardDetailsList> {
             Divider(
               height: AppSize.ubp_1,
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(20.0, 5.0, 0, 5.0),
-              child: RaisedButton(
-                  onPressed: () {
+            Row(
+              children: <Widget>[
+                SizedBox(width: AppSize.up1,),
+                RaisedButton(
+                    onPressed: () {
 //                  Navigator.of(context)
 //                      .push(MaterialPageRoute(builder: (BuildContext context) {
 //                    return CardDetailsList();
 //                  }));
-                  },
-                  child: Text("使用"),
-                  textColor: Colors.white,
-                  color: Colors.orange,
-                  shape: const RoundedRectangleBorder(
-                      side: BorderSide.none,
-                      borderRadius: BorderRadius.all(Radius.circular(12)))),
+                    },
+                    child: Text("购买"),
+                    textColor: Colors.white,
+                    color: AppColors.themeColor,
+                    shape: const RoundedRectangleBorder(
+                        side: BorderSide.none,
+                        borderRadius: BorderRadius.all(Radius.circular(12))))
+              ],
             ),
 
             Divider(
@@ -122,57 +122,55 @@ class _CardDetailsListState extends State<CardDetailsList> {
                 ],
               ),
             ),
-
-            Expanded(
-              child: ListView.builder(
-                itemCount: cardDetailsData.result.merchants.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(cardDetailsData.result.merchants[index].merName),
-                    subtitle: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.add_location,
-                                color: Colors.grey,
-                                size: 16.0,
-                              ),
-                              Text(
-                                cardDetailsData.result.merchants[index].address,
-                                style: TextStyle(
-                                  fontSize: 14.0,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                        Row(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: cardDetailsData.result.merchants.map((index) {
+                return ListTile(
+                  title: Text(index.merName),
+                  subtitle: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                        child: Row(
                           children: <Widget>[
                             Icon(
-                              Icons.call,
+                              Icons.add_location,
                               color: Colors.grey,
                               size: 16.0,
                             ),
                             Text(
-                              cardDetailsData.result.merchants[index].telephone,
-                              style: TextStyle(fontSize: 14.0),
+                              index.address,
+                              style: TextStyle(
+                                fontSize: 14.0,
+                              ),
                             )
                           ],
                         ),
-                        Divider(
-                          height: 10.0,
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            )
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.call,
+                            color: Colors.grey,
+                            size: 16.0,
+                          ),
+                          Text(
+                            index.telephone,
+                            style: TextStyle(fontSize: 14.0),
+                          )
+                        ],
+                      ),
+                      Divider(
+                        height: 10.0,
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
           ],
         );
       default:

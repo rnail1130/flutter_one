@@ -7,3 +7,4 @@ export 'package:phone_yiyang/styles/colors.dart';
 export 'package:phone_yiyang/styles/colorQ.dart';
 export 'package:phone_yiyang/styles/colorZ.dart';
 export 'package:phone_yiyang/model/currentUser.dart';
+export 'package:phone_yiyang/utiles/core.dart';

@@ -23,7 +23,7 @@ class _DeatileState extends State<Deatile> {
       if(this.id == null){
         content = WebHome(this.url,this.name);//内嵌网页
       }else{
-        content = ApiHome(this.id,this.name);
+        content = ApiHome(this.id,this.name,this.url);
       }
     });
     return content;

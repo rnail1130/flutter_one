@@ -54,6 +54,8 @@ dependencies:
   dropdown_menu: ^1.1.1
   #时间区间插件
   date_range_picker: ^1.0.5
+  #状态管理
+  scoped_model: ^1.0.1
 
 
 dev_dependencies:
@@ -298,6 +300,7 @@ flutter:
     - assets/images/source.gif
     - assets/images/header_bg.png
     - assets/images/nodatas.png
+    - assets/images/tourismCard_0.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
