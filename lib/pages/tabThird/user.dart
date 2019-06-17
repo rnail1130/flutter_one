@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:phone_yiyang/model/provide/provide.dart';
 import 'hubThird.dart';
 
 class user extends StatefulWidget {
@@ -8,10 +11,22 @@ class user extends StatefulWidget {
 }
 
 class _userState extends State<user> {
+  UserDataModel userDataModel;
+  Map data;
+  String res;
   TextStyle font1 = TextStyle(
     fontSize: 12.0,
     color: Colors.black45
   );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userDataModel = ScopedModel.of<UserDataModel>(context);
+    userDataModel.getUserLoginStatus();
+    data = userDataModel.userInfo;
+    print(data['FCard']);
+  }
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -47,7 +62,7 @@ class _userState extends State<user> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('持卡人姓名'),
-                Text('张三',style: font1,),
+                Text(data['FUserName']==null ? "":data['FUserName'],style: font1,),
               ],
             ),
           ),

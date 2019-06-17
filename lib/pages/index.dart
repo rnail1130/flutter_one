@@ -58,7 +58,7 @@ class _BottomNav extends State<BottomNav>{
         fixedColor: Theme.of(context).primaryColor,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.explore,size: AppContent.sizeIcon,),
+            icon: Icon(Icons.home,size: AppContent.sizeIcon,),
             title: Text(DataConfig.TAB[0],style: AppContent.bottomTextSize,),
           ),
           BottomNavigationBarItem(
@@ -66,7 +66,7 @@ class _BottomNav extends State<BottomNav>{
             title: Text(DataConfig.TAB[1],style: AppContent.bottomTextSize,),
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.history,size: AppContent.sizeIcon,),
+            icon: Icon(Icons.person,size: AppContent.sizeIcon,),
             title: Text(DataConfig.TAB[2],style: AppContent.bottomTextSize,),
           ),
         ],

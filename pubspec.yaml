@@ -301,6 +301,8 @@ flutter:
     - assets/images/header_bg.png
     - assets/images/nodatas.png
     - assets/images/tourismCard_0.png
+    - assets/images/hea.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -20,6 +20,8 @@ class hubThird extends StatefulWidget {
 }
 
 class _hubState extends State<hubThird> {
+  FocusNode blankNode = FocusNode();
+
   _hubHome(){
     switch(this.widget.name){
       case "个人信息":
@@ -76,6 +78,11 @@ class _hubState extends State<hubThird> {
   }
   @override
   Widget build(BuildContext context) {
-    return _buildScaffold();
+    return GestureDetector(
+      onTap: (){
+        FocusScope.of(context).requestFocus(blankNode);
+      },
+      child: _buildScaffold(),
+    );
   }
 }

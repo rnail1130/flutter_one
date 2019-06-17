@@ -8,6 +8,10 @@ class LocalStorage {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(key, value);
   }
+  static get(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.get(key);
+  }
 
   /// 获取本地存储的json的信息，无信息则返回 null;
   static getjson(String key, Function callback) async {

@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:phone_yiyang/model/provide/provide.dart';
 import 'package:phone_yiyang/utiles/Dialogs.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/net/api.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import '../index.dart';
 import 'forgetHub.dart';
 import 'forgetPwd.dart';
 import 'registered.dart';
-import 'package:phone_yiyang/utiles/getHost.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phone_yiyang/utiles/config.dart';
+import 'package:phone_yiyang/utiles/getHost.dart';
 
 class login extends StatelessWidget {
   FocusNode blankNode = FocusNode();
@@ -116,7 +118,15 @@ class _loginHomePageState extends State<loginHomePage> {
         LocalStorage.set(
             'currentUser',
             datas["d"]["Result"]
-      );
+        );
+        LocalStorage.set(
+            'username',
+            phone
+        );
+        LocalStorage.set(
+            'password',
+            password
+        );
         Navigator.of(context).pushAndRemoveUntil(
             new MaterialPageRoute(
                 builder: (context) => BottomNav()),
@@ -127,11 +137,12 @@ class _loginHomePageState extends State<loginHomePage> {
 
   //这个func 就是关闭Dialog的方法
   _disMissCallBack(Function func) async {
+
     await Future.delayed(Duration(milliseconds: 1500), () async{
-      var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":phone.toString().trim(),"passWord":password.toString().trim()}, null,  null);
+     var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":phone.toString().trim(),"passWord":password.toString().trim()}, null,  null);
       String resz = res.data.toString();
       func();
-      return jumop(resz);
+      jumop(resz);
     });
 
   }
@@ -156,6 +167,7 @@ class _loginHomePageState extends State<loginHomePage> {
       });
     }
   }
+
   String validatePhone(value) {
     if (value.isEmpty) {
       return '请填写手机号';
@@ -174,6 +186,7 @@ class _loginHomePageState extends State<loginHomePage> {
   }
   @override
   Widget build(BuildContext context) {
+
     return Form(
       key: registerFormKey,
       child: Container(
@@ -308,37 +321,7 @@ class _loginHomePageState extends State<loginHomePage> {
                           size: 30.0,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: submitRegisterForm,/*() {
-*//*                    Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (context) => registered()),
-                      );*//*
-                          LocalStorage.set(
-                              'currentUser',
-                              json.encode({
-                                "BankCardNo": null,
-                                "ChinaName": null,
-                                "FCard": "220500100000580",
-                                "FCreateTime": "/Date(1554100470000+0800)/",
-                                "FEmail": "",
-                                "FEmailValidated": 0,
-                                "FExpireTime": "/Date(1554186870000+0800)/",
-                                "FHeadImg":
-                                    "http://192.168.1.204:1024/UploadFiles/HeaderImgs/temp_1554116484560.jpg",
-                                "FID": null,
-                                "FIsAuthenticate": false,
-                                "FPassword": "e99a18c428cb38d5f260853678922e03",
-                                "FTelephone": "18210530620",
-                                "FUniqueId": 22,
-                                "FUserName": null,
-                                "ICCard": null,
-                                "VirtualTelephone": null
-                              }));
-                          Navigator.of(context).pushAndRemoveUntil(
-                              new MaterialPageRoute(
-                                  builder: (context) => BottomNav()),
-                              (Route<dynamic> rout) => false);
-                        }*/))
+                        onPressed: submitRegisterForm,))
               ],
             ),
           ],
