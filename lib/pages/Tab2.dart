@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/model/provide/provide.dart';
 import 'package:phone_yiyang/pages/tabThird/hubThird.dart';
 import 'package:phone_yiyang/styles/colors.dart';
 import 'package:phone_yiyang/utiles/Dialogs.dart';
@@ -6,11 +7,14 @@ import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
 import 'package:giffy_dialog/giffy_dialog.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 import 'index.dart';
 
 class thirdTab extends StatelessWidget {
+
   List<List<String>> userList = DataConfig.userList;
+
   var titleStyle = TextStyle(fontSize: 16.0,color: Colors.white);
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,10 @@ class thirdTab extends StatelessWidget {
     );
   }
   List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
+    final UserDataModel  userDataModel =  ScopedModel.of<UserDataModel>(context);
+    userDataModel.getHeaderImg();
+    userDataModel.getCard();
+    userDataModel.getUsername();
     return <Widget>[
       SliverAppBar(
         centerTitle: true,    //标题居中
@@ -90,7 +98,7 @@ class thirdTab extends StatelessWidget {
         ],
         flexibleSpace: FlexibleSpaceBar(
           centerTitle: true,
-          title: Text('高渐离',style: titleStyle,),
+          title: Text(userDataModel.username == null ?"abc21312":userDataModel.username,style: titleStyle,),
           background:Container(
             width: double.infinity,
             decoration: BoxDecoration(
@@ -104,10 +112,10 @@ class thirdTab extends StatelessWidget {
               children: <Widget>[
                 CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: NetworkImage("http://60.247.61.162:8020/UploadFiles/HeaderImgs/temp_1554116484560.jpg",),
+                  backgroundImage: NetworkImage(userDataModel.headerImg,),
                 ),
                 SizedBox(height: 25.0,),
-                Text("卡号：21354563215465132456",style: TextStyle(color: Colors.white,fontSize: 16.0),),
+                Text(userDataModel.card,style: TextStyle(color: Colors.white,fontSize: 16.0),),
               ],
             ),
           ),
@@ -118,6 +126,7 @@ class thirdTab extends StatelessWidget {
 
   Widget _itemBuilder(BuildContext context, int index) {
    // if (index.isEven) return new Divider();
+
     return ListTile(
       dense: true,
       leading: Image.asset(userList[index][1],width: 25.0,),

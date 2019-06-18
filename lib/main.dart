@@ -12,7 +12,7 @@ import 'package:phone_yiyang/model/provide/provide.dart';
 void main() {
   runZoned(() {
     runApp(MyApp());
-    PaintingBinding.instance.imageCache.maximumSize = 100; //图片缓存的大小
+    PaintingBinding.instance.imageCache.maximumSize = 10000; //图片缓存的大小
   }, onError: (Object obj, StackTrace stack) {
     print(obj);
     print(stack);

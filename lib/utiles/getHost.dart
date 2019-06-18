@@ -29,6 +29,7 @@ class hostAddres {
 
   static const MerchantsApply = "/Member.aspx/MerchantsApply";
   static const GetUpdatePassword = "/Member.aspx/UpdatePassword";
+  static const GetUpdateEmail = "/PersonCenter.aspx/BindInformation";
 
 
   ///获取天气的接口
@@ -123,6 +124,10 @@ class hostAddres {
   ///修改智慧益阳app密码
   static getUpPasswordUrl() {
     return config.API_VER + GetUpdatePassword;
+  }
+  ///修改邮箱
+  static getUpEmialUrl() {
+    return config.API_VER + GetUpdateEmail;
   }
   /// 购买VIP账户
   static getConsumePoints() {

@@ -89,12 +89,13 @@ class _loginHomePageState extends State<loginHomePage> {
   final registerFormKey = GlobalKey<FormState>();
   String phone, password;
   bool autovalidate = false;
+  UserDataModel userDataModel;
+
   RegExp exp = RegExp(
       r'^((13[0-9])|(14[0-9])|(15[0-9])|(16[0-9])|(17[0-9])|(18[0-9])|(19[0-9]))\d{8}$');
 
-  jumop(String resz) async{
-    Map datas = json.decode(resz);
-    if(datas["d"]["Code"] == 0){
+  jumop(Map resz) async{
+    if(resz["d"]["Code"] == 0){
       Fluttertoast.showToast(
           msg: "用户名或密码错误",
           toastLength: Toast.LENGTH_SHORT,
@@ -115,18 +116,7 @@ class _loginHomePageState extends State<loginHomePage> {
           fontSize: 16.0
       );
       await Future.delayed(Duration(seconds: 1), () {
-        LocalStorage.set(
-            'currentUser',
-            datas["d"]["Result"]
-        );
-        LocalStorage.set(
-            'username',
-            phone
-        );
-        LocalStorage.set(
-            'password',
-            password
-        );
+//        ScopedModel.of<UserDataModel>(context).getUserLoginStatus();
         Navigator.of(context).pushAndRemoveUntil(
             new MaterialPageRoute(
                 builder: (context) => BottomNav()),
@@ -137,12 +127,11 @@ class _loginHomePageState extends State<loginHomePage> {
 
   //这个func 就是关闭Dialog的方法
   _disMissCallBack(Function func) async {
-
+    userDataModel = ScopedModel.of<UserDataModel>(context);
+    userDataModel.userLogin(phone, password);
     await Future.delayed(Duration(milliseconds: 1500), () async{
-     var res = await httpManager.netFetch(hostAddres.getLoginUrl(),{"mobile":phone.toString().trim(),"passWord":password.toString().trim()}, null,  null);
-      String resz = res.data.toString();
       func();
-      jumop(resz);
+      jumop(userDataModel.Data);
     });
 
   }

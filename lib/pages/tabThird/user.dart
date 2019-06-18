@@ -1,9 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phone_yiyang/model/provide/provide.dart';
+import 'package:phone_yiyang/utiles/LocalStorage.dart';
+import 'package:scoped_model/scoped_model.dart';
 import 'hubThird.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:phone_yiyang/utiles/config.dart';
 
 class user extends StatefulWidget {
   @override
@@ -11,9 +17,14 @@ class user extends StatefulWidget {
 }
 
 class _userState extends State<user> {
+  String url;
+  String name;
+  String card;
+  String idcard;
+  String phone;
+  String img;
+  File imageFile;
   UserDataModel userDataModel;
-  Map data;
-  String res;
   TextStyle font1 = TextStyle(
     fontSize: 12.0,
     color: Colors.black45
@@ -22,17 +33,26 @@ class _userState extends State<user> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    userDataModel = ScopedModel.of<UserDataModel>(context);
-    userDataModel.getUserLoginStatus();
-    data = userDataModel.userInfo;
-    print(data['FCard']);
+    userDataModel =  ScopedModel.of<UserDataModel>(context);
+   // userDataModel.getHeaderImg();
+    _getData();
+  }
+  _getData() async {
+    String phze = await LocalStorage.get("currentUser");
+    Map prit = jsonDecode(phze);
+    setState(() {
+      phone = prit["FTelephone"];
+      name = prit["FUserName"];
+      card = prit["FCard"];
+      idcard = prit["FID"];
+    });
   }
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         InkWell(
-          onTap: (){},
+          onTap: _imgPick,
           child: Container(
             padding: EdgeInsets.all(6),
             decoration: BoxDecoration(
@@ -43,7 +63,7 @@ class _userState extends State<user> {
               children: <Widget>[
                 CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: NetworkImage("http://60.247.61.162:8020/UploadFiles/HeaderImgs/temp_1554116484560.jpg",),
+                  backgroundImage:NetworkImage(userDataModel.headerImg)
                 ),
                 Icon(Icons.chevron_right,color: Colors.black45,),
               ],
@@ -62,7 +82,7 @@ class _userState extends State<user> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('持卡人姓名'),
-                Text(data['FUserName']==null ? "":data['FUserName'],style: font1,),
+                Text(name ==null?"":name,style: font1,),
               ],
             ),
           ),
@@ -79,7 +99,7 @@ class _userState extends State<user> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('居民卡卡号'),
-                Text('1234567896543211',style: font1,),
+                Text(card==null?"":card,style: font1,),
               ],
             ),
           ),
@@ -96,7 +116,7 @@ class _userState extends State<user> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('身份证号'),
-                Text('15356418431748',style: font1,),
+                Text(idcard==null?"":idcard,style: font1,),
               ],
             ),
           ),
@@ -113,7 +133,7 @@ class _userState extends State<user> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text('手机号码'),
-                Text('13835369268',style: font1,),
+                Text(phone==null?"":phone,style: font1,),
               ],
             ),
           ),
@@ -143,4 +163,70 @@ class _userState extends State<user> {
       ],
     );
   }
+  _imgPick(){
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context){
+          return new Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new ListTile(
+                  leading: Image.asset("assets/images/carme.png"),
+                  title: new Text("相机"),
+                  onTap: () async {
+                    imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
+                    Navigator.pop(context);
+                    _upLoadImage(imageFile);
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: new ListTile(
+                  leading: Image.asset("assets/images/xiangce.png"),
+                  title: new Text("相册"),
+                  onTap: () async {
+                    imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+                    Navigator.pop(context);
+                    _upLoadImage(imageFile);
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+    );
+  }
+    _upLoadImage(File image) async {
+      String path = image.path;
+      var name = path.substring(path.lastIndexOf("/") + 1, path.length);
+      var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
+
+      FormData formData = new FormData.from({
+        "file": new UploadFileInfo(new File(path), name,
+            contentType: ContentType.parse("image/$suffix"))
+      });
+
+      Dio dio = new Dio();
+      var respone = await dio.post<String>(config.API_VER+"/UploadImg.aspx?userCode="+card, data: formData);
+      setState(() {
+        img = respone.data;
+        userDataModel.changeImage(img);
+      });
+
+      if (respone.statusCode == 200) {
+        Fluttertoast.showToast(
+            msg: "图片上传成功",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.black.withOpacity(0.2),
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+    }
+
 }
