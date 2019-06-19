@@ -4,14 +4,17 @@ import 'package:phone_yiyang/pages/join/join_index.dart';
 import 'package:phone_yiyang/pages/tabFrist/juminka/transaction_record.dart';
 import 'package:phone_yiyang/pages/tabFrist/juminka/ydjf_xiaofei.dart';
 import 'package:phone_yiyang/pages/tabFrist/landscape/landscapeIndex.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/commonPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/findPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/government.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/personDo.dart';
 
 class hub extends StatefulWidget {
   final String name;
   final String url;
+  final String id;
 
-  hub(this.name, {this.url});
+  hub(this.name, {this.url,this.id});
 
   @override
   _hubState createState() => _hubState();
@@ -71,28 +74,41 @@ class _hubState extends State<hub> {
       case "移动积分消费":
         return YdjfXiaoFei(widget.name);
         break;
+      default:
+        return comPage(this.widget.name,this.widget.id);
+        break;
     }
   }
-
+  _buildScaffold(){
+    switch(this.widget.name){
+      case "个人办事":
+        return personDo("个人办事");
+        break;
+      default:
+        return Scaffold(
+          resizeToAvoidBottomPadding: false,
+          appBar: AppBar(
+              title: Text(
+                this.widget.name,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(fontSize: 16.0, color: Colors.white,fontFamily: "alm"),
+              ),
+              leading: IconButton(
+                  icon: Icon(
+                    Icons.chevron_left,
+                    size: 30.0,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+          ),
+          body: _hubHome(),
+        );
+    }
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(
-            this.widget.name,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 16.0, color: Colors.white),
-          ),
-          leading: IconButton(
-              icon: Icon(
-                Icons.chevron_left,
-                size: 30.0,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              })),
-      body: _hubHome(),
-    );
+    return _buildScaffold();
   }
 }

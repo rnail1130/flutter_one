@@ -115,7 +115,7 @@ class thirdTab extends StatelessWidget {
                   backgroundImage: NetworkImage(userDataModel.headerImg,),
                 ),
                 SizedBox(height: 25.0,),
-                Text(userDataModel.card,style: TextStyle(color: Colors.white,fontSize: 16.0),),
+                Text(userDataModel.card.substring(0,4)+"*******"+userDataModel.card.substring(userDataModel.card.length-4),style: TextStyle(color: Colors.white,fontSize: 16.0),),
               ],
             ),
           ),

@@ -30,6 +30,9 @@ class hostAddres {
   static const MerchantsApply = "/Member.aspx/MerchantsApply";
   static const GetUpdatePassword = "/Member.aspx/UpdatePassword";
   static const GetUpdateEmail = "/PersonCenter.aspx/BindInformation";
+  static const GetGoverment = "/Government.aspx/FindGovMatters";
+  static const Getzhuti = "/Government.aspx/FindGovClassifycation";
+  static const Getxiangqing = "/Government.aspx/FindGovMatters";
 
 
   ///获取天气的接口
@@ -145,5 +148,17 @@ class hostAddres {
   /// 申请加入
   static getMerchantsApply() {
     return config.API_VER + MerchantsApply;
+  }
+  /// 获取政务查询列表
+  static getGovermentUrl() {
+    return config.API_VER + GetGoverment;
+  }
+  /// 获取个人办事
+  static getGerenbanshiUrl() {
+    return config.API_VER + Getzhuti;
+  }
+  /// 获取个人办事详情
+  static getMattersUrl() {
+    return config.API_VER + Getxiangqing;
   }
 }

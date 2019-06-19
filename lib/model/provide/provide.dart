@@ -74,7 +74,7 @@ class UserDataModel extends Model {
     String phone = await LocalStorage.get("username");
     String pwd = await LocalStorage.get("password");
     userLogin(phone,pwd);
-   await Future.delayed(Duration(milliseconds: 100), () {
+   await Future.delayed(Duration(milliseconds: 1000), () {
      getHeaderImg();
     });
   }

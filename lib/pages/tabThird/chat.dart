@@ -31,6 +31,7 @@ class chat extends StatefulWidget {
   @override
   _chatState createState() => _chatState();
 }
+
 const defaultUserName = "jaiou ";
 class _chatState extends State<chat> with TickerProviderStateMixin {
   FocusNode blankNode = FocusNode();

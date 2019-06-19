@@ -5,11 +5,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phone_yiyang/model/provide/provide.dart';
+import 'package:phone_yiyang/utiles/Dialogs.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'hubThird.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:phone_yiyang/utiles/config.dart';
+
 
 class user extends StatefulWidget {
   @override
@@ -178,7 +180,7 @@ class _userState extends State<user> {
                   onTap: () async {
                     imageFile = await ImagePicker.pickImage(source: ImageSource.camera);
                     Navigator.pop(context);
-                    _upLoadImage(imageFile);
+                    _openAlretDialog();
                   },
                 ),
               ),
@@ -190,7 +192,7 @@ class _userState extends State<user> {
                   onTap: () async {
                     imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
                     Navigator.pop(context);
-                    _upLoadImage(imageFile);
+                    _openAlretDialog();
                   },
                 ),
               ),
@@ -199,8 +201,20 @@ class _userState extends State<user> {
         }
     );
   }
-    _upLoadImage(File image) async {
-      String path = image.path;
+  _openAlretDialog(){
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) {
+          return new NetLoadingDialog(
+            dismissDialog:_upLoadImage,
+            outsideDismiss: false,
+          );
+        });
+  }
+    _upLoadImage(Function func) async {
+      String path = imageFile.path;
+
       var name = path.substring(path.lastIndexOf("/") + 1, path.length);
       var suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
 
@@ -215,7 +229,18 @@ class _userState extends State<user> {
         img = respone.data;
         userDataModel.changeImage(img);
       });
-
+      func();
+      if(respone.statusCode == 500){
+        Fluttertoast.showToast(
+            msg: "网络连接错误，请检查网络",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.black.withOpacity(0.2),
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
       if (respone.statusCode == 200) {
         Fluttertoast.showToast(
             msg: "图片上传成功",

@@ -47,7 +47,8 @@ class DataConfig {
         "sub_title": "便民政务在线办",
         "src": "assets/img/index_pic43.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "true",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "企业办事",
