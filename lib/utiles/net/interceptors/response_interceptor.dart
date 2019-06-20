@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import '../code.dart';
 import '../result_data.dart';
@@ -17,8 +19,15 @@ class ResponseInterceptors extends InterceptorsWrapper {
         return new ResultData(response.data, true, Code.SUCCESS);
       }
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return new ResultData(response.data, true, Code.SUCCESS,
-            headers: response.headers);
+/*       Map data = json.decode(response.data.toString());
+        print(data["d"]["ErrorCode"]);
+         if(data["d"]["ErrorCode"]==null ){*/
+          return new ResultData(response.data, true, Code.SUCCESS,
+              headers: response.headers);
+/*        }else{
+          return new ResultData(Code.errorHandleFunction(6666, data["d"]["Msg"], false), false, 6666);
+        }*/
+
       }
     } catch (e) {
       print("错误：" + e.toString() + option.path);

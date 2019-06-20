@@ -30,6 +30,7 @@ class HttpManager {
   ///[ header] 外加头
   ///[ option] 配置
   netFetch(url, params, Map<String, dynamic> header, Options option,{noTip = false}) async {
+
     Map<String, dynamic> headers = new HashMap();
     if (header != null) {
       headers.addAll(header);

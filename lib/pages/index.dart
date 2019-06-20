@@ -1,6 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
+import 'package:phone_yiyang/utiles/net/code.dart';
 import 'Tab0.dart';
 import 'Tab1.dart';
 import 'Tab2.dart';
@@ -16,7 +20,7 @@ class BottomNav extends StatefulWidget{
 }
 class _BottomNav extends State<BottomNav>{
   int _currentIndex = 0;
-
+  StreamSubscription stream;
   void _onTapHandler (int index) {
 
     LocalStorage.getstring('currentUser', (data){
@@ -34,14 +38,48 @@ class _BottomNav extends State<BottomNav>{
     });
   }
   List<Widget> list = List();
-
+  errorHandleFunction(int code, message) {
+    switch (code) {
+      case Code.NETWORK_ERROR:
+        Fluttertoast.showToast(msg: "网络错误");
+        break;
+      case 401:
+        Fluttertoast.showToast(msg: "登录过期");
+        break;
+      case 403:
+        Fluttertoast.showToast(msg: "403权限错误");
+        break;
+      case 404:
+        Fluttertoast.showToast(msg: "404错误");
+        break;
+      case Code.NETWORK_TIMEOUT:
+      //超时
+        Fluttertoast.showToast(msg: "请求超时");
+        break;
+      default:
+        Fluttertoast.showToast(msg: message);
+        break;
+    }
+  }
   @override
   void initState() {
+    //检查网络状态
     list
       ..add(firstTab())
       ..add(MyCard())
       ..add(thirdTab());
     super.initState();
+    stream = Code.eventBus.on<HttpErrorEvent>().listen((event) {
+      errorHandleFunction(event.code, event.message);
+    });
+  }
+  @override
+  void dispose() {
+    super.dispose();
+    if (stream != null) {
+      stream.cancel();
+      stream = null;
+    }
   }
 
   @override

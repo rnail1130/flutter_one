@@ -112,7 +112,7 @@ class thirdTab extends StatelessWidget {
               children: <Widget>[
                 CircleAvatar(
                   radius: 30.0,
-                  backgroundImage: NetworkImage(userDataModel.headerImg,),
+                  backgroundImage: NetworkImage(userDataModel.headerImg == null?"http://60.247.61.162:8019/Upload/Images/ModelImages/Img-20190419173341.jpg":userDataModel.headerImg,),
                 ),
                 SizedBox(height: 25.0,),
                 Text(userDataModel.card.substring(0,4)+"*******"+userDataModel.card.substring(userDataModel.card.length-4),style: TextStyle(color: Colors.white,fontSize: 16.0),),

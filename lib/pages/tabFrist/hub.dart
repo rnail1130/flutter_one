@@ -6,8 +6,11 @@ import 'package:phone_yiyang/pages/tabFrist/juminka/ydjf_xiaofei.dart';
 import 'package:phone_yiyang/pages/tabFrist/landscape/landscapeIndex.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/commonPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/findPage.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/goverDo.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/government.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/mainPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/personDo.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/publicMess.dart';
 
 class hub extends StatefulWidget {
   final String name;
@@ -25,6 +28,9 @@ class _hubState extends State<hub> {
     switch (this.widget.name) {
       case "政务查询":
         return government();
+        break;
+      case "政务便民":
+        return governmentPerson();
         break;
       case "不动产登记查询":
         return find('请输入公民身份证号码');
@@ -74,6 +80,9 @@ class _hubState extends State<hub> {
       case "移动积分消费":
         return YdjfXiaoFei(widget.name);
         break;
+      case "公告发布":
+        return publicMessage(this.widget.name);
+        break;
       default:
         return comPage(this.widget.name,this.widget.id);
         break;
@@ -83,6 +92,9 @@ class _hubState extends State<hub> {
     switch(this.widget.name){
       case "个人办事":
         return personDo("个人办事");
+        break;
+      case "企业办事":
+        return goverDo("企业办事");
         break;
       default:
         return Scaffold(

@@ -22,6 +22,33 @@ class _HomeBodyState extends State<HomeBody> {
 
     });
   }*/
+  Widget bilrs(String str){
+    return InkWell(
+      onTap: (){print(2123);},
+      child: Container(
+          height: 40.0,
+          decoration: BoxDecoration(
+            color: Theme.of(context).backgroundColor,
+            image: DecorationImage(
+                image: AssetImage("assets/images/index/newNewsBgc.png")
+            ),
+          ),
+
+          child:Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Flexible(
+                  child: Text('最新消息：',style: font1,)
+              ),
+              Flexible(
+                  child: Text(str,style: font2,overflow: TextOverflow.ellipsis,)
+              ),
+            ],
+          )
+
+      ),
+    );
+  }
   var _futureBuilderFuture;
   Widget _buildFuture(BuildContext context, AsyncSnapshot snapshot) {
     switch (snapshot.connectionState) {
@@ -34,32 +61,12 @@ class _HomeBodyState extends State<HomeBody> {
           child: Text(HttpManager.loading,style: AppContent.moreMinText,),
         );
       case ConnectionState.done://请求成功
-        Map NewMap = json.decode(snapshot.data.toString());
-        return InkWell(
-          onTap: (){print(2123);},
-          child: Container(
-              height: 40.0,
-              decoration: BoxDecoration(
-                color: Theme.of(context).backgroundColor,
-                image: DecorationImage(
-                    image: AssetImage("assets/images/index/newNewsBgc.png")
-                ),
-              ),
+      if(snapshot.data == null){
+        return bilrs("");
+      }
+        Map NewMap = snapshot.data;
+        return bilrs(NewMap["d"]["Result"][0]["Title"]);
 
-              child:Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                      child: Text('最新消息：',style: font1,)
-                  ),
-                  Flexible(
-                      child: Text(NewMap["d"]["Result"][0]["Title"],style: font2,overflow: TextOverflow.ellipsis,)
-                  ),
-                ],
-              )
-
-          ),
-        );
       default:
         return null;
     }
@@ -142,6 +149,7 @@ class _HomeBodyState extends State<HomeBody> {
 class getPageData {
   static getdata () async {
     var res = await httpManager.netFetch(hostAddres.getNewMessageUrl(),{"pageIndex":1}, null,  null);
-    return res.data;
+    Map NewMap = json.decode(res.data.toString());
+    return NewMap;
   }
 }

@@ -9,14 +9,14 @@ import 'package:phone_yiyang/utiles/getHost.dart';
 import '../hub.dart';
 
 
-class personDo extends StatefulWidget {
+class goverDo extends StatefulWidget {
   final String name;
-  personDo(this.name);
+  goverDo(this.name);
   @override
   _personDoState createState() => _personDoState();
 }
 
-class _personDoState extends State<personDo> {
+class _personDoState extends State<goverDo> {
   var futureBuilderFuture;
 
   List<String> title = ['主题分类',"部门分类",];
@@ -25,10 +25,10 @@ class _personDoState extends State<personDo> {
     List<Widget> con = [];
     title.forEach((item){
       con.add(
-          Padding(
-            padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,10),
-            child: Text(item,style: TextStyle(fontFamily: "alr",fontSize: 14.0),),
-          ),
+        Padding(
+          padding:EdgeInsets.fromLTRB(0.0,0.0,0.0,10),
+          child: Text(item,style: TextStyle(fontFamily: "alr",fontSize: 14.0),),
+        ),
       );
     });
     return con;
@@ -148,7 +148,7 @@ class _zhutiState extends State<zhuti> {
       case ConnectionState.active://正在链接
 
       case ConnectionState.waiting://等待阶段
-      return _loadingWidget();
+        return _loadingWidget();
       case ConnectionState.done://请求成功
         if(snapshot.data==null){
           return _loadingWidget();
@@ -230,26 +230,26 @@ class _bumenState extends State<bumen> {
     List<Widget> con = [];
     for(var i = 0;i< data.length;i++){
       con.add(
-          InkWell(
-            onTap: (){
-              Navigator.push(
-                context,
-                new MaterialPageRoute(builder: (context) => hub(data[i]["ClassifyName"], id: data[i]["ClassifyId"],)),
-              );
-            },
-            child: Column(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
+        InkWell(
+          onTap: (){
+            Navigator.push(
+              context,
+              new MaterialPageRoute(builder: (context) => hub(data[i]["ClassifyName"], id: data[i]["ClassifyId"],)),
+            );
+          },
+          child: Column(
+            children: <Widget>[
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
                     border: Border(bottom: BorderSide(color: Colors.grey[300],width: 0.5))
-                  ),
-                  child: Text(data[i]["ClassifyName"],style: fon,),
-                  padding: const EdgeInsets.all(12.0),
                 ),
-              ],
-            ),
+                child: Text(data[i]["ClassifyName"],style: fon,),
+                padding: const EdgeInsets.all(12.0),
+              ),
+            ],
           ),
+        ),
       );
     }
     return con;
@@ -289,7 +289,7 @@ class _bumenState extends State<bumen> {
 //页面获取数据
 class getPageData {
   static getdata () async {
-    var res = await httpManager.netFetch(hostAddres.getGerenbanshiUrl(),{"ClassifyType":"1",}, null,  null);
+    var res = await httpManager.netFetch(hostAddres.getGerenbanshiUrl(),{"ClassifyType":"2",}, null,  null);
     Map weatherMap = json.decode(res.data.toString());
     return weatherMap;
   }

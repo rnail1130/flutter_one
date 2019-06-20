@@ -58,7 +58,10 @@ class _governmentState extends State<government> {
       case ConnectionState.waiting://等待阶段
       return _loadingWidget();
       case ConnectionState.done://请求成功
-        Map NewMap = json.decode(snapshot.data.toString());
+        if(snapshot.data==null){
+          return _loadingWidget();
+        }
+        Map NewMap = snapshot.data;
         List resr = NewMap["d"]["Result"];
         List<String> ListDatas = [];
         resr.forEach((item){
@@ -127,6 +130,7 @@ class _governmentState extends State<government> {
 class getPageData {
   static getdata () async {
     var res = await httpManager.netFetch(hostAddres.getGovermentUrl(),{"classifyId":"","isHot":true}, null,  null);
-    return res.data;
+    Map weatherMap = json.decode(res.data.toString());
+    return weatherMap;
   }
 }

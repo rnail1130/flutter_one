@@ -15,6 +15,6 @@ class HeaderInterceptors extends InterceptorsWrapper {
     options.headers ={
       "Content-type": "application/json",
     };
-    //return options;
+    return options;
   }
 }

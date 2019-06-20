@@ -33,6 +33,7 @@ class hostAddres {
   static const GetGoverment = "/Government.aspx/FindGovMatters";
   static const Getzhuti = "/Government.aspx/FindGovClassifycation";
   static const Getxiangqing = "/Government.aspx/FindGovMatters";
+  static const GetMessagePub = "/Index.aspx/AnnounceList";
 
 
   ///获取天气的接口
@@ -160,5 +161,9 @@ class hostAddres {
   /// 获取个人办事详情
   static getMattersUrl() {
     return config.API_VER + Getxiangqing;
+  }
+  /// 获取公告发布接口
+  static getMessPubUrl() {
+    return config.API_VER + GetMessagePub;
   }
 }

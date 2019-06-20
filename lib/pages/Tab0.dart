@@ -39,7 +39,10 @@ class _HeaderTitleState extends State<HeaderTitle> {
     // TODO: implement initState
     super.initState();
     ///用_futureBuilderFuture来保存_gerData()的结果，以避免不必要的ui重绘
-    _futureBuilderFuture = getPageData.getdata();
+    setState(() {
+      _futureBuilderFuture = getPageData.getdata();
+    });
+
   }
   Widget builrd (List<String> conrs){
    return Container(
@@ -81,7 +84,10 @@ class _HeaderTitleState extends State<HeaderTitle> {
         child: Text(HttpManager.loading,style: AppContent.moreMinText,),
       );
       case ConnectionState.done://请求成功
-      Map weatherMap = json.decode(snapshot.data.toString());
+      if(snapshot.data == null){
+        return builrd([" "," ","0","0","0"," "]);
+      }
+      Map weatherMap = snapshot.data;
       if(weatherMap['d'] == null){
         return builrd([" "," ","0","0","0"]);
       }
@@ -104,7 +110,10 @@ class _HeaderTitleState extends State<HeaderTitle> {
 //页面获取数据
 class getPageData {
   static getdata () async {
-    var res = await httpManager.netFetch(hostAddres.getWeatherUrl(),null, null,  null);
-    return res.data;
+    try {
+      var res = await httpManager.netFetch(hostAddres.getWeatherUrl(),null, null,  null);
+      Map weatherMap = json.decode(res.data.toString());
+      return weatherMap;
+    } catch(e) { /**/ }
   }
 }

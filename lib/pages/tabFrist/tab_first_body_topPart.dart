@@ -5,6 +5,8 @@ import 'package:phone_yiyang/utiles/data_config.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
 import 'package:phone_yiyang/pages/cardBag/cardBag_index.dart';
 
+import 'hub.dart';
+
 class TopPart extends StatelessWidget {
   //遍历追加组价
   List<Widget> getList() {
@@ -57,6 +59,12 @@ class ExpandedList extends StatelessWidget {
         ],
       ),
       onTap: () {
+        if (this.data[0] == "政务便民") {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) {
+            return hub('政务便民');
+          }));
+        }
         if (this.data[0] == "绑卡账户") {
           Navigator.of(context)
               .push(new MaterialPageRoute(builder: (context) {
