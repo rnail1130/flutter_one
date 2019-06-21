@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:phone_yiyang/model/landscape/landscapeindex_entity.dart';
 import 'package:phone_yiyang/pages/common/DeatilPage.dart';
 import 'package:phone_yiyang/pages/public.dart';
@@ -14,6 +15,12 @@ class publicMessage extends StatefulWidget {
 }
 
 class _LandscapeIndexState extends State<publicMessage> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+  GlobalKey<EasyRefreshState>(debugLabel: "getLandScapeListApi");
+  GlobalKey<RefreshHeaderState> _headerKey =
+  GlobalKey<RefreshHeaderState>(debugLabel: "getLandScapeListApi");
+  GlobalKey<RefreshFooterState> _footerKey =
+  GlobalKey<RefreshFooterState>(debugLabel: "getLandScapeListApi");
   List<LandscapeindexResult> _LandscapeIndexResult;
   int pagenum;
 
@@ -21,7 +28,7 @@ class _LandscapeIndexState extends State<publicMessage> {
   void initState() {
     super.initState();
     pagenum = 1;
-    GetPageData.getLandScapeListData(pagenum,  (data) {
+    GetPageData.getLandScapeListData(pagenum, (data) {
       var _getResult = LandscapeindexD.fromJson(json.decode(data)['d']);
       setState(() {
         _LandscapeIndexResult = _getResult.result;
@@ -104,17 +111,19 @@ class _LandscapeIndexState extends State<publicMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: easyRefresh(_createListView(context), () async {
-        pagenum = 1;
-        GetPageData.getLandScapeListData(pagenum,  (data) {
-          var _getResult = LandscapeindexD.fromJson(json.decode(data)['d']);
-          setState(() {
-            _LandscapeIndexResult = _getResult.result;
-          });
-        });
-      }, () async {
+      child: easyRefresh(
+          _easyRefreshKey, _headerKey, _footerKey, _createListView(context),
+              () async {
+            pagenum = 1;
+            GetPageData.getLandScapeListData(pagenum,  (data) {
+              var _getResult = LandscapeindexD.fromJson(json.decode(data)['d']);
+              setState(() {
+                _LandscapeIndexResult = _getResult.result;
+              });
+            });
+          }, () async {
         pagenum++;
-        GetPageData.getLandScapeListData(pagenum, (data) {
+        GetPageData.getLandScapeListData(pagenum,  (data) {
           var _getResult = LandscapeindexD.fromJson(json.decode(data)['d']);
           setState(() {
             _LandscapeIndexResult.addAll(_getResult.result);

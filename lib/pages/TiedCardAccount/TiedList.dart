@@ -1,20 +1,27 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/utiles/refresh.dart';
 import 'package:phone_yiyang/model/bussines/business_list.dart';
 import 'package:phone_yiyang/model/bussines/businButtons.dart';
 
-ResultCurrentUser currentUser;
+bool IFStatus = false;
 
 class TiedList extends StatefulWidget {
-  TiedList({Key key}) : super(key: key);
-
+  TiedList({Key key, this.IFStatu}) : super(key: key);
+  bool IFStatu;
   _TiedListState createState() => _TiedListState();
 }
 
 class _TiedListState extends State<TiedList> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      GlobalKey<EasyRefreshState>(debugLabel: "getBusinessList");
+  GlobalKey<RefreshHeaderState> _headerKey =
+      GlobalKey<RefreshHeaderState>(debugLabel: "getBusinessList");
+  GlobalKey<RefreshFooterState> _footerKey =
+      GlobalKey<RefreshFooterState>(debugLabel: "getBusinessList");
   double doub52p4736 = 52.4736;
   double doub85 = 85.0;
   int pagenum;
@@ -189,18 +196,20 @@ class _TiedListState extends State<TiedList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getheader(title: "绑卡账户"),
-      body: easyRefresh(_createListView(context), () async {
-        LocalStorage.getjson("currentUser", (data) {
-          currentUser = ResultCurrentUser.fromJson(data);
-          pagenum = 1;
-          GetPageData.getdata(pagenum, (data) {
+      appBar: getheader("绑卡账户"),
+      body: easyRefresh(
+          _easyRefreshKey, _headerKey, _footerKey, _createListView(context),
+          () async {
+        pagenum = 1;
+        GetPageData.getdata(pagenum, (data) {
+          if (data != null) {
             var businessListD = BusinessListD.fromJson(data.toString());
             setState(() {
-              tidelist.clear();
-              tidelist.addAll(businessListD.result);
+              tidelist = businessListD.result;
             });
-          });
+          } else {
+            tidelist = [];
+          }
         });
       }, () async {
         pagenum++;
@@ -215,7 +224,9 @@ class _TiedListState extends State<TiedList> {
   }
 
   @override
-  void initState() {}
+  void initState() {
+    if (widget.IFStatu == true) IFStatus = true;
+  }
 }
 
 class GetPageData {
@@ -224,8 +235,11 @@ class GetPageData {
     if (currentUser != null) {
       cardNo = currentUser.fCard.toString();
     }
-    var res = await httpManager.netFetch(hostAddres.getBusinessList(),
-        {'cardNo': cardNo, 'pageIndex': pagenum, 'status': ''}, null, null);
+    var res = await httpManager.netFetch(
+        hostAddres.getBusinessList(),
+        {'cardNo': cardNo, 'pageIndex': pagenum, 'status': IFStatus ? 1 : ''},
+        null,
+        null);
     callback(res.data);
   }
 }

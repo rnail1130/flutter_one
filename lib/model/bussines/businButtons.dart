@@ -7,7 +7,6 @@ import 'package:phone_yiyang/pages/cardBag/cardBag_index_sms.dart';
 import 'package:phone_yiyang/pages/login/loginPage.dart';
 import 'package:phone_yiyang/pages/tabThird/checkDeil.dart';
 import 'package:phone_yiyang/pages/tabThird/hubThird.dart';
-import 'package:phone_yiyang/pages/tabThird/lostCall.dart';
 import 'package:phone_yiyang/utiles/core.dart';
 import 'package:phone_yiyang/utiles/plug.dart';
 import 'business_list.dart';
@@ -277,45 +276,45 @@ gotodetail(BuildContext context, ResultBusinessList movie, bool ifsign) {
 }
 
 /// 虚拟卡
-f100102(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100102(BuildContext context, movie, bool ifsign) {
   if (ifsign)
     Navigator.push(context, MaterialPageRoute(builder: (context) => MyCard()));
   else
-    gotoLogin();
+    gotoLogin(context);
   // 跳转到虚拟卡页面
 }
 
 /// 交易记录
-f100103(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100103(BuildContext context, movie, bool ifsign) {
   // 跳转到交易记录页面
   if (ifsign) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
 /// 修改信息
-f100104(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100104(BuildContext context, movie, bool ifsign) {
   // 跳转到修改信息页面
   if (ifsign) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => hubThird("个人信息")));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
 /// 一键挂失
-f100105(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100105(BuildContext context, movie, bool ifsign) {
   // 跳转到 一键挂失 页面
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => hubThird("居民卡一键挂失")));
 }
 
 /// 银行网点
-f100304(BuildContext context, ResultBusinessList movie, bool ifsign) {
+f100304(BuildContext context, movie, bool ifsign) {
   Navigator.push(
       context, MaterialPageRoute(builder: (context) => BankOutlets()));
   // 跳转到 银行网点 页面
@@ -341,7 +340,7 @@ f100502(BuildContext context, ResultBusinessList movie, bool ifsign) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
@@ -368,7 +367,7 @@ f102103(BuildContext context, ResultBusinessList movie, bool ifsign) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => TiedCardAccount_shopList()));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
@@ -383,7 +382,7 @@ f102102(BuildContext context, ResultBusinessList movie, bool ifsign) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => TiedCardAccount_shopshow()));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
@@ -393,7 +392,7 @@ f102003(BuildContext context, ResultBusinessList movie, bool ifsign) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => checkDeil("交易记录")));
   } else {
-    gotoLogin();
+    gotoLogin(context);
   }
 }
 
@@ -402,6 +401,6 @@ f102002(BuildContext context, ResultBusinessList movie, bool ifsign) {
   alertMsg(null, "暂未开通", "", null);
 }
 
-gotoLogin() {
+gotoLogin(context) {
   Navigator.push(context, MaterialPageRoute(builder: (context) => login()));
 }

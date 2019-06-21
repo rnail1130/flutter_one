@@ -1,18 +1,20 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/join/join_index.dart';
+import 'package:phone_yiyang/pages/public.dart';
+import 'package:phone_yiyang/pages/signingBusinessman/signingBusinessman_index.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
 import 'package:phone_yiyang/styles/colors.dart';
-import 'package:phone_yiyang/styles/theme.dart';
 import 'package:phone_yiyang/utiles/localeCommon.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'model/provide/provide.dart';
 import 'pages/index.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:scoped_model/scoped_model.dart';
-import 'package:phone_yiyang/model/provide/provide.dart';
 
-void main() {
+void main() async{
   runZoned(() {
     runApp(MyApp());
-    PaintingBinding.instance.imageCache.maximumSize = 10000; //图片缓存的大小
+    PaintingBinding.instance.imageCache.maximumSize = 100; //图片缓存的大小
   }, onError: (Object obj, StackTrace stack) {
     print(obj);
     print(stack);
@@ -22,9 +24,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    getcurrentUser(context);
     return ScopedModel<UserDataModel>(
       model: UserDataModel(),
-      child:MaterialApp(
+      child: MaterialApp(
         locale: const Locale('zh', 'CN'),
         debugShowCheckedModeBanner: false, //关闭debug显示条
         title: 'MyApp',
@@ -36,13 +39,15 @@ class MyApp extends StatelessWidget {
           accentColor: GSYColors.primarySwatch,
           backgroundColor: Colors.white,
           scaffoldBackgroundColor: AppColors.themebody,
-
         ),
         // initialRoute: "/",//功能测试初始化的页面
-/*      routes: <String,WidgetBuilder>{//配置路径
-        '/':(BuildContext context)  => BottomNav(),
-      },*/
-        home: BottomNav(),
+        routes: <String, WidgetBuilder>{
+          //配置路径
+          '/': (BuildContext context) => BottomNav(),
+         // '/shenqingjiaru':(BuildContext context) => Join(),
+        //  '/qianyueshanghu':(BuildContext context) => SigningBusinessman_index("签约商户"),
+        },
+        // home: BottomNav(),
         localizationsDelegates: [
           //此处
           GlobalMaterialLocalizations.delegate,
@@ -54,7 +59,7 @@ class MyApp extends StatelessWidget {
           const Locale('zh', 'CH'),
           const Locale('en', 'US'),
         ],
-      )
+      ),
     );
   }
 }

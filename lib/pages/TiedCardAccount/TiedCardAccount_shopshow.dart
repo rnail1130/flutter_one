@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:phone_yiyang/pages/TiedCardAccount/TiedList.dart' as prefix0;
 import 'package:phone_yiyang/pages/TiedCardAccount/detail_msg.dart';
 import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/utiles/core.dart';
@@ -79,7 +77,7 @@ class _TiedCardAccount_getphoneState extends State<TiedCardAccount_getphone> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.themebody,
-      appBar: getheader(title: "购买VIP账户"),
+      appBar: getheader("购买VIP账户"),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -215,14 +213,11 @@ class GetPageData {
   }
 
   static getphonecode(Function callback, _phone) async {
-    LocalStorage.getjson("currentUser", (data) async {
-      var currentUser = ResultCurrentUser.fromJson(data);
-      var res = await httpManager.netFetch(
-          hostAddres.sendConsumeValidCode(),
-          {"cardCode": currentUser.fCard.toString(), "mobileNo": _phone},
-          null,
-          null);
-      callback(res.data);
-    });
+    var res = await httpManager.netFetch(
+        hostAddres.sendConsumeValidCode(),
+        {"cardCode": currentUser.fCard.toString(), "mobileNo": _phone},
+        null,
+        null);
+    callback(res.data);
   }
 }

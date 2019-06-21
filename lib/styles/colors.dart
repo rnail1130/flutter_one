@@ -4,8 +4,9 @@ import 'fontSize.dart';
 
 class AppColors {
   /// 益阳主题色
-  static Color themeColor = Color(0xFFAA3200);//FE4A00
+  static Color themeColor = Color(0xFFAA3200); //FE4A00
   static Color themeColorLight = Color(0xFFFE4A00);
+
   /// 基础body背景颜色
   static Color themebody = Color(0XFFF8FAF8);
   static Color themedisply = Color(0XF9F9A9A);
@@ -20,6 +21,7 @@ class AppColors {
   static Color text_Tide_87c87f = Color(0XFF87c87f);
   static Color color_Tide_hui = Color(0XFFe9eaed);
   static Color text_Tide_hui = Color(0XFF9f9f9f);
+  static Color b_gra = Color(0XFFe4e4e4);
+  static Color bc_blu4 = Color(0XFF0185d0);
+  static Color sc_text_warn = Color(0XFFFC7800);
 }
-
-

@@ -1,10 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:barcode_flutter/barcode_flutter.dart';
+import 'package:phone_yiyang/pages/tabSecond/tabShub.dart';
+import 'package:phone_yiyang/utiles/LocalStorage.dart';
+import 'package:phone_yiyang/utiles/net/api.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'dart:math';
 import 'dart:io';
 import 'dart:async';
 import 'package:phone_yiyang/pages/tabSecond/large_page.dart';
+import 'package:phone_yiyang/utiles/getHost.dart';
+
 
 
 class MyCard extends StatefulWidget {
@@ -18,7 +25,9 @@ class _MyCardState extends State<MyCard> {
       fontSize: 12.0,
       color: Colors.black45
   );
-  String code;
+  String code = "011424346964863426268";
+  String name;
+  String cardNo = '0000000000';
   @override
   void initState() {
     getCode();
@@ -27,16 +36,27 @@ class _MyCardState extends State<MyCard> {
   }
 
   void getCode (){
-    String alphabet = '0123456789';
-    int strlenght = 21; /// 生成的字符串固定长度
+    LocalStorage.getstring("currentUser", (data) async {
+      var Cards = jsonDecode(data)["FCard"];
+      var res = await httpManager.netFetch(hostAddres.getQR(),{"virtualCardCode":Cards,"transType":0}, null,  null);
+      Map NewMap = json.decode(res.data.toString());
+      Map nNewdata = json.decode(NewMap["d"].toString());
+      setState(() {
+        code = nNewdata["Result"];
+        name = jsonDecode(data)["FUserName"];
+        cardNo = Cards;
+      });
+     // return NewMap;
+    });
+
+
+/*    int strlenght = 21; /// 生成的字符串固定长度
     String left = '';
     for (var i = 0; i < strlenght; i++) {
 //    right = right + (min + (Random().nextInt(max - min))).toString();
       left = left + alphabet[Random().nextInt(alphabet.length)];
-    }
-    setState(() {
-      code = left;
-    });
+    }*/
+
   }
   int _count = 30;
   Timer _countdownTimer;
@@ -189,49 +209,57 @@ class _MyCardState extends State<MyCard> {
                         ],
                       ),
                     ),
-                    Stack(
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 0.0),
-                          height: 220.0,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
-                            color: Colors.white,
-                            image: DecorationImage(
-                              image: AssetImage('assets/img/myCard.png'),
-                              centerSlice: new Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          new MaterialPageRoute(builder: (context) => tabShub("虚拟卡基本信息")),
+                        );
+                      },
+                      child: Stack(
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.fromLTRB(10.0, 1.0, 10.0, 0.0),
+                            height: 220.0,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              borderRadius: new BorderRadius.all(new Radius.circular(20.0)),
+                              color: Colors.white,
+                              image: DecorationImage(
+                                image: AssetImage('assets/img/myCard.png'),
+                                centerSlice: new Rect.fromLTRB(270.0, 180.0, 1360.0, 730.0),
+                              ),
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top:95.0,
-                          left: MediaQuery.of(context).size.width/3,
-                          child:  Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text('姓　　名：',style: fontStyle,),
-                                  Text('高渐离',style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w900
-                                  ),),
-                                ],
-                              ),
-                              Row(
-                                children: <Widget>[
-                                  Text('居民卡号：',style: fontStyle,),
-                                  Text('2014********1158',style: TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w900
-                                  ),),
-                                ],
-                              ),
-                            ],
+                          Positioned(
+                            top:95.0,
+                            left: MediaQuery.of(context).size.width/3,
+                            child:  Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    Text('姓　　名：',style: fontStyle,),
+                                    Text(name == null ? "":name,style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w900
+                                    ),),
+                                  ],
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text('居民卡号：',style: fontStyle,),
+                                    Text(cardNo.substring(0,4)+"*******"+cardNo.substring(cardNo.length-4),style: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w900
+                                    ),),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
 
                   ],
@@ -245,5 +273,16 @@ class _MyCardState extends State<MyCard> {
   }
 }
 
+//页面获取数据
+class getPageData {
+  static getdata () async {
+    LocalStorage.getstring("currentUser", (data) async {
+      var Cards = jsonDecode(data)["FCard"];
+      var res = await httpManager.netFetch(hostAddres.getQR(),{"virtualCardCode":Cards,"transType":0}, null,  null);
+      Map NewMap = json.decode(res.data.toString());
 
+      return NewMap;
+    });
+  }
+}
 

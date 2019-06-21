@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:phone_yiyang/model/landscape/landscapeindex_entity.dart';
 import 'package:phone_yiyang/pages/common/DeatilPage.dart';
 import 'package:phone_yiyang/pages/public.dart';
@@ -15,6 +16,12 @@ class LandscapeIndex extends StatefulWidget {
 }
 
 class _LandscapeIndexState extends State<LandscapeIndex> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      GlobalKey<EasyRefreshState>(debugLabel: "getLandScapeListApi");
+  GlobalKey<RefreshHeaderState> _headerKey =
+      GlobalKey<RefreshHeaderState>(debugLabel: "getLandScapeListApi");
+  GlobalKey<RefreshFooterState> _footerKey =
+      GlobalKey<RefreshFooterState>(debugLabel: "getLandScapeListApi");
   List<LandscapeindexResult> _LandscapeIndexResult;
   int pagenum;
 
@@ -105,7 +112,9 @@ class _LandscapeIndexState extends State<LandscapeIndex> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: easyRefresh(_createListView(context), () async {
+      child: easyRefresh(
+          _easyRefreshKey, _headerKey, _footerKey, _createListView(context),
+          () async {
         pagenum = 1;
         GetPageData.getLandScapeListData(pagenum, widget.landscapeType, (data) {
           var _getResult = LandscapeindexD.fromJson(json.decode(data)['d']);

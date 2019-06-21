@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:phone_yiyang/model/paymentAccount/paymentAccountList.dart';
 import 'package:phone_yiyang/pages/login/loginPage.dart';
@@ -10,8 +11,6 @@ import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/utiles/core.dart';
 import 'package:phone_yiyang/utiles/refresh.dart';
 
-ResultCurrentUser currentUser;
-
 class PaymentIndex extends StatefulWidget {
   PaymentIndex({Key key, this.categoryCode}) : super(key: key);
   final categoryCode;
@@ -19,6 +18,12 @@ class PaymentIndex extends StatefulWidget {
 }
 
 class _PaymentIndexState extends State<PaymentIndex> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      GlobalKey<EasyRefreshState>(debugLabel: "getPaymentAccountList");
+  GlobalKey<RefreshHeaderState> _headerKey =
+      GlobalKey<RefreshHeaderState>(debugLabel: "getPaymentAccountList");
+  GlobalKey<RefreshFooterState> _footerKey =
+      GlobalKey<RefreshFooterState>(debugLabel: "getPaymentAccountList");
   List<PaymentAccountList> paymentAccountList;
   List<bool> _listbutt = List<bool>();
   double doub52p4736 = 52.4736;
@@ -212,23 +217,22 @@ class _PaymentIndexState extends State<PaymentIndex> {
   gotobinding() {}
   // 缴费记录
   gotorecord() {}
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("缴费账户"),
       ),
-      body: easyRefresh(_createListView(context), () async {
-        LocalStorage.getjson("currentUser", (data) {
-          if (data != null) currentUser = ResultCurrentUser.fromJson(data);
-          pagenum = 1;
-          GetPageData.getPaymentAccountList(pagenum, widget.categoryCode,
-              (data) {
-            var paymentAccountListD =
-                PaymentAccountListD.fromJson(data.toString());
-            setState(() {
-              paymentAccountList = paymentAccountListD.result;
-            });
+      body: easyRefresh(
+          _easyRefreshKey, _headerKey, _footerKey, _createListView(context),
+          () async {
+        pagenum = 1;
+        GetPageData.getPaymentAccountList(pagenum, widget.categoryCode, (data) {
+          var paymentAccountListD =
+              PaymentAccountListD.fromJson(data.toString());
+          setState(() {
+            paymentAccountList = paymentAccountListD.result;
           });
         });
       }, () async {
@@ -245,31 +249,16 @@ class _PaymentIndexState extends State<PaymentIndex> {
   }
 
   @override
-  void initState() {
-    // LocalStorage.getjson("currentUser", (data) {
-    //   if (data != null) currentUser = ResultCurrentUser.fromJson(data);
-    //   pagenum = 1;
-    //   GetPageData.getPaymentAccountList(pagenum, widget.categoryCode, (data) {
-    //     var paymentAccountListD = PaymentAccountListD.fromJson(data.toString());
-    //     setState(() {
-    //       paymentAccountList = paymentAccountListD.result;
-    //     });
-    //   });
-    // });
-  }
+  void initState() {}
 }
 
 class GetPageData {
   static getPaymentAccountList(
       int pagenum, categoryCode, Function callback) async {
-    var cardNo = '';
-    if (currentUser != null) {
-      cardNo = currentUser.fCard.toString();
-    }
     var res = await httpManager.netFetch(
         hostAddres.getPaymentAccountList(),
         {
-          'cardNo': cardNo,
+          'cardNo': currentUser != null ? currentUser.fCard.toString() : "",
           'categoryCode': categoryCode != null ? categoryCode : "",
           'pageIndex': pagenum,
           'status': " "

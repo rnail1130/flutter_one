@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:phone_yiyang/model/provide/provide.dart';
+import 'package:phone_yiyang/pages/TiedCardAccount/TiedListDetail.dart';
 import 'package:phone_yiyang/utiles/Dialogs.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
 import 'package:phone_yiyang/utiles/net/api.dart';

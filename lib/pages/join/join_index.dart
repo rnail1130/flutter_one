@@ -4,9 +4,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/pages/public.dart' as prefix0;
+import 'package:phone_yiyang/utiles/core.dart' as prefix1;
 
-class join_index extends StatelessWidget {
-  const join_index({Key key}) : super(key: key);
+class Join_index extends StatelessWidget {
+  const Join_index({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

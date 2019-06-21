@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'dart:convert';
 import "package:phone_yiyang/pages/public.dart";
 import '../../model/cardBag/carddetails_entity.dart';
 
 //订单记录
 class CardDetailsList extends StatefulWidget {
+  final String cardCode;
+  final String contractPhone;
+  final String ticketCode;
+  final int ticketType;
+  CardDetailsList(
+      this.cardCode, this.contractPhone, this.ticketCode, this.ticketType);
   @override
   _CardDetailsListState createState() => _CardDetailsListState();
 }
@@ -14,7 +21,13 @@ class _CardDetailsListState extends State<CardDetailsList> {
 
   @override
   void initState() {
-    _CardDetailsData = getPageData.getdata();
+    var params = {
+      "cardCode": widget.cardCode,
+      "contractPhone": widget.contractPhone,
+      "ticketCode": widget.ticketCode,
+      "ticketType": widget.ticketType,
+    };
+    _CardDetailsData = GetPageData.getdata(params);
     super.initState();
   }
 
@@ -73,7 +86,9 @@ class _CardDetailsListState extends State<CardDetailsList> {
             ),
             Row(
               children: <Widget>[
-                SizedBox(width: AppSize.up1,),
+                SizedBox(
+                  width: AppSize.up1,
+                ),
                 RaisedButton(
                     onPressed: () {
 //                  Navigator.of(context)
@@ -102,7 +117,10 @@ class _CardDetailsListState extends State<CardDetailsList> {
                   Divider(
                     height: 10.0,
                   ),
-                  Text(cardDetailsData.result.instructions),
+                  // Text(cardDetailsData.result.instructions),
+                  Html(
+                    data: cardDetailsData.result.instructions,
+                  )
                 ],
               ),
             ),
@@ -182,7 +200,10 @@ class _CardDetailsListState extends State<CardDetailsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("订单记录"),
+        title: Text(
+          "订单记录",
+          style: TextStyle(fontSize: AppSize.uf1),
+        ),
       ),
       body: FutureBuilder(
         builder: _buildFuture,
@@ -193,14 +214,8 @@ class _CardDetailsListState extends State<CardDetailsList> {
 }
 
 //页面获取数据
-class getPageData {
-  static getdata() async {
-    var params = {
-      "cardCode": "2014351000471158",
-      "contractPhone": "18210530620",
-      "ticketCode": "MF20181106000001",
-      "ticketType": 1
-    };
+class GetPageData {
+  static getdata(params) async {
     var res = await httpManager.netFetch(
         hostAddres.getTicketDetailInfoApi(), params, null, null);
     return res.data;

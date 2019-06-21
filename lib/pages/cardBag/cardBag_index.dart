@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
+import 'package:phone_yiyang/pages/cardBag/cardBag_YDdetail.dart';
+import 'package:phone_yiyang/pages/login/loginPage.dart';
 import 'dart:convert';
 import "package:phone_yiyang/pages/public.dart";
+import 'package:phone_yiyang/pages/transactionRecord/transaction_index.dart';
+import 'package:phone_yiyang/styles/fontSize.dart';
 import 'package:phone_yiyang/utiles/core.dart';
 import 'package:phone_yiyang/utiles/refresh.dart';
 
 import 'package:phone_yiyang/model/currentUser.dart';
 import 'package:phone_yiyang/model/cardBag/cardbagindex_all_entity.dart';
+
 import 'package:phone_yiyang/model/cardBag/cardbagindex_moble_entity.dart';
 
 import 'package:phone_yiyang/pages/cardBag/order_history.dart';
@@ -29,6 +35,12 @@ class CardBagIndex extends StatefulWidget {
 }
 
 class _CardBagIndexState extends State<CardBagIndex> {
+  GlobalKey<EasyRefreshState> _easyRefreshKey =
+      GlobalKey<EasyRefreshState>(debugLabel: "getTransactionRecordsApi");
+  GlobalKey<RefreshHeaderState> _headerKey =
+      GlobalKey<RefreshHeaderState>(debugLabel: "getTransactionRecordsApi");
+  GlobalKey<RefreshFooterState> _footerKey =
+      GlobalKey<RefreshFooterState>(debugLabel: "getTransactionRecordsApi");
   List<CardBagIndexAllDResult> _cardBagIndexDatas;
   CardBagIndexMobleResult _cardMobleDatas;
   List<bool> _listbutt = List<bool>();
@@ -39,23 +51,24 @@ class _CardBagIndexState extends State<CardBagIndex> {
 
   @override
   void initState() {
-    GetPageData.getlogin((data) {
-      CurrentUserD currentUserD = CurrentUserD.fromJson(data.toString());
-      currentUser = currentUserD.result;
-      LocalStorage.set("currentUser", json.encode(currentUser));
-      pagenum = 1;
-      GetPageData.getdata(pagenum, (data) {
-        var _getCardBag = CardBagIndexAllD.fromJson(json.decode(data)['d']);
-        GetPageData.getMobleCouponInfoData(pagenum, (data) {
-          CardBagIndexMobleD _getMoble =
-              CardBagIndexMobleD.fromJson(json.decode(data)['d']);
-          setState(() {
-            _cardBagIndexDatas = _getCardBag.result;
-            _cardMobleDatas = _getMoble.result;
-          });
+    LocalStorage.getjson("currentUser", (data) {
+      if (data != null) {
+        currentUser = ResultCurrentUser.fromJson(data);
+      }
+    });
+    pagenum = 1;
+    GetPageData.getdata(pagenum, (data) {
+      var _getCardBag = CardBagIndexAllD.fromJson(json.decode(data)['d']);
+      GetPageData.getMobleCouponInfoData(pagenum, (data) {
+        CardBagIndexMobleD _getMoble =
+            CardBagIndexMobleD.fromJson(json.decode(data)['d']);
+        setState(() {
+          _cardBagIndexDatas = _getCardBag.result;
+          _cardMobleDatas = _getMoble.result;
         });
       });
     });
+
     super.initState();
   }
 
@@ -71,147 +84,201 @@ class _CardBagIndexState extends State<CardBagIndex> {
 
   ///居民卡移动消费券
   Widget _mobleCouponInfo(context) {
-    var _icon = _oneShow
-        ? Icon(Icons.expand_less, color: AppColors.test95a)
-        : Icon(Icons.expand_more, color: AppColors.test95a);
-    return Container(
-      decoration: new BoxDecoration(
-          border: Border.all(width: 0.5, color: Colors.grey[300]),
-          color: AppColors.twhite),
-      margin: EdgeInsets.only(top: AppSize.ufp7),
-      child: ExpansionTile(
-        onExpansionChanged: (bol) {
-          setState(() {
-            if (bol)
-              _oneShow = true;
-            else
-              _oneShow = false;
-          });
-        },
-        backgroundColor: Colors.white,
-        leading: Padding(
-          padding: EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
-          child: Image.asset(
-            'assets/images/tourismCard_0.png',
-            height: AppSize.up3,
-            width: AppSize.up3,
+    if (currentUser == null) {
+      return Container(
+        decoration: new BoxDecoration(
+            border: Border.all(width: 0.5, color: Colors.grey[300]),
+            color: AppColors.twhite),
+        margin: EdgeInsets.only(top: AppSize.ufp7),
+        child: ListTile(
+          leading: Padding(
+            padding:
+                EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
+            child: Image.asset(
+              'assets/images/tourismCard_0.png',
+              height: AppSize.up3,
+              width: AppSize.up3,
+            ),
           ),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text("居民卡移动消费券",
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: AppSize.ufp875,
-                    fontWeight: FontWeight.w500)),
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
-              child: Text("移动消费券有效期为${_cardMobleDatas.validDays}个自然日",
-                  style:
-                      TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
-            ),
-            Text("移动消费券余额：${_cardMobleDatas.balance}点",
-                style: TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
-          ],
-        ),
-        trailing: Column(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.fromLTRB(AppSize.ufp8125, AppSize.ufp375,
-                  AppSize.ufp8125, AppSize.uf1),
-              child: Text(
-                '',
-              ),
-            ),
-            _icon,
-          ],
-        ),
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (BuildContext context) {
-                        print(context);
-                        return CardDetailsList();
-                      }),
-                    );
-                  },
-                  child: Text(
-                    "详情",
+              Text("居民卡移动消费券",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: AppSize.ufp875,
+                      fontWeight: FontWeight.w500)),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: Text("您还未登录，无法使用此业务。",
                     style: TextStyle(
-                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
-                  ),
-                  textColor: Colors.white,
-                  color: AppColors.themeColor,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide.none,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(
-                    "消费记录",
-                    style: TextStyle(
-                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
-                  ),
-                  textColor: Colors.white,
-                  color: AppColors.themeColor,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide.none,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
-                child: RaisedButton(
-                  onPressed: () {
-                    showDialog<Null>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        print(context);
-                        return SmsContent();
-                      },
-                    ).then((val) {
-                      print(val);
-                    });
-                  },
-                  child: Text(
-                    "一键兑换",
-                    style: TextStyle(
-                        color: AppColors.twhite, fontSize: AppSize.ufp6875),
-                  ),
-                  textColor: Colors.white,
-                  color: AppColors.themeColor,
-                  shape: const RoundedRectangleBorder(
-                    side: BorderSide.none,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                  ),
-                ),
+                        color: Colors.black, fontSize: AppSize.ufp75)),
               ),
             ],
-          )
-        ],
-      ),
-    );
+          ),
+        ),
+      );
+    } else {
+      var _icon = _oneShow
+          ? Icon(Icons.expand_less, color: AppColors.test95a)
+          : Icon(Icons.expand_more, color: AppColors.test95a);
+      return Container(
+        decoration: new BoxDecoration(
+            border: Border.all(width: 0.5, color: Colors.grey[300]),
+            color: AppColors.twhite),
+        margin: EdgeInsets.only(top: AppSize.ufp7),
+        child: ExpansionTile(
+          onExpansionChanged: (bol) {
+            setState(() {
+              if (bol)
+                _oneShow = true;
+              else
+                _oneShow = false;
+            });
+          },
+          backgroundColor: Colors.white,
+          leading: Padding(
+            padding:
+                EdgeInsets.only(top: AppSize.ufp75, bottom: AppSize.ufp375),
+            child: Image.asset(
+              'assets/images/tourismCard_0.png',
+              height: AppSize.up3,
+              width: AppSize.up3,
+            ),
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text("居民卡移动消费券",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: AppSize.ufp875,
+                      fontWeight: FontWeight.w500)),
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 10.0, 0, 10.0),
+                child: Text("移动消费券有效期为${_cardMobleDatas.validDays}个自然日",
+                    style: TextStyle(
+                        color: Colors.black, fontSize: AppSize.ufp75)),
+              ),
+              Text("移动消费券余额：${_cardMobleDatas.balance}点",
+                  style:
+                      TextStyle(color: Colors.black, fontSize: AppSize.ufp75)),
+            ],
+          ),
+          trailing: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(AppSize.ufp8125, AppSize.ufp375,
+                    AppSize.ufp8125, AppSize.uf1),
+                child: Text(
+                  '',
+                ),
+              ),
+              Expanded(
+                child: _icon,
+              ),
+            ],
+          ),
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                          return CardYDDetailsList(
+                              balance: _cardMobleDatas.balance,
+                              validDays: _cardMobleDatas.validDays,
+                              fTelephone: currentUser.fTelephone.toString(),
+                              fCard: currentUser.fCard.toString());
+                        }),
+                      );
+                    },
+                    child: Text(
+                      "详情",
+                      style: TextStyle(
+                          color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                    ),
+                    textColor: Colors.white,
+                    color: AppColors.themeColor,
+                    shape: const RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) {
+                          return TransactionIndex(
+                            cardCode: currentUser.fCard.toString(),
+                            type: 4,
+                          );
+                        }),
+                      );
+                    },
+                    child: Text(
+                      "消费记录",
+                      style: TextStyle(
+                          color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                    ),
+                    textColor: Colors.white,
+                    color: AppColors.themeColor,
+                    shape: const RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      showDialog<Null>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          print(context);
+                          return SmsContent();
+                        },
+                      ).then((val) {
+                        print(val);
+                      });
+                    },
+                    child: Text(
+                      "一键兑换",
+                      style: TextStyle(
+                          color: AppColors.twhite, fontSize: AppSize.ufp6875),
+                    ),
+                    textColor: Colors.white,
+                    color: AppColors.themeColor,
+                    shape: const RoundedRectangleBorder(
+                      side: BorderSide.none,
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    }
   }
 
   ///其他票券列表
@@ -285,7 +352,9 @@ class _CardBagIndexState extends State<CardBagIndex> {
                             : AppColors.test95a),
                   ),
                 ),
-                _icon,
+                Expanded(
+                  child: _icon,
+                ),
               ],
             ),
             children: <Widget>[
@@ -298,8 +367,11 @@ class _CardBagIndexState extends State<CardBagIndex> {
                       onPressed: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                          print(context);
-                          return CardDetailsList();
+                          return CardDetailsList(
+                              currentUser.fCard.toString(),
+                              currentUser.fTelephone.toString(),
+                              _cardBagIndexData.ticketCode,
+                              _cardBagIndexData.ticketType);
                         }));
                       },
                       child: Text(
@@ -322,7 +394,16 @@ class _CardBagIndexState extends State<CardBagIndex> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
                       child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (currentUser == null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => login(),
+                              ),
+                            );
+                          }
+                        },
                         child: Text(
                           "购买",
                           style: TextStyle(
@@ -345,7 +426,16 @@ class _CardBagIndexState extends State<CardBagIndex> {
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0),
                       child: RaisedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (currentUser == null) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => login(),
+                              ),
+                            );
+                          }
+                        },
                         child: Text(
                           "购买旅游卡",
                           style: TextStyle(
@@ -423,7 +513,10 @@ class _CardBagIndexState extends State<CardBagIndex> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("票券卡包"),
+          title: Text(
+            "票券卡包",
+            style: TextStyle(fontSize: AppSize.uf1),
+          ),
           actions: <Widget>[
             FlatButton(
                 onPressed: () {
@@ -436,12 +529,12 @@ class _CardBagIndexState extends State<CardBagIndex> {
                   "订单/记录",
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16.0,
+                    fontSize: AppSize.ufp8125,
                   ),
                 )),
           ],
         ),
-        body: easyRefresh(_createListView(context), () async {
+        body: easyRefresh(_easyRefreshKey, _headerKey, _footerKey,_createListView(context), () async {
           pagenum = 1;
           GetPageData.getdata(pagenum, (data) {
             var _getCardBag = CardBagIndexAllD.fromJson(json.decode(data)['d']);
@@ -463,18 +556,12 @@ class _CardBagIndexState extends State<CardBagIndex> {
 }
 
 class GetPageData {
-  static getlogin(Function callback) async {
-    var res = await httpManager.netFetch(hostAddres.getNewLogin(),
-        {"mobile": "18210530620", "passWord": "abc123"}, null, null);
-    callback(res.data);
-  }
-
   static getdata(int _pagenum, Function callback) async {
-    var _CardCode = '2014351000471158';
-    var _ContractPhone = '18210530620';
+    var _CardCode = '';
+    var _ContractPhone = '';
     if (currentUser != null) {
       _CardCode = currentUser.fCard.toString();
-      _ContractPhone = currentUser.fCard.toString();
+      _ContractPhone = currentUser.fTelephone.toString();
     }
     var res = await httpManager.netFetch(
         hostAddres.getAllTicketsApi(),
@@ -489,11 +576,11 @@ class GetPageData {
   }
 
   static getMobleCouponInfoData(int _pagenum, Function callback) async {
-    var _CardCode = '220500100000580';
-    var _ContractPhone = '18210530620';
+    var _CardCode = '';
+    var _ContractPhone = '';
     if (currentUser != null) {
       _CardCode = currentUser.fCard.toString();
-      _ContractPhone = currentUser.fCard.toString();
+      _ContractPhone = currentUser.fTelephone.toString();
     }
     var res = await httpManager.netFetch(
         hostAddres.getMobleCouponInfoApi(),

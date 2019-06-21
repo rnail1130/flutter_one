@@ -11,12 +11,43 @@ setContext(context_) {
 }
 
 /// 头部模板
-getheader({title}) {
+getheader(String title,
+    {Widget leading,
+    bool automaticallyImplyLeading = true,
+    List<Widget> actions,
+    Widget flexibleSpace,
+    PreferredSizeWidget bottom,
+    double elevation,
+    ShapeBorder shape,
+    Color backgroundColor,
+    Brightness brightness,
+    IconThemeData iconTheme,
+    IconThemeData actionsIconTheme,
+    TextTheme textTheme,
+    bool primary = true,
+    bool centerTitle,
+    double titleSpacing = NavigationToolbar.kMiddleSpacing,
+    double toolbarOpacity = 1.0,
+    double bottomOpacity = 1.0}) {
   return AppBar(
-    title: Text(
-      title,
-      style: TextStyle(fontSize: AppSize.ufp95),
-    ),
+    title: Text(title, style: TextStyle(fontSize: AppSize.ufp95)),
+    leading: leading,
+    automaticallyImplyLeading: automaticallyImplyLeading,
+    actions: actions,
+    flexibleSpace: flexibleSpace,
+    bottom: bottom,
+    elevation: elevation,
+    shape: shape,
+    backgroundColor: backgroundColor,
+    brightness: brightness,
+    iconTheme: iconTheme,
+    actionsIconTheme: actionsIconTheme,
+    textTheme: textTheme,
+    primary: primary,
+    centerTitle: centerTitle,
+    titleSpacing: titleSpacing,
+    toolbarOpacity: toolbarOpacity,
+    bottomOpacity: bottomOpacity,
   );
 }
 

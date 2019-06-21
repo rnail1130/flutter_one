@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:phone_yiyang/utiles/LocalStorage.dart';
+import 'package:phone_yiyang/pages/public.dart';
 import 'package:phone_yiyang/utiles/net/api.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:phone_yiyang/utiles/getHost.dart';
@@ -33,6 +34,7 @@ class UserDataModel extends Model {
         'currentUser',
         responData["d"]["Result"]
     );
+    currentUser = ResultCurrentUser.fromJson(responData["d"]["Result"]);
     LocalStorage.set(
         'username',
         phone
@@ -42,6 +44,7 @@ class UserDataModel extends Model {
         password
     );
   }
+
   getUserInfo(callback) async {
     String userInfo = await LocalStorage.get("currentUser");
     callback(userInfo);

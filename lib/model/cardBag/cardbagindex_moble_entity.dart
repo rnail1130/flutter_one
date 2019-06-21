@@ -1,6 +1,6 @@
 class CardBagIndexMobleD {
   int code;
-  Null msg;
+  String msg;
   CardBagIndexMobleResult result;
 
   CardBagIndexMobleD({this.code, this.msg, this.result});

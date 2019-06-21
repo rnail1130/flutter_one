@@ -47,7 +47,7 @@ class thirdTab extends StatelessWidget {
               context: context,
               type: AlertType.info,
               style: AlertStyle(
-                animationType: AnimationType.grow
+                  animationType: AnimationType.grow
               ),
               title: "提示",
               desc: "確定要退出嗎？",
@@ -125,7 +125,7 @@ class thirdTab extends StatelessWidget {
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
-   // if (index.isEven) return new Divider();
+    // if (index.isEven) return new Divider();
 
     return ListTile(
       dense: true,

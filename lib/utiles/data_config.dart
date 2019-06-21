@@ -71,33 +71,38 @@ class DataConfig {
   static const middleData_list = [
     {
       "img": "assets/images/more/rdcx.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "政务查询",
-      "url": ""
+      "url": "",
+      "ischeck": "true" //是否需要验证登录
     },
     {
       "img": "assets/images/more/grbs.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "个人办事",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/qybs.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "企业办事",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/ggfb.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "公告发布",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/bjcx.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "办件查询",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
   ];
   //公共缴费服务
@@ -111,73 +116,84 @@ class DataConfig {
         "sub_title": "在线公共生活缴费",
         "src": "assets/images/index/index_pic11.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "燃气缴费",
         "sub_title": "在线公共生活缴费",
         "src": "assets/images/index/index_pic13.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "电费缴费",
         "sub_title": "在线公共生活缴费",
         "src": "assets/images/index/index_pic12.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "有线缴费",
         "sub_title": "在线公共生活缴费",
         "src": "assets/images/index/index_pic14.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
     ]
   };
   static const difangData_list = [
     {
       "img": "assets/images/more/moreID2_0.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "水费缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_1.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "电费缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_2.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "燃气缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_5.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "有线电视缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_6.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "话费缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_7.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "流量缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID2_8.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "加油卡缴费",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
   ];
   //地方商业服务
@@ -193,13 +209,15 @@ class DataConfig {
         "url": config.API_VER +
             "/html5/pages/juminka/BMwangdian.html", //可以跳转的话给链接，否则给类名，并且isjump为false
         "isjump": "true",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "申请加入",
         "sub_title": "成为居民卡签约商户",
         "src": "assets/images/index/index_pic10.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "data_title": "商户APP",
@@ -208,6 +226,7 @@ class DataConfig {
         "url": config.API_VER +
             "/html5/pages/difangshangyeServer/shanghuAPP.html", //可以跳转的话给链接，否则给类名，并且isjump为false
         "isjump": "true",
+        "ischeck": "false" //是否需要验证登录
       },
       {
         "ischeck": "true",
@@ -215,34 +234,38 @@ class DataConfig {
         "sub_title": "获取促销券电子门票",
         "src": "assets/images/index/index_pic9.png",
         "url": "", //可以跳转的话给链接，否则给类名，并且isjump为false
-        "isjump": "",
+        "isjump": "false",
       }
     ]
   };
   static const gonggjfeiData_list = [
     {
       "img": "assets/images/more/moreID1_0.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "签约商户",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID1_1.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "商户积分",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID1_2.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "商户点卡",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
     {
       "img": "assets/images/more/moreID1_3.png",
-      "isJump": "true",
+      "isJump": "false",
       "title": "申请加入",
-      "url": ""
+      "url": "",
+      "ischeck": "false" //是否需要验证登录
     },
   ];
   //益阳居民卡

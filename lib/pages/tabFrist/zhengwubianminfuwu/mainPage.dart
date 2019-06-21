@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:phone_yiyang/utiles/data_config.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../hub.dart';
 class governmentPerson extends StatefulWidget {
@@ -21,6 +22,32 @@ class _governmentPersonState extends State<governmentPerson> {
 
       con.add(InkWell(
           onTap: (){
+            if(item['title'] == "办件查询"){
+              Alert(
+                context: context,
+                type: AlertType.info,
+                style: AlertStyle(
+                    animationType: AnimationType.grow
+                ),
+                title: "提示",
+                desc: "该功能尚未完全开放",
+                buttons: [
+                  DialogButton(
+                    child: Text(
+                      "确定",
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () => Navigator.pop(context),
+                    gradient: LinearGradient(colors: [
+                      Color.fromRGBO(116, 116, 191, 1.0),
+                      Color.fromRGBO(52, 138, 199, 1.0)
+                    ]),
+                  ),
+                ],
+              ).show();
+              return;
+            }
+
             Navigator.push(
               context,
               new MaterialPageRoute(builder: (context) => hub(item['title'])),

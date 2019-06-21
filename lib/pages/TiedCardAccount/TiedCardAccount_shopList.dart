@@ -12,7 +12,7 @@ class _TiedCardAccount_shopListState extends State<TiedCardAccount_shopList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getheader(title: "购买记录"),
+      appBar: getheader("购买记录"),
       body: Text("goumaijilu"),
     );
   }

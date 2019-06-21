@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+
 class WebHome extends StatefulWidget {
   String url;
   String name;
-  WebHome(this.url,this.name);
+  WebHome(this.url, this.name);
   @override
-  _WebHomeState createState() => _WebHomeState(this.url,this.name);
+  _WebHomeState createState() => _WebHomeState(this.url, this.name);
 }
 
 class _WebHomeState extends State<WebHome> {
@@ -17,7 +18,7 @@ class _WebHomeState extends State<WebHome> {
   bool isLoading = true;
   int progress = 0;
   Timer _timer;
-  _WebHomeState(this.url,this.name);
+  _WebHomeState(this.url, this.name);
 
   void initState() {
     super.initState();
@@ -36,6 +37,7 @@ class _WebHomeState extends State<WebHome> {
 
     _simulateProgress();
   }
+
   /// 模拟异步加载
   Future _simulateProgress() async {
     if (_timer == null) {
@@ -51,6 +53,7 @@ class _WebHomeState extends State<WebHome> {
       });
     }
   }
+
   Widget _progressBar() {
     return SizedBox(
       height: isLoading ? 2 : 0,
@@ -61,6 +64,7 @@ class _WebHomeState extends State<WebHome> {
       ),
     );
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -71,6 +75,7 @@ class _WebHomeState extends State<WebHome> {
       _timer = null;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return WebviewScaffold(
@@ -85,25 +90,19 @@ class _WebHomeState extends State<WebHome> {
               size: 30.0,
               color: Colors.white,
             ),
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
-            }
-        ),
-        title:
-        Text(
+            }),
+        title: Text(
           this.name,
-          style: TextStyle(
-              fontSize: 18.0,
-              color: Colors.white
-          ),
+          style: TextStyle(fontSize: 18.0, color: Colors.white),
         ),
-
         centerTitle: true,
       ),
       url: this.url,
-      withZoom: false,
-      withJavascript: false,
-      scrollBar: false,
+      withJavascript: true,
+      withLocalStorage: true,
+      withZoom: true,
     );
   }
 }

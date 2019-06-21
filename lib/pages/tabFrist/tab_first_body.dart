@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:phone_yiyang/pages/common/DeatilPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/tab_first_body_topPart.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:phone_yiyang/styles/colorZ.dart';
@@ -22,9 +23,15 @@ class _HomeBodyState extends State<HomeBody> {
 
     });
   }*/
-  Widget bilrs(String str){
+  Widget bilrs(String str,int id){
     return InkWell(
-      onTap: (){print(2123);},
+      onTap: (){
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Deatile(
+            str,
+            id: id,
+            url: hostAddres.getNewMessage(),
+          )));},
       child: Container(
           height: 40.0,
           decoration: BoxDecoration(
@@ -62,10 +69,10 @@ class _HomeBodyState extends State<HomeBody> {
         );
       case ConnectionState.done://请求成功
       if(snapshot.data == null){
-        return bilrs("");
+        return bilrs("",0);
       }
         Map NewMap = snapshot.data;
-        return bilrs(NewMap["d"]["Result"][0]["Title"]);
+        return bilrs(NewMap["d"]["Result"][0]["Title"],NewMap["d"]["Result"][0]["Id"]);
 
       default:
         return null;

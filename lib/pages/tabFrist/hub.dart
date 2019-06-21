@@ -1,6 +1,7 @@
 //跳转的中转
 import 'package:flutter/material.dart';
 import 'package:phone_yiyang/pages/join/join_index.dart';
+import 'package:phone_yiyang/pages/signingBusinessman/signingBusinessman_index.dart';
 import 'package:phone_yiyang/pages/tabFrist/juminka/transaction_record.dart';
 import 'package:phone_yiyang/pages/tabFrist/juminka/ydjf_xiaofei.dart';
 import 'package:phone_yiyang/pages/tabFrist/landscape/landscapeIndex.dart';
@@ -11,6 +12,7 @@ import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/government.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/mainPage.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/personDo.dart';
 import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/publicMess.dart';
+import 'package:phone_yiyang/pages/tabFrist/zhengwubianminfuwu/shuifei.dart';
 
 class hub extends StatefulWidget {
   final String name;
@@ -75,13 +77,19 @@ class _hubState extends State<hub> {
         return LandscapeIndex(widget.name, '4');
         break;
       case "申请加入":
-        return join_index();
+        return Join_index();
         break;
       case "移动积分消费":
         return YdjfXiaoFei(widget.name);
         break;
       case "公告发布":
         return publicMessage(this.widget.name);
+        break;
+      case "申请加入":
+        return Join_index();
+        break;
+      case "水费缴费":
+        return shuifei();
         break;
       default:
         return comPage(this.widget.name,this.widget.id);
@@ -95,6 +103,9 @@ class _hubState extends State<hub> {
         break;
       case "企业办事":
         return goverDo("企业办事");
+        break;
+      case "签约商户":
+        return SigningBusinessman_index("签约商户");
         break;
       default:
         return Scaffold(

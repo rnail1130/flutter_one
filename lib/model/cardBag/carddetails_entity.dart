@@ -50,7 +50,7 @@ class CardDetailsDResult {
 	String ticketCode;
 	int limitCount;
 	String startDate;
-	double marketPrice;
+	var marketPrice;
 	String sType;
 	int ticketType;
 	dynamic salePrice;
